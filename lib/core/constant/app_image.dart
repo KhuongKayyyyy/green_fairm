@@ -11,4 +11,7 @@ class AppImage {
   // illustration
   static const String plant1 = 'assets/images/illustration/plant1.png';
   static const String plant2 = 'assets/images/illustration/plant2.png';
+
+  //weather
+  static const String hot_sun = 'assets/images/weather/hot_sun.png';
 }

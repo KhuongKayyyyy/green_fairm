@@ -57,10 +57,6 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             icon: const Icon(CupertinoIcons.person),
             title: const Text('Profile'),
           ),
-          // FlashyTabBarItem(
-          //   icon: Icon(Icons.settings),
-          //   title: Text('한국어'),
-          // ),
         ],
       ),
     );

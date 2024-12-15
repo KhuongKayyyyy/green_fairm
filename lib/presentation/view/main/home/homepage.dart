@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:green_fairm/presentation/view/main/home/widget/check_our_ai_recommendation.dart';
+import 'package:green_fairm/presentation/view/main/home/widget/my_fields_section.dart';
+import 'package:green_fairm/presentation/view/main/home/widget/weather_report.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -10,6 +13,17 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          WeatherReport(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: CheckOurAiRecommendation(),
+          ),
+          MyFieldsSection(),
+        ],
+      ),
+    );
   }
 }
