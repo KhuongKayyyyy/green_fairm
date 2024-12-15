@@ -30,9 +30,14 @@ class FieldSmallItem extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white),
-                  child: Text(field.status ?? "No status",
-                      style: AppTextStyle.defaultBold(
-                          color: AppColor.secondaryColor)),
+                  child: Text(
+                    field.status ?? "No status",
+                    style: AppTextStyle.defaultBold(
+                      color: field.status == "Good"
+                          ? AppColor.primaryColor
+                          : AppColor.secondaryColor,
+                    ),
+                  ),
                 ),
               )
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
+import 'package:green_fairm/presentation/view/notification/notification_page.dart';
 
 class WeatherReport extends StatefulWidget {
   const WeatherReport({super.key});
@@ -21,7 +22,11 @@ class _WeatherReportState extends State<WeatherReport> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildLocation(),
-              InkWell(onTap: () {}, child: const Icon(CupertinoIcons.bell))
+              InkWell(
+                  onTap: () {
+                    _showNotificationPage(context);
+                  },
+                  child: const Icon(CupertinoIcons.bell))
             ],
           ),
           const SizedBox(height: 20),
@@ -165,5 +170,21 @@ class _WeatherReportState extends State<WeatherReport> {
         ],
       ),
     );
+  }
+
+  void _showNotificationPage(BuildContext context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        useRootNavigator: true,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.vertical(
+        //     top: Radius.circular(16),
+        //   ),
+        // ),
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return const NotificationPage();
+        });
   }
 }
