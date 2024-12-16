@@ -20,7 +20,7 @@ class AppTextStyle {
 
   static TextStyle largeBold({Color color = Colors.white}) {
     return TextStyle(
-      fontSize: 24,
+      fontSize: 30,
       fontWeight: FontWeight.w900,
       color: color,
     );

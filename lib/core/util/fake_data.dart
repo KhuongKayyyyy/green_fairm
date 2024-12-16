@@ -5,28 +5,40 @@ import 'package:green_fairm/data/model/field.dart';
 class FakeData {
   static final List<Field> fakeFields = [
     Field(
+      id: "1",
       name: 'Field 1',
       status: 'Good',
       type: 'Rice',
       area: '1.5 ha',
+      imageUrl:
+          'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
     ),
     Field(
+      id: "2",
       name: 'Field 2',
       status: 'Need water',
       type: 'Corn',
       area: '2.0 ha',
+      imageUrl:
+          'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
     ),
     Field(
+      id: "3",
       name: 'Field 3',
       status: 'Good',
       type: 'Rice',
       area: '1.5 ha',
+      imageUrl:
+          'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
     ),
     Field(
+      id: "4",
       name: 'Field 4',
       status: 'Need water',
       type: 'Corn',
       area: '2.0 ha',
+      imageUrl:
+          'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
     ),
   ];
 

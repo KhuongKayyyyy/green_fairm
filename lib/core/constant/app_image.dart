@@ -14,4 +14,8 @@ class AppImage {
 
   //weather
   static const String hot_sun = 'assets/images/weather/hot_sun.png';
+
+  // placeholder
+  static const String placeholder =
+      'https://i0.wp.com/thefoodmanager.com/wp-content/uploads/2021/04/placeholder-600x400-1.png?ssl=1';
 }

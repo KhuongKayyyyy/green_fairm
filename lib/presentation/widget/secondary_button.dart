@@ -10,15 +10,21 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: AppColor.accentColor),
-      child: Center(
-        child: Text(
-          text,
-          style: AppTextStyle.mediumBold(),
+    return InkWell(
+      onTap: () {
+        onPressed();
+      },
+      child: Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: AppColor.accentColor),
+        child: Center(
+          child: Text(
+            text,
+            style: AppTextStyle.mediumBold(),
+          ),
         ),
       ),
     );

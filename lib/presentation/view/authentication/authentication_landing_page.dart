@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
+import 'package:green_fairm/core/router/app_navigation.dart';
+import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 import 'package:green_fairm/presentation/widget/secondary_button.dart';
 
@@ -75,11 +78,19 @@ class _AuthenticationLandingPageState extends State<AuthenticationLandingPage> {
   Widget _buildAuthenticationButton() {
     return Column(
       children: [
-        PrimaryButton(text: "Sign In", onPressed: () {}),
+        PrimaryButton(
+            text: "Sign In",
+            onPressed: () {
+              context.pushNamed(Routes.login);
+            }),
         const SizedBox(
           height: 30,
         ),
-        SecondaryButton(text: "Create account", onPressed: () {})
+        SecondaryButton(
+            text: "Create account",
+            onPressed: () {
+              context.pushNamed(Routes.register);
+            })
       ],
     );
   }

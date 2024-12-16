@@ -7,6 +7,8 @@ class Routes {
   static const String padding = '/padding';
 
   // auth routes
+  static const String authenticate_landing = '/authenticate_landing';
+  static const String authenticated = '/authenticated';
   static const String login = '/login';
   static const String register = '/register';
   static const String otpVerification = '/otp-verification';
@@ -16,4 +18,7 @@ class Routes {
 
   // settings routes
   static const String settings = '/settings';
+
+  // detail routes
+  static const String fieldDetail = '/field-detail';
 }

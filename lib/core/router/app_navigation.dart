@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/model/field.dart';
+import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
+import 'package:green_fairm/presentation/view/authentication/otp_verification_page.dart';
+import 'package:green_fairm/presentation/view/authentication/register_page.dart';
+import 'package:green_fairm/presentation/view/authentication/sign_in_page.dart';
+import 'package:green_fairm/presentation/view/field_detail/field_detail_page.dart';
 import 'package:green_fairm/presentation/view/main/field/field_page.dart';
 import 'package:green_fairm/presentation/view/main/home/homepage.dart';
 import 'package:green_fairm/presentation/view/main/news/news_page.dart';
@@ -26,6 +32,7 @@ class AppNavigation {
       initialLocation: Routes.home,
       routes: [
         _buildMainShellRoute(),
+        ..._buildAuthenticationRoute(),
       ],
       navigatorKey: _rootNavigatorKey);
 
@@ -40,6 +47,31 @@ class AppNavigation {
           _buildFieldBranch(),
           _buildProfileBranch(),
         ]);
+  }
+
+  static List<GoRoute> _buildAuthenticationRoute() {
+    return [
+      GoRoute(
+        path: Routes.authenticate_landing,
+        name: Routes.authenticate_landing,
+        builder: (context, state) => const AuthenticationLandingPage(),
+      ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (context, state) => const SignInPage(),
+      ),
+      GoRoute(
+        path: Routes.register,
+        name: Routes.register,
+        builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: Routes.otpVerification,
+        name: Routes.otpVerification,
+        builder: (context, state) => const OtpVerificationPage(),
+      ),
+    ];
   }
 
   static StatefulShellBranch _buildPaddingBranch() {
@@ -93,7 +125,15 @@ class AppNavigation {
           path: Routes.field,
           name: Routes.field,
           builder: (context, state) => const FieldPage(),
-        )
+        ),
+        GoRoute(
+            path: Routes.fieldDetail,
+            name: Routes.fieldDetail,
+            builder: (context, state) {
+              final extra = state.extra;
+              final field = extra as Field;
+              return FieldDetailPage(field: field);
+            })
       ],
     );
   }
