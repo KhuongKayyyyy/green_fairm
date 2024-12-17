@@ -27,4 +27,5 @@ class Routes {
 
   // detail routes
   static const String fieldDetail = '/field-detail';
+  static const String weatherDetail = '/weather-detail';
 }

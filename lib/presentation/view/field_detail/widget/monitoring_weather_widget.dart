@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/presentation/view/notification/notification_page.dart';
+import 'package:green_fairm/presentation/view/weather_detail/weather_detail_page.dart';
 
 class MonitoringWeatherWidget extends StatefulWidget {
   const MonitoringWeatherWidget({super.key});
@@ -115,32 +114,33 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
   }
 
   Widget _buildWeatherDetail() {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("More detail", style: AppTextStyle.defaultBold()),
-          const SizedBox(width: 10),
-          InkWell(
-            onTap: () {
-              _showNotificationPage(context);
-            },
-            child: const Icon(
+    return InkWell(
+      onTap: () {
+        // context.pushNamed(Routes.weatherDetail);
+        _showWeatherDetail(context);
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("More detail", style: AppTextStyle.defaultBold()),
+            const SizedBox(width: 10),
+            const Icon(
               Icons.arrow_forward_ios,
               color: AppColor.secondaryColor,
               size: 16,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  void _showNotificationPage(BuildContext context) {
+  void _showWeatherDetail(BuildContext context) {
     showModalBottomSheet(
         isScrollControlled: true,
         useRootNavigator: true,
@@ -152,7 +152,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
-          return const NotificationPage();
+          return const WeatherDetailPage();
         });
   }
 }

@@ -17,6 +17,13 @@ class AppImage {
   //weather
   // ignore: constant_identifier_names
   static const String hot_sun = 'assets/images/weather/hot_sun.png';
+  static const String sun = 'assets/images/weather/sun.avif';
+  static const String windy = 'assets/images/weather/windy.png';
+  static const String cloud = 'assets/images/weather/cloud.png';
+  static const String sun_back = 'assets/images/weather/sun_back.webp';
+  static const String cloud_back = 'assets/images/weather/cloud_back.webp';
+  static const String star_back = 'assets/images/weather/star_back.webp';
+  static const String moon_back = 'assets/images/weather/moon_back.webp';
 
   // placeholder
   static const String placeholder =
