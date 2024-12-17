@@ -1,20 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/app_navigation.dart';
-import 'package:green_fairm/core/router/routes.dart';
-import 'package:green_fairm/presentation/view/main/profile/widget/account_overview.dart';
+import 'package:green_fairm/presentation/view/main/profile/widget/account_detail_information.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/profile_header.dart';
+import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfileDetailPage extends StatefulWidget {
+  const ProfileDetailPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileDetailPage> createState() => _ProfileDetailPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileDetailPageState extends State<ProfileDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,30 +26,38 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.5,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(AppImage.profileBackground),
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const ProfileHeader(),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.45,
+              top: 70,
               left: 0,
               right: 0,
-              child: const SingleChildScrollView(
-                child: AccountOverview(),
+              child: Text(
+                "Profile",
+                textAlign: TextAlign.center,
+                style: AppTextStyle.mediumBold(color: Colors.white),
               ),
             ),
             Positioned(
-                top: 50,
+                top: 60,
                 left: 20,
-                child: Text(
-                  "Profile ",
-                  style: AppTextStyle.largeBold(),
+                child: ActionButtonIcon(
+                  icon: CupertinoIcons.chevron_left,
+                  onPressed: () => context.pop(),
                 )),
+            const Positioned(
+              top: 120,
+              left: 0,
+              right: 0,
+              child: SingleChildScrollView(
+                child: AccountDetailInformation(),
+              ),
+            ),
           ],
         ),
       ),

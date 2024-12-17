@@ -6,6 +6,11 @@ class Routes {
   static const String profile = '/profile';
   static const String padding = '/padding';
 
+  // profile subpage
+  static const String profileDetail = '/profile-detail';
+  static const String updatePassword = '/update-password';
+  static const String changePassOtp = '/change-pass-otp';
+
   // auth routes
   static const String authenticate_landing = '/authenticate_landing';
   static const String authenticated = '/authenticated';

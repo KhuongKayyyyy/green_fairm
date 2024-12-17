@@ -2,6 +2,8 @@ class AppImage {
   static const String logo = 'assets/images/logo.png';
   static const String appIcon = 'assets/images/app_icon.png';
   static const String authentication = 'assets/images/authentication.jpg';
+  static const String profileBackground =
+      'assets/images/profile_background.jpg';
 
   // onboarding
   static const String onboarding1 = 'assets/images/onboarding/onboarding1.jpg';

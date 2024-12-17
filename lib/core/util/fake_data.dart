@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:green_fairm/data/model/app_user.dart';
 import 'package:green_fairm/data/model/farm_notification.dart';
 import 'package:green_fairm/data/model/field.dart';
 
 class FakeData {
+  static AppUser user = AppUser(
+    name: "Nguyen Dat Khuong",
+    password: "1123",
+    email: "nguyendatkhuong@gmail.com",
+    avatarURL:
+        "https://yt3.googleusercontent.com/oN0p3-PD3HUzn2KbMm4fVhvRrKtJhodGlwocI184BBSpybcQIphSeh3Z0i7WBgTq7e12yKxb=s900-c-k-c0x00ffffff-no-rj",
+  );
+
   static final List<Field> fakeFields = [
     Field(
       id: "1",

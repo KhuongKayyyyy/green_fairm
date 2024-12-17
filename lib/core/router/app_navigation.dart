@@ -10,7 +10,10 @@ import 'package:green_fairm/presentation/view/field_detail/field_detail_page.dar
 import 'package:green_fairm/presentation/view/main/field/field_page.dart';
 import 'package:green_fairm/presentation/view/main/home/homepage.dart';
 import 'package:green_fairm/presentation/view/main/news/news_page.dart';
+import 'package:green_fairm/presentation/view/main/profile/profile_detail_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/profile_page.dart';
+import 'package:green_fairm/presentation/view/main/profile/update_password_page.dart';
+import 'package:green_fairm/presentation/view/main/profile/change_pass_otp_verification.dart';
 import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
 import 'package:green_fairm/presentation/view/onboard/onboard_page.dart';
 
@@ -146,6 +149,21 @@ class AppNavigation {
           path: Routes.profile,
           name: Routes.profile,
           builder: (context, state) => const ProfilePage(),
+        ),
+        GoRoute(
+          path: Routes.profileDetail,
+          name: Routes.profileDetail,
+          builder: (context, state) => const ProfileDetailPage(),
+        ),
+        GoRoute(
+          path: Routes.updatePassword,
+          name: Routes.updatePassword,
+          builder: (context, state) => const UpdatePasswordPage(),
+        ),
+        GoRoute(
+          path: Routes.changePassOtp,
+          name: Routes.changePassOtp,
+          builder: (context, state) => const ChangePassOtpVerification(),
         )
       ],
     );

@@ -49,7 +49,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             inactiveColor: AppColor.grey,
             activeColor: AppColor.primaryColor,
             icon: const Icon(CupertinoIcons.tree),
-            title: const Text('Highlights'),
+            title: const Text('Fileds'),
           ),
           FlashyTabBarItem(
             inactiveColor: AppColor.grey,
