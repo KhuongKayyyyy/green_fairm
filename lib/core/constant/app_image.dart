@@ -15,6 +15,7 @@ class AppImage {
   static const String plant2 = 'assets/images/illustration/plant2.png';
 
   //weather
+  // ignore: constant_identifier_names
   static const String hot_sun = 'assets/images/weather/hot_sun.png';
 
   // placeholder

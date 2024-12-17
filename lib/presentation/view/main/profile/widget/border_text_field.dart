@@ -25,8 +25,8 @@ class BorderTextField extends StatelessWidget {
           cursorColor: AppColor.secondaryColor,
           controller: TextEditingController(text: hintText),
           style: TextStyle(
-            color: MaterialStateColor.resolveWith((states) {
-              if (states.contains(MaterialState.focused)) {
+            color: WidgetStateColor.resolveWith((states) {
+              if (states.contains(WidgetState.focused)) {
                 return AppColor.secondaryColor;
               }
               return AppColor.grey;
@@ -36,8 +36,8 @@ class BorderTextField extends StatelessWidget {
             hintStyle: AppTextStyle.defaultBold(),
             border: InputBorder.none,
             suffixIcon: Icon(icon),
-            suffixIconColor: MaterialStateColor.resolveWith((states) {
-              if (states.contains(MaterialState.focused)) {
+            suffixIconColor: WidgetStateColor.resolveWith((states) {
+              if (states.contains(WidgetState.focused)) {
                 return AppColor.secondaryColor;
               }
               return AppColor.grey;

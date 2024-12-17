@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/user_avatar.dart';
 

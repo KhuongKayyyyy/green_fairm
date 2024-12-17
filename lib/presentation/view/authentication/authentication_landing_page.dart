@@ -1,9 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 import 'package:green_fairm/presentation/widget/secondary_button.dart';

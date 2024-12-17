@@ -25,7 +25,7 @@ class _ChatPageState extends State<ChatPage> {
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [AppColor.primaryColor, AppColor.secondaryColor],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,

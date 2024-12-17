@@ -10,7 +10,7 @@ class CheckOurAiRecommendation extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
               colors: [AppColor.primaryColor, AppColor.secondaryColor]),
           borderRadius: BorderRadius.circular(10),
           boxShadow: const [
@@ -27,8 +27,8 @@ class CheckOurAiRecommendation extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
                   color: Colors.white, shape: BoxShape.circle),
-              child:
-                  Icon(Icons.lightbulb_outline, color: AppColor.secondaryColor),
+              child: const Icon(Icons.lightbulb_outline,
+                  color: AppColor.secondaryColor),
             ),
             const SizedBox(width: 10),
             const Flexible(

@@ -12,6 +12,7 @@ class Routes {
   static const String changePassOtp = '/change-pass-otp';
 
   // auth routes
+  // ignore: constant_identifier_names
   static const String authenticate_landing = '/authenticate_landing';
   static const String authenticated = '/authenticated';
   static const String login = '/login';

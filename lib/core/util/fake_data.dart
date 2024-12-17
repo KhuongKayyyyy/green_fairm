@@ -20,6 +20,9 @@ class FakeData {
       area: '1.5 ha',
       imageUrl:
           'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
+      plantingDate: "17/11/2024",
+      cropHealth: "Good",
+      haverstTime: "in 1 month",
     ),
     Field(
       id: "2",
@@ -29,6 +32,9 @@ class FakeData {
       area: '2.0 ha',
       imageUrl:
           'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
+      plantingDate: "17/11/2024",
+      cropHealth: "Good",
+      haverstTime: "in 1 month",
     ),
     Field(
       id: "3",
@@ -38,6 +44,9 @@ class FakeData {
       area: '1.5 ha',
       imageUrl:
           'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
+      plantingDate: "17/11/2024",
+      cropHealth: "Good",
+      haverstTime: "in 1 month",
     ),
     Field(
       id: "4",
@@ -47,6 +56,9 @@ class FakeData {
       area: '2.0 ha',
       imageUrl:
           'https://eo.dhigroup.com/wp-content/uploads/sites/9/2018/12/shutterstock_284139386.jpg',
+      plantingDate: "17/11/2024",
+      cropHealth: "Good",
+      haverstTime: "in 1 month",
     ),
   ];
 

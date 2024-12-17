@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
-import 'package:green_fairm/core/router/routes.dart';
-import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
 class ChangePassSuccessfully extends StatelessWidget {

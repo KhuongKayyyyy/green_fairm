@@ -70,9 +70,9 @@ class NotificationItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
+              const Text(
                 "12:00 am",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
                 ),
@@ -87,13 +87,13 @@ class NotificationItem extends StatelessWidget {
   Widget _getNotificationIcon() {
     switch (notification.type) {
       case "Watering Plant":
-        return Icon(CupertinoIcons.drop_fill, color: Colors.blue);
+        return const Icon(CupertinoIcons.drop_fill, color: Colors.blue);
       case "Plant Health":
-        return Icon(CupertinoIcons.tree, color: Colors.green);
+        return const Icon(CupertinoIcons.tree, color: Colors.green);
       case "Heat Report":
-        return Icon(CupertinoIcons.cloud_sun_fill, color: Colors.orange);
+        return const Icon(CupertinoIcons.cloud_sun_fill, color: Colors.orange);
       default:
-        return Icon(CupertinoIcons.bell_fill, color: Colors.red);
+        return const Icon(CupertinoIcons.bell_fill, color: Colors.red);
     }
   }
 }

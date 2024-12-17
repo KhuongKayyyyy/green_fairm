@@ -82,7 +82,7 @@ class _OnboardPageState extends State<OnboardPage> {
             AnimatedSmoothIndicator(
               activeIndex: _currentIndex,
               count: _onBoardBackground.length,
-              effect: ExpandingDotsEffect(
+              effect: const ExpandingDotsEffect(
                 dotColor: AppColor.white,
                 activeDotColor: AppColor.accentColor,
               ),

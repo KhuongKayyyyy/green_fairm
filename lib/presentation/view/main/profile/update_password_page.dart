@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
-import 'package:green_fairm/presentation/view/main/profile/widget/account_detail_information.dart';
-import 'package:green_fairm/presentation/view/main/profile/widget/profile_header.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/update_password_form.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 

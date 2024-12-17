@@ -83,14 +83,14 @@ class _WeatherReportState extends State<WeatherReport> {
             AppImage.hot_sun,
             scale: 8,
           ),
-          Text(
+          const Text(
             '32°C',
             style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: AppColor.secondaryColor),
           ),
-          Text(
+          const Text(
             'Today is partly sunny day!',
             style: TextStyle(
                 fontSize: 16,
@@ -122,7 +122,7 @@ class _WeatherReportState extends State<WeatherReport> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Text(
+              Text(
                 'Humidity',
                 style: TextStyle(
                   color: AppColor.grey,
@@ -140,7 +140,7 @@ class _WeatherReportState extends State<WeatherReport> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Text(
+              Text(
                 'Precipitation',
                 style: TextStyle(
                   color: AppColor.grey,
@@ -158,7 +158,7 @@ class _WeatherReportState extends State<WeatherReport> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Text(
+              Text(
                 'Wind Speed',
                 style: TextStyle(
                   color: AppColor.grey,

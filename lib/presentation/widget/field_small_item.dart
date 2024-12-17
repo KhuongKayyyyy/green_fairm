@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/model/field.dart';
 
@@ -59,7 +58,7 @@ class FieldSmallItem extends StatelessWidget {
                     AppTextStyle.defaultBold(color: AppColor.secondaryColor)),
             const SizedBox(height: 4),
             Text(field.area ?? "No area",
-                style: TextStyle(color: AppColor.grey)),
+                style: const TextStyle(color: AppColor.grey)),
           ],
         ),
       ),

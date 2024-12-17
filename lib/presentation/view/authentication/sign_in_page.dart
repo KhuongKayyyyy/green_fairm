@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/router/routes.dart';
-import 'package:green_fairm/presentation/view/authentication/widget/authentication_background.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
@@ -119,8 +117,8 @@ class _SignInPageState extends State<SignInPage> {
           decoration: InputDecoration(
               hintText: "Email",
               prefixIcon: const Icon(CupertinoIcons.person),
-              prefixIconColor: MaterialStateColor.resolveWith((states) {
-                if (states.contains(MaterialState.focused)) {
+              prefixIconColor: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
                   return AppColor.secondaryColor;
                 }
                 return Colors.grey;
@@ -147,8 +145,8 @@ class _SignInPageState extends State<SignInPage> {
           decoration: InputDecoration(
               hintText: "Password",
               prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: MaterialStateColor.resolveWith((states) {
-                if (states.contains(MaterialState.focused)) {
+              prefixIconColor: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
                   return AppColor.secondaryColor;
                 }
                 return Colors.grey;
@@ -184,7 +182,7 @@ class _SignInPageState extends State<SignInPage> {
         const SizedBox(height: 20),
         InkWell(
           onTap: () {
-            print(GoRouter.of(context).routerDelegate.currentConfiguration);
+            // print(GoRouter.of(context).routerDelegate.currentConfiguration);
           },
           child: Container(
             width: double.infinity,

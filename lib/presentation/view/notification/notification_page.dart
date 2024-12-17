@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/presentation/view/notification/widget/notification_by_day_section.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -56,16 +55,16 @@ class _NotificationPageState extends State<NotificationPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Expanded(
+                const Expanded(
                   child: SafeArea(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           NotificationByDaySection(),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           NotificationByDaySection(),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           NotificationByDaySection(),
                         ],
                       ),

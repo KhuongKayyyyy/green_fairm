@@ -72,8 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
               hintText: "Email",
               prefixIcon: const Icon(CupertinoIcons.person),
-              prefixIconColor: MaterialStateColor.resolveWith((states) {
-                if (states.contains(MaterialState.focused)) {
+              prefixIconColor: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
                   return AppColor.secondaryColor;
                 }
                 return Colors.grey;
@@ -100,8 +100,8 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
               hintText: "Password",
               prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: MaterialStateColor.resolveWith((states) {
-                if (states.contains(MaterialState.focused)) {
+              prefixIconColor: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
                   return AppColor.secondaryColor;
                 }
                 return Colors.grey;
@@ -128,8 +128,8 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
               hintText: "Password",
               prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: MaterialStateColor.resolveWith((states) {
-                if (states.contains(MaterialState.focused)) {
+              prefixIconColor: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
                   return AppColor.secondaryColor;
                 }
                 return Colors.grey;
