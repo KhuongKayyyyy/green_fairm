@@ -15,6 +15,9 @@ import 'package:green_fairm/presentation/view/main/profile/profile_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/update_password_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/change_pass_otp_verification.dart';
 import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
+import 'package:green_fairm/presentation/view/setting/set_up_successfully.dart';
+import 'package:green_fairm/presentation/view/setting/setting_landing_page.dart';
+import 'package:green_fairm/presentation/view/setting/set_up_farm.dart';
 import 'package:green_fairm/presentation/view/weather_detail/weather_detail_page.dart';
 
 class AppNavigation {
@@ -36,6 +39,7 @@ class AppNavigation {
       routes: [
         _buildMainShellRoute(),
         ..._buildAuthenticationRoute(),
+        ..._buildSetUpFarmRoute(),
       ],
       navigatorKey: _rootNavigatorKey);
 
@@ -50,6 +54,26 @@ class AppNavigation {
           _buildFieldBranch(),
           _buildProfileBranch(),
         ]);
+  }
+
+  static List<GoRoute> _buildSetUpFarmRoute() {
+    return [
+      GoRoute(
+        path: Routes.settingLanding,
+        name: Routes.settingLanding,
+        builder: (context, state) => const SettingLandingPage(),
+      ),
+      GoRoute(
+        path: Routes.settingDetail,
+        name: Routes.settingDetail,
+        builder: (context, state) => const SetUpFarmPage(),
+      ),
+      GoRoute(
+        path: Routes.setUpSuccess,
+        name: Routes.setUpSuccess,
+        builder: (context, state) => const SetUpSuccessfully(),
+      )
+    ];
   }
 
   static List<GoRoute> _buildAuthenticationRoute() {
@@ -168,7 +192,11 @@ class AppNavigation {
           path: Routes.changePassOtp,
           name: Routes.changePassOtp,
           builder: (context, state) => const ChangePassOtpVerification(),
-        )
+        ),
+        // GoRoute(
+        //     path: Routes.settingLanding,
+        //     name: Routes.settingLanding,
+        //     builder: (context, state) => const SettingLandingPage()),
       ],
     );
   }

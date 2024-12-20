@@ -56,7 +56,7 @@ class _AuthenticationLandingPageState extends State<AuthenticationLandingPage> {
                     color: Color(0xff3F7719),
                     fontWeight: FontWeight.bold)),
             Image.asset(
-              AppImage.appIcon,
+              AppImage.appLogo,
               width: 80,
               height: 80,
             )
