@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
+
 import 'package:green_fairm/presentation/view/chat/chat_page.dart';
 
 class AiMiniChatbox extends StatelessWidget {

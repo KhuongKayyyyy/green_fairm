@@ -77,8 +77,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (resigsterState
                             .userCredential.additionalUserInfo!.isNewUser) {
                           context.goNamed(Routes.settingLanding);
+                        } else {
+                          context.goNamed(Routes.home);
                         }
-                        context.goNamed(Routes.home);
                       } else if (resigsterState is RegisterFailure) {
                         // Show error message on failure
                         ScaffoldMessenger.of(context).showSnackBar(

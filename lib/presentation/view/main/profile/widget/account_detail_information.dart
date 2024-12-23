@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
@@ -14,6 +15,7 @@ class AccountDetailInformation extends StatefulWidget {
 }
 
 class _AccountDetailInformationState extends State<AccountDetailInformation> {
+  final User user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +32,7 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
               ),
               const Hero(tag: "avatar", child: UserAvatar()),
               BorderTextField(
-                hintText: FakeData.user.name,
+                hintText: getFirstName(),
                 labelText: "First Name",
                 icon: CupertinoIcons.person,
               ),
@@ -38,7 +40,7 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
                 height: 5,
               ),
               BorderTextField(
-                hintText: FakeData.user.name,
+                hintText: getLastName(),
                 labelText: "Last Name",
                 icon: CupertinoIcons.person,
               ),
@@ -46,7 +48,7 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
                 height: 5,
               ),
               BorderTextField(
-                hintText: FakeData.user.email,
+                hintText: user.email!,
                 labelText: "Email Address",
                 icon: Icons.email_outlined,
               ),
@@ -74,5 +76,13 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
         ),
       ),
     );
+  }
+
+  String getFirstName() {
+    return user.displayName!.split(' ').first;
+  }
+
+  String getLastName() {
+    return user.displayName!.split(' ').last;
   }
 }

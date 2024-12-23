@@ -64,6 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onLoginWithGoogle(
       LoginEventWithGooglePressed event, Emitter<LoginState> emit) async {
+    emit(const LoginLoading());
     try {
       final userCredential = await _userRepository.signInWithGoogle();
       print(userCredential);
@@ -73,6 +74,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       // emit(state.cloneWith(isFailure: true));
       print("Error signing in with Google: $e");
+      if (e == "Null check operator used on a null value") {
+        emit(const LoginFailure("Sign in with Google failed"));
+      }
       emit(LoginFailure(e.toString()));
     }
   }

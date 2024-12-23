@@ -9,6 +9,7 @@ import 'package:green_fairm/presentation/view/authentication/otp_verification_pa
 import 'package:green_fairm/presentation/view/authentication/register_page.dart';
 import 'package:green_fairm/presentation/view/authentication/set_up_information_page.dart';
 import 'package:green_fairm/presentation/view/authentication/sign_in_page.dart';
+import 'package:green_fairm/presentation/view/chat/chat_page.dart';
 import 'package:green_fairm/presentation/view/field_detail/field_detail_page.dart';
 import 'package:green_fairm/presentation/view/main/field/field_page.dart';
 import 'package:green_fairm/presentation/view/main/home/homepage.dart';
@@ -147,6 +148,28 @@ class AppNavigation {
           name: Routes.home,
           builder: (context, state) => const Homepage(),
         ),
+        GoRoute(
+          path: Routes.chat,
+          name: Routes.chat,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const ChatPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+
+              final tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              final offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          ),
+        )
       ],
     );
   }
