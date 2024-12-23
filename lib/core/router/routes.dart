@@ -22,7 +22,10 @@ class Routes {
   static const String authenticated = '/authenticated';
   static const String login = '/login';
   static const String register = '/register';
+  static const String forgotPassword = '/forgot-password';
   static const String otpVerification = '/otp-verification';
+  static const String setNewPassword = '/set-new-password';
+  static const String setUpInforamtion = '/set-up-information';
 
   // onboarding routes
   static const String onboarding = '/onboarding';

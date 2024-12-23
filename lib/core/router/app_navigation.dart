@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/router/routes.dart';
@@ -5,6 +7,7 @@ import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
 import 'package:green_fairm/presentation/view/authentication/otp_verification_page.dart';
 import 'package:green_fairm/presentation/view/authentication/register_page.dart';
+import 'package:green_fairm/presentation/view/authentication/set_up_information_page.dart';
 import 'package:green_fairm/presentation/view/authentication/sign_in_page.dart';
 import 'package:green_fairm/presentation/view/field_detail/field_detail_page.dart';
 import 'package:green_fairm/presentation/view/main/field/field_page.dart';
@@ -21,6 +24,7 @@ import 'package:green_fairm/presentation/view/setting/set_up_farm.dart';
 import 'package:green_fairm/presentation/view/weather_detail/weather_detail_page.dart';
 
 class AppNavigation {
+  static bool isLoggedIn = FirebaseAuth.instance.currentUser != null;
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> _homeNavigatorKey =
@@ -35,7 +39,18 @@ class AppNavigation {
   static final GlobalKey<NavigatorState> _paddingNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'paddingNavigator');
   static final GoRouter router = GoRouter(
-      initialLocation: Routes.home,
+      initialLocation: isLoggedIn ? Routes.home : Routes.authenticate_landing,
+      // redirect: (context, state) {
+      //   final loggedIn = isLoggedIn; // Replace with your actual login check
+      //   final goingToLogin = state.subloc == Routes.authenticate_landing;
+
+      //   if (!loggedIn && !goingToLogin) {
+      //     return Routes.authenticate_landing;
+      //   } else if (loggedIn && goingToLogin) {
+      //     return Routes.home;
+      //   }
+      //   return null;
+      // },
       routes: [
         _buildMainShellRoute(),
         ..._buildAuthenticationRoute(),
@@ -98,6 +113,11 @@ class AppNavigation {
         name: Routes.otpVerification,
         builder: (context, state) => const OtpVerificationPage(),
       ),
+      GoRoute(
+        path: Routes.setUpInforamtion,
+        name: Routes.setUpInforamtion,
+        builder: (context, state) => const SetupInformationPage(),
+      )
     ];
   }
 

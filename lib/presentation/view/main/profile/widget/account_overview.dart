@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
+import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/account_setting_section.dart';
 
 class AccountOverview extends StatelessWidget {
@@ -60,6 +63,11 @@ class AccountOverview extends StatelessWidget {
                 settingType: "My Fields"),
             const SizedBox(height: 20),
             AccountSettingSection(
+                onTap: () async {
+                  // ignore: use_build_context_synchronously
+                  context.goNamed(Routes.authenticate_landing);
+                  UserRepository().signOut();
+                },
                 backgroundColor: const Color(0xffF84141).withOpacity(0.4),
                 icon: const Icon(
                   CupertinoIcons.square_arrow_left,

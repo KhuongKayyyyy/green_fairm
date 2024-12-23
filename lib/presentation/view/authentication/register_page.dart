@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/presentation/bloc/register/register_bloc.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
@@ -17,6 +20,34 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool agreePolicy = false;
+
+  // Declare TextEditingController instances for text fields
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  late final RegisterBloc registerBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    registerBloc = RegisterBloc();
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    registerBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           ..._buildRegisterBackground(),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.15,
+            top: MediaQuery.of(context).size.height * 0.06,
             left: 20,
             right: 20,
             child: Center(
@@ -32,7 +63,33 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   _buildRegisterHeader(),
                   const SizedBox(height: 20),
-                  _buildSignUpForm(),
+                  BlocListener<RegisterBloc, RegisterState>(
+                    bloc: registerBloc,
+                    listener: (context, resigsterState) {
+                      if (resigsterState is RegisterLoading) {
+                        // Show loading indicator
+                        EasyLoading.show(status: 'Signing up...');
+                      } else {
+                        // Dismiss loading indicator
+                        EasyLoading.dismiss();
+                      }
+                      if (resigsterState is RegisterSuccess) {
+                        if (resigsterState
+                            .userCredential.additionalUserInfo!.isNewUser) {
+                          context.goNamed(Routes.settingLanding);
+                        }
+                        context.goNamed(Routes.home);
+                      } else if (resigsterState is RegisterFailure) {
+                        // Show error message on failure
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(resigsterState.errorMessage),
+                          ),
+                        );
+                      }
+                    },
+                    child: _buildSignUpForm(),
+                  ),
                   _buildSignUpFooter()
                 ],
               ),
@@ -50,10 +107,49 @@ class _RegisterPageState extends State<RegisterPage> {
       children: [
         Text("Sign Up",
             style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
-        Text(
-          "Create new account",
-          style: AppTextStyle.defaultBold(color: Colors.grey),
-          textAlign: TextAlign.center,
+        Text("Create new account",
+            style: AppTextStyle.defaultBold(color: Colors.grey),
+            textAlign: TextAlign.center),
+      ],
+    );
+  }
+
+  // Reusable method for TextField widget
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: AppTextStyle.defaultBold()),
+        const SizedBox(height: 10),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          cursorColor: AppColor.secondaryColor,
+          decoration: InputDecoration(
+            hintText: label,
+            prefixIcon: Icon(icon),
+            prefixIconColor: WidgetStateColor.resolveWith((states) {
+              if (states.contains(WidgetState.focused)) {
+                return AppColor.secondaryColor;
+              }
+              return Colors.grey;
+            }),
+            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            filled: true,
+            focusColor: AppColor.primaryColor.withOpacity(0.2),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.grey)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide:
+                    const BorderSide(color: AppColor.secondaryColor, width: 2)),
+          ),
         ),
       ],
     );
@@ -63,93 +159,37 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Username/Email", style: AppTextStyle.defaultBold()),
-        const SizedBox(
-          height: 10,
-        ),
-        TextField(
-          cursorColor: AppColor.secondaryColor,
-          decoration: InputDecoration(
-              hintText: "Email",
-              prefixIcon: const Icon(CupertinoIcons.person),
-              prefixIconColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return AppColor.secondaryColor;
-                }
-                return Colors.grey;
-              }),
-              fillColor: AppColor.primaryColor.withOpacity(0.2),
-              filled: true,
-              focusColor: AppColor.primaryColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: AppColor.secondaryColor, width: 2))),
-        ),
+        _buildTextField(
+            label: "Email",
+            controller: emailController,
+            icon: CupertinoIcons.person),
         const SizedBox(height: 20),
-        Text("Password", style: AppTextStyle.defaultBold()),
-        const SizedBox(
-          height: 10,
-        ),
-        TextField(
-          obscureText: true,
-          cursorColor: AppColor.secondaryColor,
-          decoration: InputDecoration(
-              hintText: "Password",
-              prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return AppColor.secondaryColor;
-                }
-                return Colors.grey;
-              }),
-              fillColor: AppColor.primaryColor.withOpacity(0.2),
-              filled: true,
-              focusColor: AppColor.primaryColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: AppColor.secondaryColor, width: 2))),
-        ),
+        _buildTextField(
+            label: "Name",
+            controller: nameController,
+            icon: CupertinoIcons.person),
         const SizedBox(height: 20),
-        Text("Password confirm", style: AppTextStyle.defaultBold()),
-        const SizedBox(
-          height: 10,
-        ),
-        TextField(
-          obscureText: true,
-          cursorColor: AppColor.secondaryColor,
-          decoration: InputDecoration(
-              hintText: "Password",
-              prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return AppColor.secondaryColor;
-                }
-                return Colors.grey;
-              }),
-              fillColor: AppColor.primaryColor.withOpacity(0.2),
-              filled: true,
-              focusColor: AppColor.primaryColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: AppColor.secondaryColor, width: 2))),
-        ),
+        _buildTextField(
+            label: "Password",
+            controller: passwordController,
+            icon: CupertinoIcons.lock,
+            obscureText: true),
+        const SizedBox(height: 20),
+        _buildTextField(
+            label: "Password confirm",
+            controller: confirmPasswordController,
+            icon: CupertinoIcons.lock,
+            obscureText: true),
         const SizedBox(height: 20),
         PrimaryButton(
             text: "Sign Up",
             onPressed: () {
-              context.pushNamed(Routes.otpVerification);
+              // context.pushNamed(Routes.otpVerification);
+              registerBloc.add(RegisterEventPressed(
+                email: emailController.text,
+                username: nameController.text,
+                password: passwordController.text,
+              ));
             }),
         const SizedBox(height: 10),
         Center(
@@ -190,27 +230,22 @@ class _RegisterPageState extends State<RegisterPage> {
   List<Widget> _buildRegisterBackground() {
     return [
       Positioned(
-          top: 30,
-          left: -90,
-          child: Hero(
-            tag: "plant1",
-            child: Transform.rotate(
-              angle: 30 * 3.1415927 / 180, // 45 degrees to radians
-              child: Image.asset(
-                AppImage.plant1,
-                scale: 2,
-              ),
-            ),
-          )),
+        top: 100,
+        left: -120,
+        child: Hero(
+          tag: "plant1",
+          child: Transform.rotate(
+            angle: 30 * 3.1415927 / 180, // 45 degrees to radians
+            child: Image.asset(AppImage.plant1, scale: 2),
+          ),
+        ),
+      ),
       Positioned(
         bottom: -10,
         left: -60,
         child: Hero(
           tag: "plant2",
-          child: Image.asset(
-            AppImage.plant2,
-            scale: 1.5,
-          ),
+          child: Image.asset(AppImage.plant2, scale: 1.5),
         ),
       ),
       Positioned(

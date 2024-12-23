@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
@@ -10,6 +11,7 @@ class UserAvatar extends StatefulWidget {
 }
 
 class _UserAvatarState extends State<UserAvatar> {
+  String imageUrl = FirebaseAuth.instance.currentUser!.photoURL!;
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -27,9 +29,50 @@ class _UserAvatarState extends State<UserAvatar> {
           ),
         ),
         height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.height * 0.2,
         child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
-            child: Image.network(FakeData.user.avatarURL)),
+            // ignore: unnecessary_null_comparison
+            child: imageUrl != null
+                ? Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                  )
+                : Image.network(
+                    FakeData.user.avatarURL,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppColor.secondaryColor,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                  )),
       ),
       Positioned(
         bottom: 0,

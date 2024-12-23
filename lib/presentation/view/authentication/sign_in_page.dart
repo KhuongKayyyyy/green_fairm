@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/presentation/bloc/login/login_bloc.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
@@ -16,7 +19,25 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool keepSignIn = false;
+  late final LoginBloc loginBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    loginBloc = LoginBloc();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    loginBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +53,134 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   _buildSignInHeader(),
                   const SizedBox(height: 50),
-                  _buildSignInForm(),
-                  _buildSignInFooter()
+                  BlocListener<LoginBloc, LoginState>(
+                    bloc: loginBloc,
+                    listener: (context, loginState) {
+                      if (loginState is LoginLoading) {
+                        EasyLoading.show(status: 'Logging in...');
+                      } else {
+                        EasyLoading.dismiss();
+                      }
+
+                      if (loginState is LoginSuccess) {
+                        context.go(Routes.home); // Navigate to home on success
+                      } else if (loginState is LoginFailure) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(loginState.errorMessage),
+                          ),
+                        );
+                      }
+                    },
+                    child: _buildSignInForm(),
+                  ),
+                  _buildSignInFooter(),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSignInForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTextField(
+          label: "Username/Email",
+          hintText: "Email",
+          controller: emailController,
+          icon: CupertinoIcons.person,
+        ),
+        const SizedBox(height: 20),
+        _buildTextField(
+          label: "Password",
+          hintText: "Password",
+          controller: passwordController,
+          icon: CupertinoIcons.lock,
+          obscureText: true,
+        ),
+        const SizedBox(height: 20),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              // Handle Forgot Password action
+            },
+            child: Text(
+              "Forgot Password?",
+              style: AppTextStyle.defaultBold(color: Colors.grey),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        PrimaryButton(
+          text: "Sign In",
+          onPressed: () {
+            loginBloc.add(
+              LoginEventWithEmailAndPasswordPressed(
+                email: emailController.text,
+                password: passwordController.text,
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        Center(
+          child: Text(
+            "or sign in with",
+            style: AppTextStyle.defaultBold(color: Colors.grey),
+          ),
+        ),
+        const SizedBox(height: 20),
+        _buildSocialSignInButton(),
+      ],
+    );
+  }
+
+  Widget _buildTextField({
+    required String label,
+    required String hintText,
+    required TextEditingController controller,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: AppTextStyle.defaultBold()),
+        const SizedBox(height: 10),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          cursorColor: AppColor.secondaryColor,
+          decoration: InputDecoration(
+            hintText: hintText,
+            prefixIcon: Icon(icon),
+            prefixIconColor: WidgetStateColor.resolveWith((states) {
+              if (states.contains(WidgetState.focused)) {
+                return AppColor.secondaryColor;
+              }
+              return Colors.grey;
+            }),
+            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: AppColor.secondaryColor,
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -57,7 +198,6 @@ class _SignInPageState extends State<SignInPage> {
                     .currentConfiguration
                     .matches;
 
-                // Check if the top-most route is "register"
                 if (currentRoutes.any((route) =>
                     route.route is GoRoute &&
                     (route.route as GoRoute).name == Routes.register)) {
@@ -76,140 +216,50 @@ class _SignInPageState extends State<SignInPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform.scale(
-              scale: 1,
-              child: Theme(
-                data: ThemeData(
-                  unselectedWidgetColor: Colors.grey,
-                ),
-                child: Checkbox(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  value: keepSignIn,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      keepSignIn = value ?? false;
-                    });
-                  },
-                  activeColor: AppColor.primaryColor,
-                  checkColor: Colors.white,
-                ),
+            Checkbox(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
               ),
+              value: keepSignIn,
+              onChanged: (value) => setState(() => keepSignIn = value ?? false),
+              activeColor: AppColor.primaryColor,
+              checkColor: Colors.white,
             ),
             const Text("Keep me signed in"),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget _buildSignInForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Username/Email", style: AppTextStyle.defaultBold()),
-        const SizedBox(
-          height: 10,
+  Widget _buildSocialSignInButton() {
+    return InkWell(
+      onTap: () {
+        loginBloc.add(const LoginEventWithGooglePressed());
+      },
+      child: Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey.withOpacity(0.2),
         ),
-        TextField(
-          cursorColor: AppColor.secondaryColor,
-          decoration: InputDecoration(
-              hintText: "Email",
-              prefixIcon: const Icon(CupertinoIcons.person),
-              prefixIconColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return AppColor.secondaryColor;
-                }
-                return Colors.grey;
-              }),
-              fillColor: AppColor.primaryColor.withOpacity(0.2),
-              filled: true,
-              focusColor: AppColor.primaryColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: AppColor.secondaryColor, width: 2))),
-        ),
-        const SizedBox(height: 20),
-        Text("Password", style: AppTextStyle.defaultBold()),
-        const SizedBox(
-          height: 10,
-        ),
-        TextField(
-          obscureText: true,
-          cursorColor: AppColor.secondaryColor,
-          decoration: InputDecoration(
-              hintText: "Password",
-              prefixIcon: const Icon(CupertinoIcons.lock),
-              prefixIconColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return AppColor.secondaryColor;
-                }
-                return Colors.grey;
-              }),
-              fillColor: AppColor.primaryColor.withOpacity(0.2),
-              filled: true,
-              focusColor: AppColor.primaryColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: AppColor.secondaryColor, width: 2))),
-        ),
-        const SizedBox(height: 20),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text("Forgot Password?",
-              style: AppTextStyle.defaultBold(color: Colors.grey),
-              textAlign: TextAlign.end),
-        ),
-        const SizedBox(height: 20),
-        PrimaryButton(text: "Sign In", onPressed: () {}),
-        const SizedBox(height: 10),
-        Center(
-          child: Text(
-            "or sign in with",
-            style: AppTextStyle.defaultBold(color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 20),
-        InkWell(
-          onTap: () {
-            // print(GoRouter.of(context).routerDelegate.currentConfiguration);
-          },
-          child: Container(
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.withOpacity(0.2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.facebook_rounded,
+              color: AppColor.secondaryColor,
+              size: 25,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.facebook_rounded,
-                  color: AppColor.secondaryColor,
-                  size: 25,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  "Login with Google",
-                  style:
-                      AppTextStyle.mediumBold(color: AppColor.secondaryColor),
-                ),
-              ],
+            const SizedBox(width: 10),
+            Text(
+              "Login with Google",
+              style: AppTextStyle.mediumBold(color: AppColor.secondaryColor),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -230,11 +280,8 @@ class _SignInPageState extends State<SignInPage> {
         child: Hero(
           tag: "plant1",
           child: Transform.rotate(
-            angle: -45 * 3.1415927 / 180, // 45 degrees to radians
-            child: Image.asset(
-              AppImage.plant1,
-              scale: 2,
-            ),
+            angle: -45 * 3.1415927 / 180,
+            child: Image.asset(AppImage.plant1, scale: 2),
           ),
         ),
       ),
@@ -243,12 +290,9 @@ class _SignInPageState extends State<SignInPage> {
         right: -50,
         child: Hero(
           tag: "plant2",
-          child: Image.asset(
-            AppImage.plant2,
-            scale: 1.5,
-          ),
+          child: Image.asset(AppImage.plant2, scale: 1.5),
         ),
-      )
+      ),
     ];
   }
 
@@ -262,7 +306,6 @@ class _SignInPageState extends State<SignInPage> {
         Text(
           "Sign in to continue",
           style: AppTextStyle.defaultBold(color: Colors.grey),
-          textAlign: TextAlign.center,
         ),
       ],
     );
