@@ -107,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {
-              // Handle Forgot Password action
+              context.pushNamed(Routes.forgotPassword);
             },
             child: Text(
               "Forgot Password?",

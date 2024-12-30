@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,8 +10,33 @@ import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/account_setting_section.dart';
 
-class AccountOverview extends StatelessWidget {
+class AccountOverview extends StatefulWidget {
   const AccountOverview({super.key});
+
+  @override
+  State<AccountOverview> createState() => _AccountOverviewState();
+}
+
+class _AccountOverviewState extends State<AccountOverview> {
+  User user = FirebaseAuth.instance.currentUser!;
+
+  bool isSignedInByGoogle = false;
+  @override
+  void initState() {
+    super.initState();
+    checkGoogleSignIn();
+  }
+
+  void checkGoogleSignIn() {
+    for (UserInfo provider in user.providerData) {
+      if (provider.providerId == "google.com") {
+        setState(() {
+          isSignedInByGoogle = true;
+        });
+        return;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +67,23 @@ class AccountOverview extends StatelessWidget {
                 settingType: "My Profile",
                 onTap: () => context.pushNamed(Routes.profileDetail)),
             const SizedBox(height: 20),
-            AccountSettingSection(
-                onTap: () => context.pushNamed(Routes.updatePassword),
-                backgroundColor: const Color(0xffF99B77).withOpacity(0.4),
-                icon: const Icon(
-                  CupertinoIcons.lock,
-                  color: Color(
-                    0xffF99B77,
-                  ),
-                  size: 30,
-                ),
-                settingType: "Change Password"),
-            const SizedBox(height: 20),
+            if (isSignedInByGoogle == false)
+              Column(
+                children: [
+                  AccountSettingSection(
+                      onTap: () => context.pushNamed(Routes.updatePassword),
+                      backgroundColor: const Color(0xffF99B77).withOpacity(0.4),
+                      icon: const Icon(
+                        CupertinoIcons.lock,
+                        color: Color(
+                          0xffF99B77,
+                        ),
+                        size: 30,
+                      ),
+                      settingType: "Change Password"),
+                  const SizedBox(height: 20),
+                ],
+              ),
             AccountSettingSection(
                 backgroundColor: AppColor.primaryColor.withOpacity(0.4),
                 icon: const Icon(

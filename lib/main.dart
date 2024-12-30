@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,6 +16,21 @@ void main() async {
   await Firebase.initializeApp();
   configEasyLoading();
   runApp(const MyApp());
+
+  User? user = FirebaseAuth.instance.currentUser;
+
+  if (user != null) {
+    // Check the list of providers
+    for (UserInfo provider in user.providerData) {
+      if (provider.providerId == "google.com") {
+        print("User is signed in using Google.");
+        return;
+      }
+    }
+    print("User is not signed in using Google.");
+  } else {
+    print("No user is signed in.");
+  }
 }
 
 void configEasyLoading() {

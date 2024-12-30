@@ -23,7 +23,7 @@ class Routes {
   static const String login = '/login';
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
-  static const String otpVerification = '/otp-verification';
+  static const String mailVerification = '/mail-verification';
   static const String setNewPassword = '/set-new-password';
   static const String setUpInforamtion = '/set-up-information';
 

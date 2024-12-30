@@ -200,7 +200,7 @@ class _ChatPageState extends State<ChatPage> {
           medias: [
             ChatMedia(url: image.path, fileName: "", type: MediaType.image)
           ],
-          text: "Describe the picture");
+          text: "What plant is this?");
       _sendMessage(message);
     }
   }

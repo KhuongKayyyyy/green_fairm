@@ -61,7 +61,7 @@ class FakeData {
       haverstTime: "in 1 month",
     ),
     Field(
-      id: "1",
+      id: "5",
       name: 'Field 1',
       status: 'Good',
       type: 'Rice',
@@ -73,7 +73,7 @@ class FakeData {
       haverstTime: "in 1 month",
     ),
     Field(
-      id: "2",
+      id: "6",
       name: 'Field 2',
       status: 'Need water',
       type: 'Corn',
@@ -85,7 +85,7 @@ class FakeData {
       haverstTime: "in 1 month",
     ),
     Field(
-      id: "3",
+      id: "7",
       name: 'Field 3',
       status: 'Good',
       type: 'Rice',
@@ -97,7 +97,7 @@ class FakeData {
       haverstTime: "in 1 month",
     ),
     Field(
-      id: "4",
+      id: "8",
       name: 'Field 4',
       status: 'Need water',
       type: 'Corn',

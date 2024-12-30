@@ -31,7 +31,6 @@ class UserRepository {
         email: email.trim(),
         password: password,
       );
-      print(userCredential);
       if (kDebugMode) {
         print("Successfully signed in with email and password");
       }

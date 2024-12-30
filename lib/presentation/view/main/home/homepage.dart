@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/router/routes.dart';
@@ -18,17 +19,22 @@ class _HomepageState extends State<Homepage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          WeatherReport(),
-          Padding(
+          const WeatherReport(),
+          const Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: CheckOurAiRecommendation(),
           ),
-          MyFieldsSection(),
+          const MyFieldsSection(),
           TextButton(
               onPressed: () {
                 context.pushNamed(Routes.settingLanding);
               },
-              child: Text("Go to setting"))
+              child: Text("Go to setting")),
+          TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.currentUser?.sendEmailVerification();
+              },
+              child: Text("Send Verification")),
         ],
       ),
     );

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
-import 'package:green_fairm/presentation/view/authentication/otp_verification_page.dart';
+import 'package:green_fairm/presentation/view/authentication/reset_password_page.dart';
+import 'package:green_fairm/presentation/view/authentication/verification_page.dart';
 import 'package:green_fairm/presentation/view/authentication/register_page.dart';
 import 'package:green_fairm/presentation/view/authentication/set_up_information_page.dart';
 import 'package:green_fairm/presentation/view/authentication/sign_in_page.dart';
@@ -110,14 +110,19 @@ class AppNavigation {
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
-        path: Routes.otpVerification,
-        name: Routes.otpVerification,
-        builder: (context, state) => const OtpVerificationPage(),
+        path: Routes.mailVerification,
+        name: Routes.mailVerification,
+        builder: (context, state) => const VerificationPage(),
       ),
       GoRoute(
         path: Routes.setUpInforamtion,
         name: Routes.setUpInforamtion,
         builder: (context, state) => const SetupInformationPage(),
+      ),
+      GoRoute(
+        path: Routes.forgotPassword,
+        name: Routes.forgotPassword,
+        builder: (context, state) => const ResetPasswordPage(),
       )
     ];
   }

@@ -14,6 +14,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final User user = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,23 +32,31 @@ class _ProfilePageState extends State<ProfilePage> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const ProfileHeader(),
+              child: ProfileHeader(
+                needsRefresh: true,
+                user: user, // Pass user to ProfileHeader
+              ),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.45,
               left: 0,
               right: 0,
-              child: const SingleChildScrollView(
-                child: AccountOverview(),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    AccountOverview(),
+                  ],
+                ),
               ),
             ),
             Positioned(
-                top: 50,
-                left: 20,
-                child: Text(
-                  "Profile ",
-                  style: AppTextStyle.largeBold(),
-                )),
+              top: 50,
+              left: 20,
+              child: Text(
+                "Profile",
+                style: AppTextStyle.largeBold(),
+              ),
+            ),
           ],
         ),
       ),

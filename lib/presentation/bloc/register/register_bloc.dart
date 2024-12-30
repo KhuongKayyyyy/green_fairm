@@ -35,7 +35,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     try {
       final userCredential =
           await _userRepository.createUserWithEmailAndPassword(
-              event.email, event.username, event.password);
+        event.email,
+        event.username,
+        event.password,
+      );
+
       emit(RegisterSuccess(userCredential: userCredential));
     } catch (e) {
       String errorMessage = 'An unknown error occurred';
@@ -44,8 +48,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       }
       emit(RegisterFailure(errorMessage: errorMessage));
     }
-    // finally {
-    //   emit(state.cloneWith(isSubmitting: false));
-    // }
   }
 }
