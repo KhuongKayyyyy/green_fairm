@@ -1,6 +1,13 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:green_fairm/core/constant/app_setting.dart';
+import 'package:green_fairm/core/network/server.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
@@ -21,6 +28,7 @@ class UserRepository {
     );
     final UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(authCredential);
+    loginWithGoogleToServer();
     return userCredential.user!;
   }
 
@@ -87,5 +95,118 @@ class UserRepository {
 
   Future<User?> getUser() async {
     return _firebaseAuth.currentUser;
+  }
+
+  Future<void> saveNewUserToServer(
+      {required String name,
+      required String email,
+      required String password}) async {
+    try {
+      var client = HttpClient();
+      var request = await client.postUrl(Uri.parse(API.register));
+      request.headers.set('content-type', 'application/json');
+      request.write(
+          '{"username": "$name", "email": "$email", "password": "$password"}');
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to save user to server');
+      } else {
+        if (kDebugMode) {
+          print('User saved to server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving user to server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> loginToServer(
+      {required String email, required String password}) async {
+    try {
+      var client = HttpClient();
+      var request = await client.postUrl(Uri.parse(API.login));
+      request.headers.set('content-type', 'application/json');
+      request.write('{ "email": "$email", "password": "$password"}');
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to save user to server');
+      } else {
+        if (kDebugMode) {
+          print('User saved to server successfully');
+          final responseBody = await response.transform(utf8.decoder).join();
+          final responseData = jsonDecode(responseBody);
+          if (responseData['statusCode'] == 200) {
+            const storage = FlutterSecureStorage();
+            await storage.write(
+                key: AppSetting.userUid,
+                value: responseData['metadata']['_id']);
+            if (kDebugMode) {
+              print('User ID saved to secure storage successfully');
+              print(const FlutterSecureStorage().read(key: AppSetting.userUid));
+            }
+          } else {
+            throw Exception('Failed to save user ID to secure storage');
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving user to server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> loginWithGoogleToServer() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        var client = HttpClient();
+        var request = await client.postUrl(Uri.parse(API.loginWithGoogle));
+        request.headers.set('content-type', 'application/json');
+
+        // URL encode the username to handle special characters
+        String encodedUsername = Uri.encodeComponent(user.displayName ?? "");
+
+        request.write(jsonEncode({
+          "email": user.email,
+          "username": encodedUsername, // Use the encoded username
+          "avatar": user.photoURL,
+        }));
+
+        var response = await request.close();
+        if (response.statusCode != 200) {
+          throw Exception('Failed to save user to server');
+        } else {
+          if (kDebugMode) {
+            print('User saved to server successfully');
+            final responseBody = await response.transform(utf8.decoder).join();
+            final responseData = jsonDecode(responseBody);
+            if (responseData['statusCode'] == 200) {
+              const storage = FlutterSecureStorage();
+              await storage.write(
+                  key: AppSetting.userUid,
+                  value: responseData['metadata']['_id']);
+              if (kDebugMode) {
+                print('User ID saved to secure storage successfully');
+                print(await storage.read(key: AppSetting.userUid));
+              }
+            } else {
+              throw Exception('Failed to save user ID to secure storage');
+            }
+          }
+        }
+      } else {
+        throw Exception('No user is signed in');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving user to server: $e');
+      }
+      rethrow;
+    }
   }
 }

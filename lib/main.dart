@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // Import Flutter Bloc package
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/theme/app_theme.dart';
+import 'package:green_fairm/data/res/user_repository.dart';
+import 'package:green_fairm/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart'; // Example bloc
 
 void main() async {
   await dotenv.load(); // Load environment variables
@@ -17,19 +21,13 @@ void main() async {
   configEasyLoading();
   runApp(const MyApp());
 
-  User? user = FirebaseAuth.instance.currentUser;
-
-  if (user != null) {
-    // Check the list of providers
-    for (UserInfo provider in user.providerData) {
-      if (provider.providerId == "google.com") {
-        print("User is signed in using Google.");
-        return;
-      }
-    }
-    print("User is not signed in using Google.");
+  User user = FirebaseAuth.instance.currentUser!;
+  if (user.metadata.creationTime == user.metadata.lastSignInTime) {
+    // The user is new
+    print('New user');
   } else {
-    print("No user is signed in.");
+    // The user is not new
+    print('Existing user');
   }
 }
 
@@ -46,13 +44,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Green Fairm',
-      theme: AppTheme.theme,
-      routerConfig: AppNavigation.router,
-      builder: EasyLoading.init(),
-      // home: const SignInPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          create: (context) =>
+              AuthenticationBloc()..add(AuthenticationEventStarted()),
+        ),
+        BlocProvider<FieldManagementBloc>(
+          create: (context) => FieldManagementBloc(),
+        ),
+        // Add more BlocProviders as needed
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Green Fairm',
+        theme: AppTheme.theme,
+        routerConfig: AppNavigation.router,
+        builder: EasyLoading.init(),
+      ),
     );
   }
 }

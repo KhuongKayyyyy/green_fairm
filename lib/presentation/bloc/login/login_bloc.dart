@@ -51,6 +51,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.email,
         event.password,
       );
+      await _userRepository.loginToServer(
+          email: event.email, password: event.password);
       emit(const LoginSuccess());
     } catch (e) {
       String errorMessage = 'An unknown error occurred';
@@ -66,9 +68,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginEventWithGooglePressed event, Emitter<LoginState> emit) async {
     emit(const LoginLoading());
     try {
-      final userCredential = await _userRepository.signInWithGoogle();
-      print(userCredential);
-      await storage.write(key: AppSetting.userUid, value: userCredential.uid);
+      await _userRepository.signInWithGoogle();
       emit(const LoginSuccess());
       // emit(state.cloneWith(isSuccess: true));
     } catch (e) {

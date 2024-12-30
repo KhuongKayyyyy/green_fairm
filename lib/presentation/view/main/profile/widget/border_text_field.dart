@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
+// ignore: must_be_immutable
 class BorderTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String hintText;

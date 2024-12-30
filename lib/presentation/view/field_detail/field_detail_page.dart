@@ -5,7 +5,6 @@ import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/field_overview.dart';
-import 'package:green_fairm/presentation/view/field_detail/widget/field_detail_header.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/field_monitoring.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 

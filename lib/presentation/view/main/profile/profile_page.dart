@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
               top: MediaQuery.of(context).size.height * 0.45,
               left: 0,
               right: 0,
-              child: SingleChildScrollView(
+              child: const SingleChildScrollView(
                 child: Column(
                   children: [
                     AccountOverview(),

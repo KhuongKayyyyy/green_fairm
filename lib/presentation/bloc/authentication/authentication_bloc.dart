@@ -8,10 +8,9 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository userRepository;
+  final UserRepository userRepository = UserRepository();
 
-  AuthenticationBloc({required this.userRepository})
-      : super(AuthenticationInitial()) {
+  AuthenticationBloc() : super(AuthenticationInitial()) {
     on<AuthenticationEventStarted>(_onAuthenticationStarted);
     on<AuthenticationEventLoggedIn>(_onAuthenticationLoggedIn);
     on<AuthenticationEventLoggedOut>(_onAuthenticationLoggedOut);

@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
-import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
@@ -85,6 +83,9 @@ class _AccountOverviewState extends State<AccountOverview> {
                 ],
               ),
             AccountSettingSection(
+                onTap: () {
+                  context.pushNamed(Routes.addNewField);
+                },
                 backgroundColor: AppColor.primaryColor.withOpacity(0.4),
                 icon: const Icon(
                   CupertinoIcons.tree,

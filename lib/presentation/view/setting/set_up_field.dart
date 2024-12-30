@@ -1,22 +1,33 @@
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/model/field.dart';
+import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/view/setting/widget/set_up_drop_down_menu.dart';
 import 'package:green_fairm/presentation/view/setting/widget/set_up_text_field.dart';
 import 'package:green_fairm/presentation/view/setting/widget/toggle_selection_item.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
-class SetUpFarmPage extends StatefulWidget {
-  const SetUpFarmPage({super.key});
+class SetUpFieldPage extends StatefulWidget {
+  const SetUpFieldPage({super.key});
 
   @override
-  State<SetUpFarmPage> createState() => _SetUpFarmPageState();
+  State<SetUpFieldPage> createState() => _SetUpFieldPageState();
 }
 
-class _SetUpFarmPageState extends State<SetUpFarmPage> {
+class _SetUpFieldPageState extends State<SetUpFieldPage> {
+  late final FieldManagementBloc _fieldManagementBloc;
+  String countryValue = "";
+  String stateValue = "";
+  String cityValue = "";
+  String address = "";
+  String farmName = "";
   List<String> title = [
     "Set up your farm",
     "AI Intergration",
@@ -30,34 +41,73 @@ class _SetUpFarmPageState extends State<SetUpFarmPage> {
   int _currentIndex = 0; // To track the current step index
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fieldManagementBloc = BlocProvider.of<FieldManagementBloc>(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ..._buildSetUpHeader(), // Header remains fixed
-            const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: _buildSetUpBody(), // Make only the body scrollable
+      body: BlocListener<FieldManagementBloc, FieldManagementState>(
+        listener: (context, createState) {
+          if (createState is FieldManagementCreateSuccess) {
+            EasyLoading.dismiss();
+            context.goNamed(Routes.setUpSuccess, extra: createState.field);
+          } else if (createState is FieldManagementCreateError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(createState.message),
               ),
-            ),
-            const SizedBox(height: 20),
-            PrimaryButton(
-                text: "Continue",
-                onPressed: () {
-                  setState(() {
-                    if (_currentIndex < 2) {
-                      _currentIndex++;
+            );
+          } else if (createState is FieldManagementLoading) {
+            EasyLoading.show(status: "Creating farm...");
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ..._buildSetUpHeader(), // Header remains fixed
+              const SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: _buildSetUpBody(), // Make only the body scrollable
+                ),
+              ),
+              const SizedBox(height: 20),
+              PrimaryButton(
+                  text: "Continue",
+                  onPressed: () {
+                    if (_currentIndex == 0 &&
+                        (farmName.isEmpty ||
+                            countryValue.isEmpty ||
+                            stateValue.isEmpty ||
+                            cityValue.isEmpty)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text("Please fill in all required fields")),
+                      );
                     } else {
-                      context.pushNamed(Routes.setUpSuccess);
+                      setState(() {
+                        if (_currentIndex < 2) {
+                          _currentIndex++;
+                        } else {
+                          _fieldManagementBloc.add(FieldManagementEventCreate(
+                              field: Field(
+                            name: farmName,
+                            area: "$stateValue, $cityValue, $countryValue",
+                          )));
+                        }
+                      });
                     }
-                  });
-                }),
-            const SizedBox(height: 20),
-          ],
+                  }),
+              const SizedBox(height: 80),
+            ],
+          ),
         ),
       ),
     );
@@ -74,29 +124,50 @@ class _SetUpFarmPageState extends State<SetUpFarmPage> {
   }
 
   Widget _buildSetUpStep1() {
-    return const Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SetUpTextField(
           title: "Farm name",
           hintText: "Enter your farm name",
+          onChanged: (value) {
+            setState(() {
+              farmName = value;
+            });
+          },
         ),
-        SizedBox(height: 10),
-        SetUpTextField(
-          title: "Location",
-          hintText: "Thốt Nốt, Cần Thơ",
+        Text("Location", style: AppTextStyle.defaultBold()),
+        const SizedBox(height: 5),
+        CSCPicker(
+          flagState: CountryFlag.DISABLE,
+          onCountryChanged: (country) {
+            setState(() {
+              countryValue = country;
+            });
+          },
+          onStateChanged: (state) {
+            setState(() {
+              stateValue = state ?? ""; // Use empty string if state is null
+            });
+          },
+          onCityChanged: (city) {
+            setState(() {
+              cityValue = city ?? ""; // Use empty string if city is null
+            });
+          },
         ),
-        SizedBox(height: 10),
-        SetUpDropDownMenu(title: "Farm type", items: [
+        const SizedBox(height: 10),
+        const SetUpDropDownMenu(title: "Farm type", items: [
           "Crop Farm",
           "Livestock",
         ]),
-        SizedBox(height: 10),
-        SetUpTextField(
-          title: "Farm size (m2)",
-          hintText: "200",
-        ),
-        SizedBox(height: 10),
-        SetUpDropDownMenu(title: "Crop type", items: [
+        const SizedBox(height: 10),
+        // const SetUpTextField(
+        //   title: "Farm size (m2)",
+        //   hintText: "200",
+        // ),
+        const SizedBox(height: 10),
+        const SetUpDropDownMenu(title: "Crop type", items: [
           "Tomatoes",
           "Paddy",
           "Corn",

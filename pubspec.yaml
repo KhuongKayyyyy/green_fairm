@@ -57,6 +57,8 @@ dependencies:
   flutter_gemini: ^3.0.0
   dash_chat_2: ^0.0.21
   flutter_dotenv: ^5.2.1
+  csc_picker: ^0.2.7
+  country_state_city_pro: ^0.0.6
 
 
 dev_dependencies:

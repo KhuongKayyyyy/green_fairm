@@ -15,6 +15,7 @@ class Routes {
   static const String settingLanding = '/setting-landing';
   static const String settingDetail = '/setting-detail';
   static const String setUpSuccess = '/set-up-success';
+  static const String addNewField = '/add-new-field';
 
   // auth routes
   // ignore: constant_identifier_names

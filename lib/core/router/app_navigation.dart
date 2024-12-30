@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
@@ -21,11 +22,13 @@ import 'package:green_fairm/presentation/view/main/profile/change_pass_otp_verif
 import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
 import 'package:green_fairm/presentation/view/setting/set_up_successfully.dart';
 import 'package:green_fairm/presentation/view/setting/setting_landing_page.dart';
-import 'package:green_fairm/presentation/view/setting/set_up_farm.dart';
+import 'package:green_fairm/presentation/view/setting/set_up_field.dart';
 import 'package:green_fairm/presentation/view/weather_detail/weather_detail_page.dart';
 
 class AppNavigation {
   static bool isLoggedIn = FirebaseAuth.instance.currentUser != null;
+  bool isNewUser = FirebaseAuth.instance.currentUser!.metadata.creationTime ==
+      FirebaseAuth.instance.currentUser!.metadata.lastSignInTime;
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> _homeNavigatorKey =
@@ -40,7 +43,9 @@ class AppNavigation {
   static final GlobalKey<NavigatorState> _paddingNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'paddingNavigator');
   static final GoRouter router = GoRouter(
-      initialLocation: isLoggedIn ? Routes.home : Routes.authenticate_landing,
+      initialLocation: isLoggedIn
+          ? (AppSetting.isUserNew ? Routes.settingLanding : Routes.home)
+          : Routes.authenticate_landing,
       // redirect: (context, state) {
       //   final loggedIn = isLoggedIn; // Replace with your actual login check
       //   final goingToLogin = state.subloc == Routes.authenticate_landing;
@@ -82,13 +87,16 @@ class AppNavigation {
       GoRoute(
         path: Routes.settingDetail,
         name: Routes.settingDetail,
-        builder: (context, state) => const SetUpFarmPage(),
+        builder: (context, state) => const SetUpFieldPage(),
       ),
       GoRoute(
-        path: Routes.setUpSuccess,
-        name: Routes.setUpSuccess,
-        builder: (context, state) => const SetUpSuccessfully(),
-      )
+          path: Routes.setUpSuccess,
+          name: Routes.setUpSuccess,
+          builder: (context, state) {
+            final extra = state.extra;
+            final field = extra as Field;
+            return SetUpSuccessfully(field: field);
+          })
     ];
   }
 
@@ -241,10 +249,11 @@ class AppNavigation {
           name: Routes.changePassOtp,
           builder: (context, state) => const ChangePassOtpVerification(),
         ),
-        // GoRoute(
-        //     path: Routes.settingLanding,
-        //     name: Routes.settingLanding,
-        //     builder: (context, state) => const SettingLandingPage()),
+        GoRoute(
+          path: Routes.addNewField,
+          name: Routes.addNewField,
+          builder: (context, state) => const SetUpFieldPage(),
+        ),
       ],
     );
   }

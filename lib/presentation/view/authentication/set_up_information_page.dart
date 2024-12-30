@@ -1,17 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
-import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/presentation/bloc/register/register_bloc.dart';
-import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
 class SetupInformationPage extends StatefulWidget {

@@ -4,9 +4,15 @@ import 'package:green_fairm/core/constant/app_text_style.dart';
 
 class SetUpTextField extends StatefulWidget {
   final String title;
+  final TextEditingController? controller;
+  final void Function(String)? onChanged;
   final String hintText;
   const SetUpTextField(
-      {super.key, required this.title, required this.hintText});
+      {super.key,
+      required this.title,
+      required this.hintText,
+      this.onChanged,
+      this.controller});
 
   @override
   State<SetUpTextField> createState() => _SetUpTextFieldState();
@@ -26,6 +32,8 @@ class _SetUpTextFieldState extends State<SetUpTextField> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextField(
+            onChanged: widget.onChanged,
+            controller: widget.controller,
             cursorColor: AppColor.secondaryColor,
             style: AppTextStyle.defaultBold(),
             decoration: InputDecoration(

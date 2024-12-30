@@ -4,10 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 
 class SetUpSuccessfully extends StatelessWidget {
-  const SetUpSuccessfully({super.key});
+  final Field field;
+  const SetUpSuccessfully({super.key, required this.field});
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,7 @@ class SetUpSuccessfully extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text('Success set up your farm',
+                        textAlign: TextAlign.center,
                         style: AppTextStyle.largeBold(
                             color: AppColor.secondaryColor)),
                     const SizedBox(height: 10),
@@ -81,12 +84,12 @@ class SetUpSuccessfully extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "Khu vườn trên mây",
+                                  field.name!,
                                   style: AppTextStyle.defaultBold(
                                       color: AppColor.secondaryColor),
                                 ),
                                 Text(
-                                  "Farm name",
+                                  "Field name",
                                   style: AppTextStyle.defaultBold(
                                       color: Colors.grey),
                                 )
@@ -105,12 +108,13 @@ class SetUpSuccessfully extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "Cần Thơ",
+                                  field.area!,
+                                  textAlign: TextAlign.center,
                                   style: AppTextStyle.defaultBold(
                                       color: AppColor.secondaryColor),
                                 ),
                                 Text(
-                                  "Farm name",
+                                  "Field location",
                                   style: AppTextStyle.defaultBold(
                                       color: Colors.grey),
                                 )
@@ -126,7 +130,11 @@ class SetUpSuccessfully extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            PrimaryButton(text: "Open Your Farm", onPressed: () {}),
+            PrimaryButton(
+                text: "Open Your Farm",
+                onPressed: () {
+                  context.go(Routes.fieldDetail, extra: field);
+                }),
             const SizedBox(height: 10),
             PrimaryButton(
               text: "Go to home",

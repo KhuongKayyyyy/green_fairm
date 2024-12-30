@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:green_fairm/core/validator/validator.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
 
 part 'register_event.dart';
@@ -39,6 +38,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         event.username,
         event.password,
       );
+      await _userRepository.saveNewUserToServer(
+          name: event.username, email: event.email, password: event.password);
 
       emit(RegisterSuccess(userCredential: userCredential));
     } catch (e) {
