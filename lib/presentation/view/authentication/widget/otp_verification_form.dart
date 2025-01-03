@@ -60,12 +60,12 @@ class OtpVerificationForm extends StatelessWidget {
                   final secondsStr = (seconds % 60).toString().padLeft(2, '0');
                   return Text(
                     '$minutesStr:$secondsStr',
-                    style: AppTextStyle.mediumBold(color: AppColor.grey),
+                    style: AppTextStyle.mediumBold(color: AppColors.grey),
                   );
                 } else {
                   return Text(
                     '00:30',
-                    style: AppTextStyle.mediumBold(color: AppColor.grey),
+                    style: AppTextStyle.mediumBold(color: AppColors.grey),
                   );
                 }
               },

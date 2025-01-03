@@ -23,7 +23,7 @@ class _UserAvatarState extends State<UserAvatar> {
             color: Colors.transparent,
           ),
           gradient: const LinearGradient(
-            colors: [AppColor.primaryColor, AppColor.secondaryColor],
+            colors: [AppColors.primaryColor, AppColors.secondaryColor],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -63,7 +63,7 @@ class _UserAvatarState extends State<UserAvatar> {
                       } else {
                         return Center(
                           child: CircularProgressIndicator(
-                            color: AppColor.secondaryColor,
+                            color: AppColors.secondaryColor,
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
                                     loadingProgress.expectedTotalBytes!
@@ -85,7 +85,7 @@ class _UserAvatarState extends State<UserAvatar> {
               color: Colors.transparent,
             ),
             gradient: const LinearGradient(
-              colors: [AppColor.primaryColor, AppColor.secondaryColor],
+              colors: [AppColors.primaryColor, AppColors.secondaryColor],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

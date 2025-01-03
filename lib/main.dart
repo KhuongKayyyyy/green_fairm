@@ -8,7 +8,6 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/theme/app_theme.dart';
-import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart'; // Example bloc
 
@@ -33,8 +32,8 @@ void main() async {
 
 void configEasyLoading() {
   EasyLoading.instance
-    ..backgroundColor = AppColor.secondaryColor
-    ..indicatorColor = AppColor.primaryColor
+    ..backgroundColor = AppColors.secondaryColor
+    ..indicatorColor = AppColors.primaryColor
     ..textColor = Colors.white
     ..loadingStyle = EasyLoadingStyle.custom;
 }
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<FieldManagementBloc>(
           create: (context) => FieldManagementBloc(),
         ),
-        // Add more BlocProviders as needed
+        // Add more BlocProvid–ers as needed
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

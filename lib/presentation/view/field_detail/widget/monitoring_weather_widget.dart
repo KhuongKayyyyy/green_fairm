@@ -20,7 +20,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         gradient: const LinearGradient(
-          colors: [AppColor.mediumWhite, Colors.white],
+          colors: [AppColors.mediumWhite, Colors.white],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
         ),
@@ -70,7 +70,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
             style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: AppColor.grey),
+                color: AppColors.grey),
           ),
           const SizedBox(height: 10),
         ],
@@ -105,7 +105,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
             const SizedBox(height: 10),
             Text(
               "Water your plants in the morning or evening when the temperature is cooler to minimize evaporation.",
-              style: AppTextStyle.defaultBold(color: AppColor.grey),
+              style: AppTextStyle.defaultBold(color: AppColors.grey),
             ),
           ],
         ),
@@ -131,7 +131,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
             const SizedBox(width: 10),
             const Icon(
               Icons.arrow_forward_ios,
-              color: AppColor.secondaryColor,
+              color: AppColors.secondaryColor,
               size: 16,
             ),
           ],

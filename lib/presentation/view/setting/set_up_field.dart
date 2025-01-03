@@ -179,7 +179,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
   }
 
   Widget _buildSetUpStep2() {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         children: [
           ToggleSelectionItem(
@@ -233,7 +233,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
               children: [
                 Text("Irriagation method",
                     style: AppTextStyle.defaultBold(
-                      color: AppColor.secondaryColor,
+                      color: AppColors.secondaryColor,
                     )),
                 const SizedBox(height: 10),
                 Row(
@@ -250,12 +250,12 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: selectedIrrigation == "Drip irrigation"
-                                  ? AppColor.primaryColor
+                                  ? AppColors.primaryColor
                                   : Colors.grey,
                             ),
                             borderRadius: BorderRadius.circular(10),
                             color: selectedIrrigation == "Drip irrigation"
-                                ? AppColor.primaryColor.withOpacity(0.1)
+                                ? AppColors.primaryColor.withOpacity(0.1)
                                 : Colors.transparent,
                           ),
                           child: Center(
@@ -263,8 +263,8 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                               "Drip irrigation",
                               style: AppTextStyle.defaultBold(
                                 color: selectedIrrigation == "Drip irrigation"
-                                    ? AppColor.primaryColor
-                                    : AppColor.grey,
+                                    ? AppColors.primaryColor
+                                    : AppColors.grey,
                               ),
                             ),
                           ),
@@ -285,12 +285,12 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                             border: Border.all(
                               color:
                                   selectedIrrigation == "Sprinkler irrigation"
-                                      ? AppColor.primaryColor
+                                      ? AppColors.primaryColor
                                       : Colors.grey,
                             ),
                             borderRadius: BorderRadius.circular(10),
                             color: selectedIrrigation == "Sprinkler irrigation"
-                                ? AppColor.primaryColor.withOpacity(0.1)
+                                ? AppColors.primaryColor.withOpacity(0.1)
                                 : Colors.transparent,
                           ),
                           child: Center(
@@ -299,8 +299,8 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                               style: AppTextStyle.defaultBold(
                                 color:
                                     selectedIrrigation == "Sprinkler irrigation"
-                                        ? AppColor.primaryColor
-                                        : AppColor.grey,
+                                        ? AppColors.primaryColor
+                                        : AppColors.grey,
                               ),
                             ),
                           ),
@@ -346,7 +346,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
               ),
               child: const Icon(
                 CupertinoIcons.arrow_left,
-                color: AppColor.secondaryColor,
+                color: AppColors.secondaryColor,
               ),
             ),
           ),
@@ -354,7 +354,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
           Text(
             title[_currentIndex],
             style: AppTextStyle.mediumBold(
-              color: AppColor.secondaryColor,
+              color: AppColors.secondaryColor,
             ),
           ),
         ],
@@ -376,7 +376,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                     : 10, // Active indicator is wider
                 decoration: BoxDecoration(
                   color: _currentIndex >= index
-                      ? AppColor.primaryColor
+                      ? AppColors.primaryColor
                       : Colors.grey[300], // Active indicator color
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -390,7 +390,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
       ),
       Text(
         subTitle[_currentIndex],
-        style: AppTextStyle.defaultBold(color: AppColor.secondaryColor),
+        style: AppTextStyle.defaultBold(color: AppColors.secondaryColor),
       ),
     ];
   }

@@ -72,14 +72,14 @@ class _FieldOverviewState extends State<FieldOverview> {
       children: [
         Text(
           "${widget.field.type} field",
-          style: AppTextStyle.mediumBold(color: AppColor.secondaryColor),
+          style: AppTextStyle.mediumBold(color: AppColors.secondaryColor),
         ),
         const SizedBox(width: 10),
         InkWell(
           onTap: () {},
           child: const Icon(
             CupertinoIcons.pencil,
-            color: AppColor.secondaryColor,
+            color: AppColors.secondaryColor,
             size: 25,
           ),
         ),

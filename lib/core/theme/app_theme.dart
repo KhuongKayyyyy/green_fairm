@@ -6,15 +6,15 @@ class AppTheme {
   static ThemeData get theme {
     return ThemeData(
       useMaterial3: false,
-      primaryColor: AppColor.primaryColor,
+      primaryColor: AppColors.primaryColor,
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white.withOpacity(0.9),
+        backgroundColor: Colors.white.withOpacity(0.3),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        secondary: AppColor.secondaryColor,
+        secondary: AppColors.secondaryColor,
       ),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {

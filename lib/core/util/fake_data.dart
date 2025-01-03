@@ -1,6 +1,7 @@
 import 'package:green_fairm/data/model/app_user.dart';
 import 'package:green_fairm/data/model/farm_notification.dart';
 import 'package:green_fairm/data/model/field.dart';
+import 'package:green_fairm/data/model/water_history.dart';
 
 class FakeData {
   static AppUser user = AppUser(
@@ -129,5 +130,38 @@ class FakeData {
         description: 'The temperature of Field 2 is too high',
         time: '5:00 AM',
         date: "15 December 2024"),
+  ];
+
+  static final List<WaterHistory> fakeWaterHistories = [
+    WaterHistory(
+      id: "1",
+      date: "Thursday, 12 August 2021",
+      time: "9:00 AM",
+      status: "Done",
+    ),
+    WaterHistory(
+      id: "2",
+      date: "Thursday, 12 August 2021",
+      time: "9:00 AM",
+      status: "Done",
+    ),
+    WaterHistory(
+      id: "3",
+      date: "Thursday, 12 August 2021",
+      time: "9:00 AM",
+      status: "Done",
+    ),
+    WaterHistory(
+      id: "4",
+      date: "Thursday, 12 August 2021",
+      time: "9:00 AM",
+      status: "Done",
+    ),
+    WaterHistory(
+      id: "5",
+      date: "Thursday, 12 August 2021",
+      time: "9:00 AM",
+      status: "Done",
+    ),
   ];
 }

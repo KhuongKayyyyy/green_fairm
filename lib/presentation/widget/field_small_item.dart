@@ -44,8 +44,8 @@ class FieldSmallItem extends StatelessWidget {
                       field.status ?? "No status",
                       style: AppTextStyle.defaultBold(
                         color: field.status == "Good"
-                            ? AppColor.primaryColor
-                            : AppColor.secondaryColor,
+                            ? AppColors.primaryColor
+                            : AppColors.secondaryColor,
                       ),
                     ),
                   ),
@@ -55,10 +55,10 @@ class FieldSmallItem extends StatelessWidget {
             const SizedBox(height: 10),
             Text(field.type ?? "No type",
                 style:
-                    AppTextStyle.defaultBold(color: AppColor.secondaryColor)),
+                    AppTextStyle.defaultBold(color: AppColors.secondaryColor)),
             const SizedBox(height: 4),
             Text(field.area ?? "No area",
-                style: const TextStyle(color: AppColor.grey)),
+                style: const TextStyle(color: AppColors.grey)),
           ],
         ),
       ),

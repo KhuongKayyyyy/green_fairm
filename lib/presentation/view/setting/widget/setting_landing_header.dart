@@ -66,14 +66,14 @@ class SettingLandingHeader extends StatelessWidget {
             children: [
               Text(
                 "Khu vườn trên mây",
-                style: AppTextStyle.mediumBold(color: AppColor.secondaryColor),
+                style: AppTextStyle.mediumBold(color: AppColors.secondaryColor),
               ),
               const SizedBox(width: 10),
               InkWell(
                 onTap: () {},
                 child: const Icon(
                   CupertinoIcons.pencil,
-                  color: AppColor.secondaryColor,
+                  color: AppColors.secondaryColor,
                   size: 25,
                 ),
               ),
@@ -119,7 +119,7 @@ class SettingLandingHeader extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: informationType == "Crop health"
             ? LinearGradient(
-                colors: [AppColor.primaryColor.withOpacity(0.5), Colors.white],
+                colors: [AppColors.primaryColor.withOpacity(0.5), Colors.white],
                 end: Alignment.bottomLeft,
                 begin: Alignment.topCenter,
               )
@@ -144,7 +144,7 @@ class SettingLandingHeader extends StatelessWidget {
                   softWrap: true,
                   style: AppTextStyle.defaultBold(
                       color: informationType == "Crop health"
-                          ? AppColor.primaryColor
+                          ? AppColors.primaryColor
                           : Colors.grey),
                 ),
               ),

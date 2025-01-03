@@ -28,7 +28,7 @@ class _NotificationByDaySectionState extends State<NotificationByDaySection> {
         children: [
           Text(
             "Today, Dec 15",
-            style: AppTextStyle.defaultBold(color: AppColor.primaryColor),
+            style: AppTextStyle.defaultBold(color: AppColors.primaryColor),
           ),
           ListView.builder(
             padding: EdgeInsets.zero,

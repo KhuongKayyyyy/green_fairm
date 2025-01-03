@@ -34,7 +34,7 @@ class _BorderTextFieldState extends State<BorderTextField> {
         Text(widget.labelText, style: AppTextStyle.defaultBold()),
         TextField(
           obscureText: widget.obscureText!,
-          cursorColor: AppColor.secondaryColor,
+          cursorColor: AppColors.secondaryColor,
           controller: widget.controller,
           style: AppTextStyle.defaultBold(),
           decoration: InputDecoration(
@@ -50,19 +50,19 @@ class _BorderTextFieldState extends State<BorderTextField> {
                     },
                     child: Icon(
                       widget.icon,
-                      color: AppColor.primaryColor,
+                      color: AppColors.primaryColor,
                     ),
                   )
                 : null,
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(
-                color: AppColor.grey,
+                color: AppColors.grey,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(
-                color: AppColor.secondaryColor,
+                color: AppColors.secondaryColor,
               ),
               borderRadius: BorderRadius.circular(10),
             ),

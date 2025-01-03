@@ -103,7 +103,7 @@ class _VerificationPageState extends State<VerificationPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Verify Your Email",
-            style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
+            style: AppTextStyle.largeBold(color: AppColors.secondaryColor)),
         const SizedBox(height: 60),
         Text(
           "A verification email has been sent to your email address. Please verify your email to continue.",

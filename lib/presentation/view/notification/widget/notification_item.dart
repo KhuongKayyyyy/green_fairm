@@ -65,7 +65,7 @@ class NotificationItem extends StatelessWidget {
                 width: 10,
                 height: 10,
                 decoration: BoxDecoration(
-                  color: AppColor.primaryColor,
+                  color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),

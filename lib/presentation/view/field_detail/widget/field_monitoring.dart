@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/basic_characteristic.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/field_setting.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/monitoring_weather_widget.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/water_history_section.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/water_schedule.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/water_usage.dart';
 
 class FieldMonitoring extends StatefulWidget {
   const FieldMonitoring({super.key});
@@ -27,27 +31,27 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
         SizedBox(
           width: double.infinity,
           child: CupertinoSlidingSegmentedControl(
-              thumbColor: AppColor.primaryColor.withOpacity(0.5),
+              thumbColor: AppColors.primaryColor.withOpacity(0.5),
               children: {
                 0: Text(
                   "Monitoring",
                   style: AppTextStyle.defaultBold(
                       color: _slidingIndex == 0
-                          ? AppColor.secondaryColor
+                          ? AppColors.secondaryColor
                           : Colors.grey),
                 ),
                 1: Text(
                   "Irrigation",
                   style: AppTextStyle.defaultBold(
                       color: _slidingIndex == 1
-                          ? AppColor.secondaryColor
+                          ? AppColors.secondaryColor
                           : Colors.grey),
                 ),
                 2: Text(
                   "Settings",
                   style: AppTextStyle.defaultBold(
                       color: _slidingIndex == 2
-                          ? AppColor.secondaryColor
+                          ? AppColors.secondaryColor
                           : Colors.grey),
                 ),
               },
@@ -59,6 +63,8 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
               groupValue: _slidingIndex),
         ),
         if (_slidingIndex == 0) _buildMonitoring(),
+        if (_slidingIndex == 1) _buildIrrigation(),
+        if (_slidingIndex == 2) _buildSettings()
       ],
     );
   }
@@ -74,6 +80,34 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
           ),
           BasicCharacteristic()
         ],
+      ),
+    );
+  }
+
+  Widget _buildIrrigation() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        children: [
+          WaterUsage(),
+          SizedBox(
+            height: 20,
+          ),
+          WaterHistorySection(),
+          SizedBox(
+            height: 20,
+          ),
+          WaterSchedule()
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettings() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        children: [FieldSetting()],
       ),
     );
   }

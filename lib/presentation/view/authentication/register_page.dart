@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Sign Up",
-            style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
+            style: AppTextStyle.largeBold(color: AppColors.secondaryColor)),
         Text("Create new account",
             style: AppTextStyle.defaultBold(color: Colors.grey),
             textAlign: TextAlign.center),
@@ -125,26 +125,26 @@ class _RegisterPageState extends State<RegisterPage> {
         TextField(
           controller: controller,
           obscureText: obscureText,
-          cursorColor: AppColor.secondaryColor,
+          cursorColor: AppColors.secondaryColor,
           decoration: InputDecoration(
             hintText: label,
             prefixIcon: Icon(icon),
             prefixIconColor: WidgetStateColor.resolveWith((states) {
               if (states.contains(WidgetState.focused)) {
-                return AppColor.secondaryColor;
+                return AppColors.secondaryColor;
               }
               return Colors.grey;
             }),
-            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            fillColor: AppColors.primaryColor.withOpacity(0.2),
             filled: true,
-            focusColor: AppColor.primaryColor.withOpacity(0.2),
+            focusColor: AppColors.primaryColor.withOpacity(0.2),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(color: Colors.grey)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                    const BorderSide(color: AppColor.secondaryColor, width: 2)),
+                borderSide: const BorderSide(
+                    color: AppColors.secondaryColor, width: 2)),
           ),
         ),
       ],
@@ -281,7 +281,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               child: Text(
                 "Sign In",
-                style: AppTextStyle.defaultBold(color: AppColor.primaryColor),
+                style: AppTextStyle.defaultBold(color: AppColors.primaryColor),
               ),
             ),
           ],
@@ -305,7 +305,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       agreePolicy = value ?? false;
                     });
                   },
-                  activeColor: AppColor.primaryColor,
+                  activeColor: AppColors.primaryColor,
                   checkColor: Colors.white,
                 ),
               ),
@@ -318,14 +318,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     TextSpan(
                       text: "Term of use",
-                      style: TextStyle(color: AppColor.primaryColor),
+                      style: TextStyle(color: AppColors.primaryColor),
                     ),
                     TextSpan(
                       text: " and ",
                     ),
                     TextSpan(
                       text: "Privacy Policy",
-                      style: TextStyle(color: AppColor.primaryColor),
+                      style: TextStyle(color: AppColors.primaryColor),
                     ),
                   ],
                 ),

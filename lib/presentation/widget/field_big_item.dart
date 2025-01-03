@@ -45,7 +45,7 @@ class FieldBigItem extends StatelessWidget {
                       Text(
                         field.name!,
                         style: AppTextStyle.mediumBold(
-                            color: AppColor.secondaryColor),
+                            color: AppColors.secondaryColor),
                       ),
                       Text(
                         "${field.type!}field",
@@ -75,8 +75,8 @@ class FieldBigItem extends StatelessWidget {
                       field.status!,
                       style: AppTextStyle.defaultBold(
                         color: field.status!.toLowerCase() == 'good'
-                            ? AppColor.primaryColor
-                            : AppColor.secondaryColor,
+                            ? AppColors.primaryColor
+                            : AppColors.secondaryColor,
                       ),
                     ),
                   ),
@@ -88,7 +88,7 @@ class FieldBigItem extends StatelessWidget {
               children: [
                 Icon(
                   Icons.location_on,
-                  color: AppColor.primaryColor,
+                  color: AppColors.primaryColor,
                 ),
                 SizedBox(width: 10),
                 Text(

@@ -28,24 +28,25 @@ class ChangePassSuccessfully extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                        color: AppColor.secondaryColor.withOpacity(0.5),
+                        color: AppColors.secondaryColor.withOpacity(0.5),
                         blurRadius: 30,
                         offset: const Offset(0, 5)),
                     BoxShadow(
-                        color: AppColor.primaryColor.withOpacity(0.8),
+                        color: AppColors.primaryColor.withOpacity(0.8),
                         blurRadius: 80,
                         offset: const Offset(0, 10)),
                   ],
                   gradient: const LinearGradient(colors: [
-                    AppColor.primaryColor,
-                    AppColor.secondaryColor
+                    AppColors.primaryColor,
+                    AppColors.secondaryColor
                   ])),
               child: const Icon(CupertinoIcons.check_mark,
                   size: 50, color: Colors.white),
             ),
             const SizedBox(height: 50),
             Text("Password Changed Successfully",
-                style: AppTextStyle.mediumBold(color: AppColor.secondaryColor)),
+                style:
+                    AppTextStyle.mediumBold(color: AppColors.secondaryColor)),
             Text("You can now login with your new password",
                 style: AppTextStyle.defaultBold(color: Colors.grey)),
             // const SizedBox(height: 300),

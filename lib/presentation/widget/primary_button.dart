@@ -24,13 +24,13 @@ class PrimaryButton extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColor.primaryColor,
-                    AppColor.secondaryColor,
+                    AppColors.primaryColor,
+                    AppColors.secondaryColor,
                   ],
                 ),
           color: isReverse == true ? Colors.white : null,
           border: isReverse == true
-              ? Border.all(color: AppColor.secondaryColor)
+              ? Border.all(color: AppColors.secondaryColor)
               : null,
         ),
         child: Center(
@@ -38,7 +38,7 @@ class PrimaryButton extends StatelessWidget {
             text,
             style: isReverse == true
                 ? AppTextStyle.mediumBold()
-                    .copyWith(color: AppColor.secondaryColor)
+                    .copyWith(color: AppColors.secondaryColor)
                 : AppTextStyle.mediumBold(),
           ),
         ),

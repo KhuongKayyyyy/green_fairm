@@ -67,7 +67,7 @@ class TemperatureMonitoring extends StatelessWidget {
                             width: 20,
                             height: 20,
                             decoration: const BoxDecoration(
-                              color: AppColor.primaryColor,
+                              color: AppColors.primaryColor,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -112,7 +112,7 @@ class TemperatureMonitoring extends StatelessWidget {
       statusIcon = Icons.ac_unit;
     } else if (currentTemperature >= 25 && currentTemperature <= 30) {
       status = "Normal";
-      statusColor = AppColor.primaryColor;
+      statusColor = AppColors.primaryColor;
       statusIcon = Icons.check_circle;
     } else if (currentTemperature >= 31 && currentTemperature <= 40) {
       status = "Kinda hot";

@@ -72,7 +72,7 @@ class _SetupInformationPageState extends State<SetupInformationPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Set Up Information",
-            style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
+            style: AppTextStyle.largeBold(color: AppColors.secondaryColor)),
         Text("Please provide your details",
             style: AppTextStyle.defaultBold(color: Colors.grey),
             textAlign: TextAlign.center),
@@ -95,26 +95,26 @@ class _SetupInformationPageState extends State<SetupInformationPage> {
         TextField(
           controller: controller,
           obscureText: obscureText,
-          cursorColor: AppColor.secondaryColor,
+          cursorColor: AppColors.secondaryColor,
           decoration: InputDecoration(
             hintText: label,
             prefixIcon: Icon(icon),
             prefixIconColor: WidgetStateColor.resolveWith((states) {
               if (states.contains(WidgetState.focused)) {
-                return AppColor.secondaryColor;
+                return AppColors.secondaryColor;
               }
               return Colors.grey;
             }),
-            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            fillColor: AppColors.primaryColor.withOpacity(0.2),
             filled: true,
-            focusColor: AppColor.primaryColor.withOpacity(0.2),
+            focusColor: AppColors.primaryColor.withOpacity(0.2),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(color: Colors.grey)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                    const BorderSide(color: AppColor.secondaryColor, width: 2)),
+                borderSide: const BorderSide(
+                    color: AppColors.secondaryColor, width: 2)),
           ),
         ),
       ],

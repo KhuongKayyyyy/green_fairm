@@ -17,7 +17,7 @@ class OnboardBackground extends StatelessWidget {
         ),
         Positioned.fill(
           child: Container(
-            color: AppColor.secondaryColor.withOpacity(0.7),
+            color: AppColors.secondaryColor.withOpacity(0.7),
           ),
         ),
       ],

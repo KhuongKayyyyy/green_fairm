@@ -15,18 +15,13 @@ class _WeatherReportState extends State<WeatherReport> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 80, left: 15, right: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildLocation(),
-              InkWell(
-                  onTap: () {
-                    _showNotificationPage(context);
-                  },
-                  child: const Icon(CupertinoIcons.bell))
             ],
           ),
           const SizedBox(height: 20),
@@ -40,7 +35,7 @@ class _WeatherReportState extends State<WeatherReport> {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: AppColor.mediumWhite.withOpacity(0.5),
+        color: AppColors.mediumWhite.withOpacity(0.5),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -54,12 +49,12 @@ class _WeatherReportState extends State<WeatherReport> {
         children: [
           Icon(
             CupertinoIcons.map_pin_ellipse,
-            color: AppColor.secondaryColor,
+            color: AppColors.secondaryColor,
           ),
           Text(
             'Thốt Nốt, Cần Thơ',
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: AppColor.secondaryColor),
+                fontWeight: FontWeight.bold, color: AppColors.secondaryColor),
           )
         ],
       ),
@@ -72,7 +67,7 @@ class _WeatherReportState extends State<WeatherReport> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         gradient: const LinearGradient(
-          colors: [AppColor.mediumWhite, Colors.white],
+          colors: [AppColors.mediumWhite, Colors.white],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
         ),
@@ -88,14 +83,14 @@ class _WeatherReportState extends State<WeatherReport> {
             style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: AppColor.secondaryColor),
+                color: AppColors.secondaryColor),
           ),
           const Text(
             'Today is partly sunny day!',
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColor.secondaryColor),
+                color: AppColors.secondaryColor),
           ),
           const SizedBox(height: 10),
           _buildWeatherDetail(),
@@ -118,14 +113,14 @@ class _WeatherReportState extends State<WeatherReport> {
               Text(
                 '77 %',
                 style: TextStyle(
-                  color: AppColor.secondaryColor,
+                  color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 'Humidity',
                 style: TextStyle(
-                  color: AppColor.grey,
+                  color: AppColors.grey,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -136,14 +131,14 @@ class _WeatherReportState extends State<WeatherReport> {
               Text(
                 '0.01 in',
                 style: TextStyle(
-                  color: AppColor.secondaryColor,
+                  color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 'Precipitation',
                 style: TextStyle(
-                  color: AppColor.grey,
+                  color: AppColors.grey,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -154,14 +149,14 @@ class _WeatherReportState extends State<WeatherReport> {
               Text(
                 '6 mph/s',
                 style: TextStyle(
-                  color: AppColor.secondaryColor,
+                  color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 'Wind Speed',
                 style: TextStyle(
-                  color: AppColor.grey,
+                  color: AppColors.grey,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -170,21 +165,5 @@ class _WeatherReportState extends State<WeatherReport> {
         ],
       ),
     );
-  }
-
-  void _showNotificationPage(BuildContext context) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        useRootNavigator: true,
-        // shape: const RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.vertical(
-        //     top: Radius.circular(16),
-        //   ),
-        // ),
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return const NotificationPage();
-        });
   }
 }

@@ -23,12 +23,12 @@ class WeatherDetailPage extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: isDayTime
               ? [
-                  AppColor.white,
-                  AppColor.primaryColor
+                  AppColors.white,
+                  AppColors.primaryColor
                 ] // Day gradient (white and primary)
               : [
-                  AppColor.primaryColor,
-                  AppColor.secondaryColor
+                  AppColors.primaryColor,
+                  AppColors.secondaryColor
                 ], // Night gradient (primary and secondary)
         ),
       ),

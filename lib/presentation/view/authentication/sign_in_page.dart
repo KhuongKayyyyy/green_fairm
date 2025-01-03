@@ -155,17 +155,17 @@ class _SignInPageState extends State<SignInPage> {
         TextField(
           controller: controller,
           obscureText: obscureText,
-          cursorColor: AppColor.secondaryColor,
+          cursorColor: AppColors.secondaryColor,
           decoration: InputDecoration(
             hintText: hintText,
             prefixIcon: Icon(icon),
             prefixIconColor: WidgetStateColor.resolveWith((states) {
               if (states.contains(WidgetState.focused)) {
-                return AppColor.secondaryColor;
+                return AppColors.secondaryColor;
               }
               return Colors.grey;
             }),
-            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            fillColor: AppColors.primaryColor.withOpacity(0.2),
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -174,7 +174,7 @@ class _SignInPageState extends State<SignInPage> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                color: AppColor.secondaryColor,
+                color: AppColors.secondaryColor,
                 width: 2,
               ),
             ),
@@ -208,7 +208,7 @@ class _SignInPageState extends State<SignInPage> {
               },
               child: Text(
                 "Sign Up",
-                style: AppTextStyle.defaultBold(color: AppColor.primaryColor),
+                style: AppTextStyle.defaultBold(color: AppColors.primaryColor),
               ),
             ),
           ],
@@ -222,7 +222,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               value: keepSignIn,
               onChanged: (value) => setState(() => keepSignIn = value ?? false),
-              activeColor: AppColor.primaryColor,
+              activeColor: AppColors.primaryColor,
               checkColor: Colors.white,
             ),
             const Text("Keep me signed in"),
@@ -249,13 +249,13 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             const Icon(
               Icons.facebook_rounded,
-              color: AppColor.secondaryColor,
+              color: AppColors.secondaryColor,
               size: 25,
             ),
             const SizedBox(width: 10),
             Text(
               "Login with Google",
-              style: AppTextStyle.mediumBold(color: AppColor.secondaryColor),
+              style: AppTextStyle.mediumBold(color: AppColors.secondaryColor),
             ),
           ],
         ),
@@ -302,7 +302,7 @@ class _SignInPageState extends State<SignInPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Welcome Back",
-            style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
+            style: AppTextStyle.largeBold(color: AppColors.secondaryColor)),
         Text(
           "Sign in to continue",
           style: AppTextStyle.defaultBold(color: Colors.grey),

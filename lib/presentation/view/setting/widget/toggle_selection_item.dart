@@ -6,11 +6,13 @@ import 'package:green_fairm/core/constant/app_text_style.dart';
 class ToggleSelectionItem extends StatefulWidget {
   final String title;
   final String description;
+  bool? isSelected;
   final bool? isDisable;
-  const ToggleSelectionItem(
+  ToggleSelectionItem(
       {super.key,
       required this.title,
       required this.description,
+      this.isSelected,
       this.isDisable});
 
   @override
@@ -18,7 +20,6 @@ class ToggleSelectionItem extends StatefulWidget {
 }
 
 class _ToggleSelectionItemState extends State<ToggleSelectionItem> {
-  bool isToggled = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,20 +40,20 @@ class _ToggleSelectionItemState extends State<ToggleSelectionItem> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
                   widget.title,
-                  style: isToggled
+                  style: widget.isSelected ?? false
                       ? AppTextStyle.defaultBold()
-                      : AppTextStyle.defaultBold(color: AppColor.grey),
+                      : AppTextStyle.defaultBold(color: AppColors.grey),
                 ),
               ),
               const Spacer(),
               CupertinoSwitch(
-                value: isToggled,
-                activeColor: AppColor.primaryColor,
+                value: widget.isSelected ?? false,
+                activeColor: AppColors.primaryColor,
                 onChanged: widget.isDisable == true
                     ? null
                     : (value) {
                         setState(() {
-                          isToggled = value;
+                          widget.isSelected = value;
                         });
                       },
               ),
@@ -60,9 +61,9 @@ class _ToggleSelectionItemState extends State<ToggleSelectionItem> {
           ),
           Text(
             widget.description,
-            style: isToggled
+            style: widget.isSelected ?? false
                 ? AppTextStyle.defaultBold()
-                : AppTextStyle.defaultBold(color: AppColor.grey),
+                : AppTextStyle.defaultBold(color: AppColors.grey),
           )
         ],
       ),

@@ -23,14 +23,14 @@ class BasicCharacteristic extends StatelessWidget {
           children: [
             Expanded(
               child: EnvironmentalCharactersiticItem(
-                  icon: Icons.health_and_safety, type: "Nutrient"),
+                  icon: CupertinoIcons.drop_triangle, type: "Humidity"),
             ),
             SizedBox(
               width: 15,
             ),
             Expanded(
               child: EnvironmentalCharactersiticItem(
-                  icon: CupertinoIcons.tree, type: "Soil"),
+                  icon: CupertinoIcons.tree, type: "Soil moisture"),
             ),
           ],
         ),

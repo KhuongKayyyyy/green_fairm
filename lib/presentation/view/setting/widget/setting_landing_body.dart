@@ -16,13 +16,13 @@ class SettingLandingBody extends StatelessWidget {
         Text(
           "Let's start your journey with Green Fairm",
           textAlign: TextAlign.center,
-          style: AppTextStyle.largeBold(color: AppColor.secondaryColor),
+          style: AppTextStyle.largeBold(color: AppColors.secondaryColor),
         ),
         const SizedBox(height: 10),
         Text(
           textAlign: TextAlign.center,
           "Create an account to access Green Fairm , and start set up your farm and garden",
-          style: AppTextStyle.defaultBold(color: AppColor.secondaryColor),
+          style: AppTextStyle.defaultBold(color: AppColors.secondaryColor),
         ),
         const SizedBox(height: 70),
         PrimaryButton(
@@ -35,7 +35,6 @@ class SettingLandingBody extends StatelessWidget {
           text: "Set up later",
           onPressed: () {
             context.goNamed(Routes.home);
-            AppSetting.isUserNew = false;
           },
           isReverse: true,
         ),

@@ -24,8 +24,8 @@ class _NotificationPageState extends State<NotificationPage> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                AppColor.primaryColor,
-                AppColor.secondaryColor,
+                AppColors.primaryColor,
+                AppColors.secondaryColor,
               ],
             ),
             borderRadius: BorderRadius.circular(16),
@@ -49,7 +49,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       child: Text(
                         "Done",
                         style: AppTextStyle.defaultBold(
-                            color: AppColor.primaryColor),
+                            color: AppColors.primaryColor),
                       ),
                     ),
                   ),

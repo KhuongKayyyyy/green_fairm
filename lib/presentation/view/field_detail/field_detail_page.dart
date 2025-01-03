@@ -64,8 +64,8 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
             title: _showTitle
                 ? Text(
                     "${widget.field.type!} Field",
-                    style:
-                        AppTextStyle.mediumBold(color: AppColor.secondaryColor),
+                    style: AppTextStyle.mediumBold(
+                        color: AppColors.secondaryColor),
                   )
                 : null,
             flexibleSpace: FlexibleSpaceBar(

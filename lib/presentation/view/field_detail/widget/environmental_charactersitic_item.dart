@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class EnvironmentalCharactersiticItem extends StatelessWidget {
   final IconData icon;
@@ -29,7 +30,7 @@ class EnvironmentalCharactersiticItem extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: AppColor.secondaryColor,
+                  color: AppColors.secondaryColor,
                 ),
               ),
               const SizedBox(
@@ -41,13 +42,29 @@ class EnvironmentalCharactersiticItem extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(
-            height: 15,
+          CircularPercentIndicator(
+            radius: 70.0,
+            lineWidth: 15,
+            animation: true,
+            arcType: ArcType.FULL,
+            percent: 0.75,
+            arcBackgroundColor: Colors.grey.withOpacity(0.3),
+            startAngle: 270,
+            circularStrokeCap: CircularStrokeCap.round,
+            progressColor: Theme.of(context).primaryColor,
+            center: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Now',
+                  style: AppTextStyle.defaultBold(),
+                ),
+                const Text(
+                  '75 %',
+                ),
+              ],
+            ),
           ),
-          Text(
-            "Coming soon",
-            style: AppTextStyle.defaultBold(color: AppColor.primaryColor),
-          )
         ],
       ),
     );

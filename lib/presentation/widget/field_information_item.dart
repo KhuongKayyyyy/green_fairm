@@ -21,7 +21,7 @@ class FieldInformationItem extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: informationType == "Crop health"
             ? LinearGradient(
-                colors: [AppColor.primaryColor.withOpacity(0.7), Colors.white],
+                colors: [AppColors.primaryColor.withOpacity(0.7), Colors.white],
                 end: Alignment.bottomLeft,
                 begin: Alignment.topCenter,
               )
@@ -33,7 +33,7 @@ class FieldInformationItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(informationType,
-              style: AppTextStyle.defaultBold(color: AppColor.secondaryColor)),
+              style: AppTextStyle.defaultBold(color: AppColors.secondaryColor)),
           const SizedBox(height: 4),
           Row(
             children: [
@@ -43,7 +43,7 @@ class FieldInformationItem extends StatelessWidget {
                   softWrap: true,
                   style: AppTextStyle.defaultBold(
                       color: informationType == "Crop health"
-                          ? AppColor.primaryColor
+                          ? AppColors.primaryColor
                           : Colors.black),
                 ),
               ),

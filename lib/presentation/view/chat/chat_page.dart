@@ -56,8 +56,8 @@ class _ChatPageState extends State<ChatPage> {
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
-                          AppColor.primaryColor,
-                          AppColor.secondaryColor
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -90,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
       child: DashChat(
           messageOptions: MessageOptions(
             containerColor: Colors.grey[200]!,
-            textColor: AppColor.secondaryColor,
+            textColor: AppColors.secondaryColor,
             borderRadius: 10,
             messageMediaBuilder:
                 (currentMessage, previousMessage, nextMessage) {
@@ -122,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
             IconButton(
               icon: const Icon(
                 CupertinoIcons.photo,
-                color: AppColor.primaryColor,
+                color: AppColors.primaryColor,
               ),
               onPressed: _sendMediaMessage,
             ),

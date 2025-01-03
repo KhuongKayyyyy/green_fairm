@@ -141,17 +141,17 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         const SizedBox(height: 10),
         TextField(
           controller: controller,
-          cursorColor: AppColor.secondaryColor,
+          cursorColor: AppColors.secondaryColor,
           decoration: InputDecoration(
             hintText: hintText,
             prefixIcon: Icon(icon),
             prefixIconColor: WidgetStateColor.resolveWith((states) {
               if (states.contains(WidgetState.focused)) {
-                return AppColor.secondaryColor;
+                return AppColors.secondaryColor;
               }
               return Colors.grey;
             }),
-            fillColor: AppColor.primaryColor.withOpacity(0.2),
+            fillColor: AppColors.primaryColor.withOpacity(0.2),
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -160,7 +160,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                color: AppColor.secondaryColor,
+                color: AppColors.secondaryColor,
                 width: 2,
               ),
             ),
@@ -176,7 +176,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Reset Password",
-            style: AppTextStyle.largeBold(color: AppColor.secondaryColor)),
+            style: AppTextStyle.largeBold(color: AppColors.secondaryColor)),
         Text(
           "Enter your email to reset your password",
           style: AppTextStyle.defaultBold(color: Colors.grey),

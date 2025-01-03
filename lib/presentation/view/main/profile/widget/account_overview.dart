@@ -86,13 +86,13 @@ class _AccountOverviewState extends State<AccountOverview> {
                 onTap: () {
                   context.pushNamed(Routes.addNewField);
                 },
-                backgroundColor: AppColor.primaryColor.withOpacity(0.4),
+                backgroundColor: AppColors.primaryColor.withOpacity(0.4),
                 icon: const Icon(
                   CupertinoIcons.tree,
-                  color: AppColor.primaryColor,
+                  color: AppColors.primaryColor,
                   size: 30,
                 ),
-                settingType: "My Fields"),
+                settingType: "Set up more field"),
             const SizedBox(height: 20),
             AccountSettingSection(
                 onTap: () async {

@@ -18,14 +18,14 @@ class AiMiniChatbox extends StatelessWidget {
           width: 50,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [AppColor.primaryColor, AppColor.secondaryColor],
+              colors: [AppColors.primaryColor, AppColors.secondaryColor],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: AppColor.primaryColor.withOpacity(0.4),
+                color: AppColors.primaryColor.withOpacity(0.4),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),

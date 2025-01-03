@@ -83,8 +83,8 @@ class _OnboardPageState extends State<OnboardPage> {
               activeIndex: _currentIndex,
               count: _onBoardBackground.length,
               effect: const ExpandingDotsEffect(
-                dotColor: AppColor.white,
-                activeDotColor: AppColor.accentColor,
+                dotColor: AppColors.white,
+                activeDotColor: AppColors.accentColor,
               ),
             ),
             InkWell(
@@ -108,11 +108,11 @@ class _OnboardPageState extends State<OnboardPage> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColor.accentColor),
+                    color: AppColors.accentColor),
                 child: Text(
                   "Continue",
                   style:
-                      AppTextStyle.defaultBold(color: AppColor.secondaryColor),
+                      AppTextStyle.defaultBold(color: AppColors.secondaryColor),
                 ),
               ),
             )

@@ -59,6 +59,9 @@ dependencies:
   flutter_dotenv: ^5.2.1
   csc_picker: ^0.2.7
   country_state_city_pro: ^0.0.6
+  percent_indicator: ^4.2.4
+  fl_chart: ^0.69.2
+  wave: ^0.2.2
 
 
 dev_dependencies:

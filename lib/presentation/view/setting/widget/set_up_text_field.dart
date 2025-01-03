@@ -34,7 +34,7 @@ class _SetUpTextFieldState extends State<SetUpTextField> {
           child: TextField(
             onChanged: widget.onChanged,
             controller: widget.controller,
-            cursorColor: AppColor.secondaryColor,
+            cursorColor: AppColors.secondaryColor,
             style: AppTextStyle.defaultBold(),
             decoration: InputDecoration(
               border: InputBorder.none,

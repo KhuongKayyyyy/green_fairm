@@ -41,7 +41,7 @@ class SetUpSuccessfully extends StatelessWidget {
                         decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: AppColor.primaryColor,
+                                color: AppColors.primaryColor,
                                 blurRadius: 100,
                                 spreadRadius: 20,
                               )
@@ -51,14 +51,14 @@ class SetUpSuccessfully extends StatelessWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                AppColor.secondaryColor,
-                                AppColor.primaryColor,
+                                AppColors.secondaryColor,
+                                AppColors.primaryColor,
                               ],
                             )),
                         child: const Icon(
                           CupertinoIcons.check_mark,
                           size: 50,
-                          color: AppColor.white,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
@@ -66,11 +66,11 @@ class SetUpSuccessfully extends StatelessWidget {
                     Text('Success set up your farm',
                         textAlign: TextAlign.center,
                         style: AppTextStyle.largeBold(
-                            color: AppColor.secondaryColor)),
+                            color: AppColors.secondaryColor)),
                     const SizedBox(height: 10),
                     Text('Welcome to Green Fairm',
                         style: AppTextStyle.defaultBold(
-                            color: AppColor.secondaryColor)),
+                            color: AppColors.secondaryColor)),
                     const SizedBox(height: 20),
                     Container(
                       width: double.infinity,
@@ -86,7 +86,7 @@ class SetUpSuccessfully extends StatelessWidget {
                                 Text(
                                   field.name!,
                                   style: AppTextStyle.defaultBold(
-                                      color: AppColor.secondaryColor),
+                                      color: AppColors.secondaryColor),
                                 ),
                                 Text(
                                   "Field name",
@@ -111,7 +111,7 @@ class SetUpSuccessfully extends StatelessWidget {
                                   field.area!,
                                   textAlign: TextAlign.center,
                                   style: AppTextStyle.defaultBold(
-                                      color: AppColor.secondaryColor),
+                                      color: AppColors.secondaryColor),
                                 ),
                                 Text(
                                   "Field location",
