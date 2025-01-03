@@ -13,96 +13,77 @@ class FieldBigItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        context.pushNamed(Routes.fieldDetail, extra: field);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          children: [
-            Row(
+        onTap: () {
+          context.pushNamed(Routes.fieldDetail, extra: field);
+        },
+        child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: AppColors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ], borderRadius: BorderRadius.circular(10), color: Colors.white),
+            child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Hero(
-                    tag: "fieldImage${field.id}",
+                Hero(
+                  tag: "fieldImage${field.id}",
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
                     child: Image.network(
                       field.imageUrl!,
-                      width: 100,
-                      height: 100,
+                      width: double.infinity,
+                      height: 150,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        field.name!,
-                        style: AppTextStyle.mediumBold(
-                            color: AppColors.secondaryColor),
-                      ),
-                      Text(
-                        "${field.type!}field",
-                        style: AppTextStyle.defaultBold(
-                            color: const Color.fromARGB(255, 95, 55, 55)),
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          field.name!,
+                          style: AppTextStyle.defaultBold(),
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on_outlined,
+                              color: AppColors.grey,
+                              size: 15,
+                            ),
+                            Text(
+                              field.area!,
+                              style: AppTextStyle.defaultBold(
+                                  color: AppColors.grey),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    child: Text(
-                      field.status!,
-                      style: AppTextStyle.defaultBold(
-                        color: field.status!.toLowerCase() == 'good'
-                            ? AppColors.primaryColor
-                            : AppColors.secondaryColor,
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.lightbg.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ),
-                  ),
+                      child: Text(
+                        field.status ?? 'Good',
+                        style: AppTextStyle.defaultBold(
+                            color: AppColors.primaryColor),
+                      ),
+                    )
+                  ],
                 )
               ],
-            ),
-            const SizedBox(height: 10),
-            const Row(
-              children: [
-                Icon(
-                  Icons.location_on,
-                  color: AppColors.primaryColor,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  "Thốt Nốt, Cần Thơ",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+            )));
   }
 }

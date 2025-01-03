@@ -1,11 +1,15 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
-import 'package:green_fairm/presentation/view/notification/notification_page.dart';
+import 'package:green_fairm/data/model/weather_model.dart';
+import 'package:green_fairm/presentation/view/main/home/widget/check_our_ai_recommendation.dart';
 
 class WeatherReport extends StatefulWidget {
-  const WeatherReport({super.key});
+  final WeatherModel weather;
+  const WeatherReport({super.key, required this.weather});
 
   @override
   State<WeatherReport> createState() => _WeatherReportState();
@@ -26,6 +30,9 @@ class _WeatherReportState extends State<WeatherReport> {
           ),
           const SizedBox(height: 20),
           _buildWeatherInfo(),
+          const SizedBox(height: 20),
+          CheckOurAiRecommendation(),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -45,15 +52,15 @@ class _WeatherReportState extends State<WeatherReport> {
           ),
         ],
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(
+          const Icon(
             CupertinoIcons.map_pin_ellipse,
             color: AppColors.secondaryColor,
           ),
           Text(
-            'Thốt Nốt, Cần Thơ',
-            style: TextStyle(
+            widget.weather.cityName,
+            style: const TextStyle(
                 fontWeight: FontWeight.bold, color: AppColors.secondaryColor),
           )
         ],
@@ -78,9 +85,9 @@ class _WeatherReportState extends State<WeatherReport> {
             AppImage.hot_sun,
             scale: 8,
           ),
-          const Text(
-            '32°C',
-            style: TextStyle(
+          Text(
+            '${widget.weather.temperature.toStringAsFixed(0)}°C',
+            style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: AppColors.secondaryColor),
@@ -105,19 +112,19 @@ class _WeatherReportState extends State<WeatherReport> {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: Colors.white),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             children: [
               Text(
-                '77 %',
-                style: TextStyle(
+                '${widget.weather.humidity}%',
+                style: const TextStyle(
                   color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 'Humidity',
                 style: TextStyle(
                   color: AppColors.grey,
@@ -129,14 +136,14 @@ class _WeatherReportState extends State<WeatherReport> {
           Column(
             children: [
               Text(
-                '0.01 in',
+                widget.weather.visibility,
                 style: TextStyle(
                   color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'Precipitation',
+                'Visibility',
                 style: TextStyle(
                   color: AppColors.grey,
                   fontWeight: FontWeight.bold,
@@ -147,7 +154,7 @@ class _WeatherReportState extends State<WeatherReport> {
           Column(
             children: [
               Text(
-                '6 mph/s',
+                '${widget.weather.windSpeed} m/s',
                 style: TextStyle(
                   color: AppColors.secondaryColor,
                   fontWeight: FontWeight.bold,

@@ -8,6 +8,9 @@ class Field {
   String? plantingDate;
   String? cropHealth;
   String? haverstTime;
+  bool? isAutoWatering;
+  bool? isWeatherService;
+
   Field({
     this.id,
     this.name,
@@ -19,4 +22,32 @@ class Field {
     this.cropHealth,
     this.haverstTime,
   });
+
+  factory Field.fromJson(Map<String, dynamic> json) {
+    return Field(
+      id: json['_id'],
+      name: json['name'],
+      // status: json['status'],
+      // type: json['type'],
+      area: json['area'],
+      imageUrl: "https://img-cdn.krishijagran.com/99864/krishi-dss.jpg",
+      // plantingDate: json['plantingDate'],
+      // cropHealth: json['cropHealth'],
+      // haverstTime: json['haverstTime'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'status': status,
+      'type': type,
+      'area': area,
+      'imageUrl': imageUrl,
+      'plantingDate': plantingDate,
+      'cropHealth': cropHealth,
+      'haverstTime': haverstTime,
+    };
+  }
 }

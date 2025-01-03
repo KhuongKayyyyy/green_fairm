@@ -20,6 +20,7 @@ import 'package:green_fairm/presentation/view/main/profile/profile_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/update_password_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/change_pass_otp_verification.dart';
 import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
+import 'package:green_fairm/presentation/view/mqtt.dart';
 import 'package:green_fairm/presentation/view/setting/set_up_successfully.dart';
 import 'package:green_fairm/presentation/view/setting/setting_landing_page.dart';
 import 'package:green_fairm/presentation/view/setting/set_up_field.dart';

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/data/model/weather_model.dart';
 import 'package:green_fairm/presentation/view/weather_detail/weather_detail_page.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class MonitoringWeatherWidget extends StatefulWidget {
-  const MonitoringWeatherWidget({super.key});
+  final WeatherModel weather;
+  const MonitoringWeatherWidget({super.key, required this.weather});
 
   @override
   State<MonitoringWeatherWidget> createState() =>
@@ -13,6 +17,42 @@ class MonitoringWeatherWidget extends StatefulWidget {
 }
 
 class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
+  Gemini gemini = Gemini.instance;
+  String recommendation =
+      "Water your plants in the morning or evening when the temperature is cooler to minimize evaporation.";
+  StringBuffer fullRecommendation = StringBuffer();
+  bool isLoading = true; // Flag to track loading state
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRecommendation();
+  }
+
+  void _fetchRecommendation() {
+    setState(() {
+      isLoading = true; // Start loading
+    });
+
+    gemini.promptStream(
+      parts: [
+        Part.text(
+          "Provide a concise 15 words plant care recommendation based on this weather data: ${widget.weather}",
+        ),
+      ],
+    ).listen((value) {
+      setState(() {
+        fullRecommendation.write(value?.output ?? "");
+        recommendation = fullRecommendation.toString();
+      });
+    }).onDone(() {
+      setState(() {
+        isLoading = false; // Stop loading when done
+      });
+      print("Final Recommendation: $recommendation");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,7 +102,7 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
             scale: 14,
           ),
           Text(
-            '32°C',
+            "${widget.weather.temperature.round()}°C",
             style: AppTextStyle.defaultBold(),
           ),
           const Text(
@@ -103,10 +143,19 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
               style: AppTextStyle.defaultBold(),
             ),
             const SizedBox(height: 10),
-            Text(
-              "Water your plants in the morning or evening when the temperature is cooler to minimize evaporation.",
-              style: AppTextStyle.defaultBold(color: AppColors.grey),
-            ),
+            isLoading
+                ? Skeletonizer(
+                    enabled: true,
+                    enableSwitchAnimation: true,
+                    child: Text(
+                      recommendation,
+                      style: AppTextStyle.defaultBold(color: AppColors.grey),
+                    ),
+                  )
+                : Text(
+                    recommendation,
+                    style: AppTextStyle.defaultBold(color: AppColors.grey),
+                  ),
           ],
         ),
       ),
@@ -116,7 +165,6 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
   Widget _buildWeatherDetail() {
     return InkWell(
       onTap: () {
-        // context.pushNamed(Routes.weatherDetail);
         _showWeatherDetail(context);
       },
       child: Container(
@@ -144,11 +192,6 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
     showModalBottomSheet(
         isScrollControlled: true,
         useRootNavigator: true,
-        // shape: const RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.vertical(
-        //     top: Radius.circular(16),
-        //   ),
-        // ),
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {

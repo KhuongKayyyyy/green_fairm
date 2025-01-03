@@ -63,7 +63,7 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
             ),
             title: _showTitle
                 ? Text(
-                    "${widget.field.type!} Field",
+                    "${widget.field.name}",
                     style: AppTextStyle.mediumBold(
                         color: AppColors.secondaryColor),
                   )
@@ -86,7 +86,9 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
                 [
                   FieldOverview(field: widget.field),
                   const SizedBox(height: 15),
-                  const FieldMonitoring(),
+                  FieldMonitoring(
+                    field: widget.field,
+                  ),
                 ],
               ),
             ),

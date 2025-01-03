@@ -71,7 +71,7 @@ class _FieldOverviewState extends State<FieldOverview> {
     return Row(
       children: [
         Text(
-          "${widget.field.type} field",
+          "${widget.field.name} ",
           style: AppTextStyle.mediumBold(color: AppColors.secondaryColor),
         ),
         const SizedBox(width: 10),

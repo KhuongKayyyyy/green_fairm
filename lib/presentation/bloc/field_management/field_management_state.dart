@@ -23,3 +23,42 @@ final class FieldManagementCreateError extends FieldManagementState {
   @override
   List<Object> get props => [message];
 }
+
+final class FieldManagementGetAllSuccess extends FieldManagementState {
+  final List<Field> fields;
+  const FieldManagementGetAllSuccess({required this.fields});
+}
+
+final class FieldManagementGetAllError extends FieldManagementState {
+  final String message;
+  const FieldManagementGetAllError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class FieldManagementGetByIdSuccess extends FieldManagementState {
+  final Field field;
+  const FieldManagementGetByIdSuccess({required this.field});
+}
+
+final class FieldManagementGetByIdError extends FieldManagementState {
+  final String message;
+  const FieldManagementGetByIdError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class FieldManagementGetByUserIdSuccess extends FieldManagementState {
+  final List<Field> fields;
+  const FieldManagementGetByUserIdSuccess({required this.fields});
+}
+
+final class FieldManagementGetByUserIdError extends FieldManagementState {
+  final String message;
+  const FieldManagementGetByUserIdError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

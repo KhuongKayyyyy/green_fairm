@@ -13,6 +13,7 @@ class FieldManagementBloc
   final FieldRepository _fieldRepository = FieldRepository();
   FieldManagementBloc() : super(FieldManagementInitial()) {
     on<FieldManagementEventCreate>(_onCreate);
+    on<FieldManagementGetByUserId>(_onGetByUserId);
   }
 
   Future<void> _onCreate(
@@ -31,6 +32,24 @@ class FieldManagementBloc
       emit(FieldManagementCreateSuccess(field: event.field));
     } catch (e) {
       emit(const FieldManagementCreateError(
+          message: 'An unknown error occurred'));
+    }
+  }
+
+  Future<void> _onGetByUserId(
+    FieldManagementGetByUserId event,
+    Emitter<FieldManagementState> emit,
+  ) async {
+    emit(FieldManagementLoading());
+    try {
+      final userId =
+          await const FlutterSecureStorage().read(key: AppSetting.userUid) ??
+              '';
+      print('User ID: $userId');
+      final fields = await _fieldRepository.getFieldsByUserId(userId);
+      emit(FieldManagementGetByUserIdSuccess(fields: fields));
+    } catch (e) {
+      emit(const FieldManagementGetByUserIdError(
           message: 'An unknown error occurred'));
     }
   }

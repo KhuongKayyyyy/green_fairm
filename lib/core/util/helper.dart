@@ -1,4 +1,4 @@
-class StringHelper {
+class Helper {
   static String getFormattedDate() {
     final now = DateTime.now();
     final day = now.day;
@@ -47,5 +47,20 @@ class StringHelper {
       'Dec'
     ];
     return shortMonthNames[month - 1];
+  }
+
+  static String scaleToPercentage(int value, int min, int max) {
+    if (value < min || value > max) {
+      throw ArgumentError('Value must be within the range [$min, $max]');
+    }
+    final percentage = (value - min) / (max - min) * 100;
+    return '${percentage.toStringAsFixed(2)}%';
+  }
+
+  static double scaleToPercentageNum(int value, int min, int max) {
+    if (value < min || value > max) {
+      throw ArgumentError('Value must be within the range [$min, $max]');
+    }
+    return 100 - ((value - min) / (max - min) * 100);
   }
 }

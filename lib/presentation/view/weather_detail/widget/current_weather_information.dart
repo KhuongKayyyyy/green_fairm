@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/util/string_helper.dart';
+import 'package:green_fairm/core/util/helper.dart';
 
 class CurrentWeatherInformation extends StatelessWidget {
   const CurrentWeatherInformation({super.key});
@@ -36,7 +36,7 @@ class CurrentWeatherInformation extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Today, ${StringHelper.getFormattedDate()}",
+                    "Today, ${Helper.getFormattedDate()}",
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

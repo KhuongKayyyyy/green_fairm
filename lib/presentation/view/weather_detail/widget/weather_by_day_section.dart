@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/util/string_helper.dart';
+import 'package:green_fairm/core/util/helper.dart';
 
 class WeatherByDaySection extends StatelessWidget {
   const WeatherByDaySection({super.key});
@@ -33,8 +33,7 @@ class WeatherByDaySection extends StatelessWidget {
                 children: List.generate(
                   7,
                   (i) => _buildWeatherByDayItem(
-                    day: StringHelper.getFormattedDateWithShortMonth(
-                        offsetDays: i),
+                    day: Helper.getFormattedDateWithShortMonth(offsetDays: i),
                     icon: AppImage.windy,
                     temperature: "${29 + i} °C",
                   ),

@@ -1,13 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/util/helper.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class EnvironmentalCharactersiticItem extends StatelessWidget {
+class EnvironmentalCharactersiticItem extends StatefulWidget {
   final IconData icon;
   final String type;
-  const EnvironmentalCharactersiticItem(
-      {super.key, required this.icon, required this.type});
+  String value;
+  final bool isAnimated;
+  EnvironmentalCharactersiticItem({
+    super.key,
+    required this.icon,
+    required this.type,
+    required this.value,
+    this.isAnimated = false,
+  });
+
+  @override
+  State<EnvironmentalCharactersiticItem> createState() =>
+      _EnvironmentalCharactersiticItemState();
+}
+
+class _EnvironmentalCharactersiticItemState
+    extends State<EnvironmentalCharactersiticItem> {
+  double valueNum = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateValue();
+  }
+
+  @override
+  void didUpdateWidget(covariant EnvironmentalCharactersiticItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _updateValue();
+    }
+  }
+
+  void _updateValue() {
+    setState(() {
+      valueNum = double.tryParse(widget.value) ?? 0.0;
+      if (valueNum > 100) {
+        valueNum = Helper.scaleToPercentageNum(valueNum.toInt(), 0, 4095);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +69,7 @@ class EnvironmentalCharactersiticItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
-                  icon,
+                  widget.icon,
                   color: AppColors.secondaryColor,
                 ),
               ),
@@ -37,17 +77,17 @@ class EnvironmentalCharactersiticItem extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                type,
+                widget.type,
                 style: AppTextStyle.defaultBold(),
-              )
+              ),
             ],
           ),
           CircularPercentIndicator(
             radius: 70.0,
             lineWidth: 15,
-            animation: true,
+            animation: widget.isAnimated,
             arcType: ArcType.FULL,
-            percent: 0.75,
+            percent: valueNum / 100,
             arcBackgroundColor: Colors.grey.withOpacity(0.3),
             startAngle: 270,
             circularStrokeCap: CircularStrokeCap.round,
@@ -59,8 +99,8 @@ class EnvironmentalCharactersiticItem extends StatelessWidget {
                   'Now',
                   style: AppTextStyle.defaultBold(),
                 ),
-                const Text(
-                  '75 %',
+                Text(
+                  "${valueNum.toStringAsFixed(0)}%",
                 ),
               ],
             ),

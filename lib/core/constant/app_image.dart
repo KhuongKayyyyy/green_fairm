@@ -32,6 +32,9 @@ class AppImage {
   static const String moon_back = 'assets/images/weather/moon_back.webp';
 
   // placeholder
-  static const String placeholder =
-      'https://i0.wp.com/thefoodmanager.com/wp-content/uploads/2021/04/placeholder-600x400-1.png?ssl=1';
+  static const String placeholder = 'assets/images/placeholder.png';
+
+  // background
+  // ignore: constant_identifier_names
+  static const String field_background = 'assets/images/field_background.png';
 }

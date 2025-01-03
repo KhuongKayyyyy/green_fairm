@@ -2,6 +2,7 @@ import 'package:green_fairm/data/model/app_user.dart';
 import 'package:green_fairm/data/model/farm_notification.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/data/model/water_history.dart';
+import 'package:green_fairm/data/model/weather_model.dart';
 
 class FakeData {
   static AppUser user = AppUser(
@@ -164,4 +165,14 @@ class FakeData {
       status: "Done",
     ),
   ];
+
+  static WeatherModel fakeWeather = WeatherModel(
+    cityName: "Ho Chi Minh",
+    temperature: 30,
+    description: "Cloudy",
+    humidity: "80",
+    windSpeed: 5,
+    weatherIcon: "01d",
+    visibility: "10000",
+  );
 }

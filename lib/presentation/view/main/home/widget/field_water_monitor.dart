@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_pie_chart.dart';
 
 class FieldWaterMonitor extends StatefulWidget {

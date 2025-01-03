@@ -145,7 +145,8 @@ class UserRepository {
                 value: responseData['metadata']['_id']);
             if (kDebugMode) {
               print('User ID saved to secure storage successfully');
-              print(const FlutterSecureStorage().read(key: AppSetting.userUid));
+              print(await const FlutterSecureStorage()
+                  .read(key: AppSetting.userUid));
             }
           } else {
             throw Exception('Failed to save user ID to secure storage');

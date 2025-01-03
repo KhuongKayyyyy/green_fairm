@@ -27,3 +27,11 @@ final class FieldManagementEventCreate extends FieldManagementEvent {
   @override
   List<Object> get props => [field];
 }
+
+final class FieldManagementGetByUserId extends FieldManagementEvent {
+  final String userId;
+  const FieldManagementGetByUserId({required this.userId});
+
+  @override
+  List<Object> get props => [userId];
+}
