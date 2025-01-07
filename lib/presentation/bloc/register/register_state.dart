@@ -31,9 +31,9 @@ sealed class RegisterState extends Equatable {
     bool? isFailure,
   }) {
     return this is RegisterInitial
-        ? RegisterInitial()
+        ? const RegisterInitial()
         : this is RegisterLoading
-            ? RegisterLoading()
+            ? const RegisterLoading()
             : this is RegisterFailure
                 ? RegisterFailure(
                     errorMessage: (this as RegisterFailure).errorMessage)

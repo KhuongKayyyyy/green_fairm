@@ -74,4 +74,67 @@ class FieldRepository {
       rethrow;
     }
   }
+
+  Future<void> updateField(Field field) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.patchUrl(Uri.parse('${API.updateFieldById}${field.id}'));
+      request.headers.set('content-type', 'application/json');
+
+      // if (kDebugMode) {
+      //   print('Updating field with id: ${field.id}');
+      // }
+      // if (kDebugMode) {
+      //   print(request.uri);
+      // }
+      final body = jsonEncode({
+        "name": field.name,
+        "area": field.area,
+      });
+
+      request.write(body);
+
+      var response = await request.close();
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to update farm to server. Response code: ${response.statusCode}');
+      } else {
+        if (kDebugMode) {
+          print('Farm updated to server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating farm to server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> deleteField(Field field) async {
+    try {
+      var client = HttpClient();
+      var request = await client
+          .deleteUrl(Uri.parse('${API.deleteFieldById}${field.id}'));
+      request.headers.set('content-type', 'application/json');
+
+      var response = await request.close();
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to delete farm from server. Response code: ${response.statusCode}');
+      } else {
+        if (kDebugMode) {
+          print('Farm deleted from server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting farm from server: $e');
+      }
+      rethrow;
+    }
+  }
 }

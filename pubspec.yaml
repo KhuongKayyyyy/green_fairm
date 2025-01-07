@@ -63,6 +63,7 @@ dependencies:
   fl_chart: ^0.69.2
   wave: ^0.2.2
   mqtt_client: ^10.5.1
+  syncfusion_flutter_charts: ^20.3.60
 
 
 dev_dependencies:

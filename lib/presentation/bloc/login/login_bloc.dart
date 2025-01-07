@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/validator/validator.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
 
@@ -59,7 +58,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (e is FirebaseAuthException) {
         errorMessage = e.message ?? 'An unknown error occurred';
       }
-      print("Error signing in with email and password: $errorMessage");
+      if (kDebugMode) {
+        print("Error signing in with email and password: $errorMessage");
+      }
       emit(LoginFailure(errorMessage));
     }
   }
@@ -73,7 +74,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // emit(state.cloneWith(isSuccess: true));
     } catch (e) {
       // emit(state.cloneWith(isFailure: true));
-      print("Error signing in with Google: $e");
+      if (kDebugMode) {
+        print("Error signing in with Google: $e");
+      }
       if (e == "Null check operator used on a null value") {
         emit(const LoginFailure("Sign in with Google failed"));
       }

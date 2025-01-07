@@ -63,4 +63,16 @@ class Helper {
     }
     return 100 - ((value - min) / (max - min) * 100);
   }
+
+  static String getState(String location) {
+    return location.split(", ")[1];
+  }
+
+  static String getCity(String location) {
+    return location.split(", ")[0];
+  }
+
+  static String getCountry(String location) {
+    return location.split(", ")[2];
+  }
 }

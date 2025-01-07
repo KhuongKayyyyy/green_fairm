@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
@@ -74,34 +73,34 @@ class _NotificationByDaySectionState extends State<NotificationByDaySection> {
     );
   }
 
-  void _showDelelteConfirmationDialog(BuildContext context, int index) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: const Text("Delete Notification"),
-          content:
-              const Text("Are you sure you want to delete this notification?"),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text("Cancel"),
-            ),
-            CupertinoDialogAction(
-              onPressed: () {
-                setState(() {
-                  FakeData.fakeNotifications
-                      .removeAt(index); // Delete the notification
-                });
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text("Delete"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showDelelteConfirmationDialog(BuildContext context, int index) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return CupertinoAlertDialog(
+  //         title: const Text("Delete Notification"),
+  //         content:
+  //             const Text("Are you sure you want to delete this notification?"),
+  //         actions: [
+  //           CupertinoDialogAction(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Close the dialog
+  //             },
+  //             child: const Text("Cancel"),
+  //           ),
+  //           CupertinoDialogAction(
+  //             onPressed: () {
+  //               setState(() {
+  //                 FakeData.fakeNotifications
+  //                     .removeAt(index); // Delete the notification
+  //               });
+  //               Navigator.of(context).pop(); // Close the dialog
+  //             },
+  //             child: const Text("Delete"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

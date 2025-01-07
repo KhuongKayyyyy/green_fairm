@@ -17,7 +17,7 @@ class _AppSearchBarState extends State<AppSearchBar> {
           border: Border.all(color: Colors.grey.shade300), // Outer border
           borderRadius: BorderRadius.circular(10), // Border radius
         ),
-        child: TextField(
+        child: const TextField(
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.search, // Leading search icon

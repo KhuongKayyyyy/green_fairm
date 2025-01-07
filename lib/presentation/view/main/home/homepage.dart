@@ -7,10 +7,8 @@ import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
-import 'package:green_fairm/data/res/weather_reposity.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
-import 'package:green_fairm/presentation/view/main/home/widget/check_our_ai_recommendation.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_monitor.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/my_fields_section.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/sensor_monitor.dart';
@@ -32,7 +30,6 @@ class _HomepageState extends State<Homepage> {
   var userId = "";
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initializeUserId();
     _fieldManagementBloc.add(FieldManagementGetByUserId(userId: userId));
@@ -79,9 +76,9 @@ class _HomepageState extends State<Homepage> {
           children: [
             _buildWeatherReport(),
             _buildMyFieldsSection(),
-            FieldWaterMonitor(),
-            SensorMonitor(),
-            SizedBox(height: 200),
+            const FieldWaterMonitor(),
+            const SensorMonitor(),
+            const SizedBox(height: 200),
           ],
         ),
       ),
@@ -160,11 +157,6 @@ class _HomepageState extends State<Homepage> {
     showModalBottomSheet(
         isScrollControlled: true,
         useRootNavigator: true,
-        // shape: const RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.vertical(
-        //     top: Radius.circular(16),
-        //   ),
-        // ),
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {

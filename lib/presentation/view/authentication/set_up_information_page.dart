@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
@@ -175,7 +176,9 @@ class _SetupInformationPageState extends State<SetupInformationPage> {
               }
             } catch (e) {
               EasyLoading.showError('Failed to update information: $e');
-              print('Failed to update information: $e');
+              if (kDebugMode) {
+                print('Failed to update information: $e');
+              }
             }
           },
         )

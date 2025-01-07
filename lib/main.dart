@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; // Import Flutter Bloc package
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,10 +24,14 @@ void main() async {
   User user = FirebaseAuth.instance.currentUser!;
   if (user.metadata.creationTime == user.metadata.lastSignInTime) {
     // The user is new
-    print('New user');
+    if (kDebugMode) {
+      print('New user');
+    }
   } else {
     // The user is not new
-    print('Existing user');
+    if (kDebugMode) {
+      print('Existing user');
+    }
   }
 }
 

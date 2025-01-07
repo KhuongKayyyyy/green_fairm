@@ -22,7 +22,6 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstNameController = TextEditingController(text: getFirstName());
     lastNameController = TextEditingController(text: getLastName());
@@ -116,6 +115,7 @@ class _AccountDetailInformationState extends State<AccountDetailInformation> {
                   } catch (error) {
                     EasyLoading.dismiss();
                     showCupertinoDialog(
+                      // ignore: use_build_context_synchronously
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
                         title: const Text("Error"),

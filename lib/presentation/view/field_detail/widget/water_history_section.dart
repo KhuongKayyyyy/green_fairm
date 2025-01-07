@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
-import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/presentation/view/field_detail/water_history_page.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_history_item.dart';

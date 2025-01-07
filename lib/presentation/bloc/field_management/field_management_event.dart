@@ -35,3 +35,21 @@ final class FieldManagementGetByUserId extends FieldManagementEvent {
   @override
   List<Object> get props => [userId];
 }
+
+final class FieldManagementEventUpdate extends FieldManagementEvent {
+  final Field field;
+
+  const FieldManagementEventUpdate({required this.field});
+
+  @override
+  List<Object> get props => [field];
+}
+
+final class FieldManagementEventDelete extends FieldManagementEvent {
+  final Field field;
+
+  const FieldManagementEventDelete({required this.field});
+
+  @override
+  List<Object> get props => [field];
+}

@@ -12,7 +12,6 @@ class WaterUsage extends StatefulWidget {
 }
 
 class _WaterUsageState extends State<WaterUsage> {
-  String _selectedValue = "Today";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,9 +56,7 @@ class _WaterUsageState extends State<WaterUsage> {
                   ],
                   initialSelection: "Today",
                   onSelected: (String? newValue) {
-                    setState(() {
-                      _selectedValue = newValue!;
-                    });
+                    setState(() {});
                   },
                 ),
             ],

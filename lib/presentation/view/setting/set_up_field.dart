@@ -42,7 +42,6 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _fieldManagementBloc = BlocProvider.of<FieldManagementBloc>(context);
   }
@@ -186,24 +185,24 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
               title: "Weather APIs",
               description:
                   "Integrate weather APIs to get the most accurate weather forecast for your farm"),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ToggleSelectionItem(
               title: "Soil moisture",
               description:
                   "Soil sensors and analysis tools offer precise details on soil health factors like moisture, nutrients, pH and compaction."),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ToggleSelectionItem(
               title: "Satellite imagery services (Soon)",
               isDisable: true,
               description:
                   "Satellite and drone AI help the app monitor health and spo early issues like diseases or pest."),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ToggleSelectionItem(
               title: "Predictive Analytics for Yield Optimization (Soon)",
               isDisable: true,
               description:
                   "Satellite and drone AI help the app monitor health and spo early issues like diseases or pest."),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ToggleSelectionItem(
               title: "Pest Management and Control (Soon)",
               isDisable: true,

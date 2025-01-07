@@ -12,8 +12,6 @@ class SensorMonitor extends StatefulWidget {
 }
 
 class _SensorMonitorState extends State<SensorMonitor> {
-  static const _backgroundColor = Color(0xFFF15BB5);
-
   final _onlineColor = [
     AppColors.primaryColor,
     AppColors.secondaryColor.withOpacity(0.5),

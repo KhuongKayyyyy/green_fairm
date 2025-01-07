@@ -62,3 +62,29 @@ final class FieldManagementGetByUserIdError extends FieldManagementState {
   @override
   List<Object> get props => [message];
 }
+
+final class FieldManagementUpdateSuccess extends FieldManagementState {
+  final Field field;
+  const FieldManagementUpdateSuccess({required this.field});
+}
+
+final class FieldManagementUpdateError extends FieldManagementState {
+  final String message;
+  const FieldManagementUpdateError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class FieldManagementDeleteSuccess extends FieldManagementState {
+  final Field field;
+  const FieldManagementDeleteSuccess({required this.field});
+}
+
+final class FieldManagementDeleteError extends FieldManagementState {
+  final String message;
+  const FieldManagementDeleteError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

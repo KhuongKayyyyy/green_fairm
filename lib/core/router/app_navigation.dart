@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/model/environmental_data.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
 import 'package:green_fairm/presentation/view/authentication/reset_password_page.dart';
@@ -11,6 +12,8 @@ import 'package:green_fairm/presentation/view/authentication/register_page.dart'
 import 'package:green_fairm/presentation/view/authentication/set_up_information_page.dart';
 import 'package:green_fairm/presentation/view/authentication/sign_in_page.dart';
 import 'package:green_fairm/presentation/view/chat/chat_page.dart';
+import 'package:green_fairm/presentation/view/field_analysis/category_detail_analysis.dart';
+import 'package:green_fairm/presentation/view/field_analysis/field_analysis_page.dart';
 import 'package:green_fairm/presentation/view/field_detail/field_detail_page.dart';
 import 'package:green_fairm/presentation/view/main/field/field_page.dart';
 import 'package:green_fairm/presentation/view/main/home/homepage.dart';
@@ -20,7 +23,6 @@ import 'package:green_fairm/presentation/view/main/profile/profile_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/update_password_page.dart';
 import 'package:green_fairm/presentation/view/main/profile/change_pass_otp_verification.dart';
 import 'package:green_fairm/presentation/view/main_wrapper/main_wrapper.dart';
-import 'package:green_fairm/presentation/view/mqtt.dart';
 import 'package:green_fairm/presentation/view/setting/set_up_successfully.dart';
 import 'package:green_fairm/presentation/view/setting/setting_landing_page.dart';
 import 'package:green_fairm/presentation/view/setting/set_up_field.dart';
@@ -221,7 +223,29 @@ class AppNavigation {
         GoRoute(
             path: Routes.weatherDetail,
             name: Routes.weatherDetail,
-            builder: (context, state) => const WeatherDetailPage())
+            builder: (context, state) => const WeatherDetailPage()),
+        GoRoute(
+          path: Routes.fieldAnalysis,
+          name: Routes.fieldAnalysis,
+          builder: (context, state) {
+            final extra = state.extra;
+            final field = extra as Field;
+            return FieldAnalysisPage(field: field);
+          },
+        ),
+        GoRoute(
+          path: Routes.categoryDetailAnalysis,
+          name: Routes.categoryDetailAnalysis,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+
+            final category = extra?['category'] as String? ?? '';
+
+            return CategoryDetailAnalysis(
+              category: category,
+            );
+          },
+        ),
       ],
     );
   }

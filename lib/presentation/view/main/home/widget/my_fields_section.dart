@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/widget/field_small_item.dart';
 
@@ -12,6 +11,8 @@ class MyFieldsSection extends StatefulWidget {
 }
 
 class _MyFieldsSectionState extends State<MyFieldsSection> {
+  var controller = PageController(viewportFraction: 0.45);
+
   @override
   void initState() {
     super.initState();
@@ -21,8 +22,9 @@ class _MyFieldsSectionState extends State<MyFieldsSection> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.25,
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
+      child: PageView.builder(
+        padEnds: false,
+        controller: controller,
         scrollDirection: Axis.horizontal,
         itemCount: widget.fields.length,
         itemBuilder: (context, index) {

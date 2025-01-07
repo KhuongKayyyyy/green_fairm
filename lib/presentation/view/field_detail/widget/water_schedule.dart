@@ -95,6 +95,6 @@ class _WaterScheduleState extends State<WaterSchedule> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         context: context,
-        builder: (context) => WaterStatistic());
+        builder: (context) => const WaterStatistic());
   }
 }

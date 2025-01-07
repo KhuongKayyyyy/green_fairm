@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_image.dart';
@@ -25,7 +26,9 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   @override
   void initState() {
     super.initState();
-    print(user?.email);
+    if (kDebugMode) {
+      print(user?.email);
+    }
   }
 
   @override

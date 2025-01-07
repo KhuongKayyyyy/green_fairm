@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
@@ -49,7 +50,9 @@ class _MonitoringWeatherWidgetState extends State<MonitoringWeatherWidget> {
       setState(() {
         isLoading = false; // Stop loading when done
       });
-      print("Final Recommendation: $recommendation");
+      if (kDebugMode) {
+        print("Final Recommendation: $recommendation");
+      }
     });
   }
 

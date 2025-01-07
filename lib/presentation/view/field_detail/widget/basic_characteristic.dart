@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/data/model/realtime_sensor_data.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/environmental_charactersitic_item.dart';

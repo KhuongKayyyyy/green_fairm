@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
@@ -55,19 +56,27 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
     client!.connectionMessage = connMessage;
 
     try {
-      print('Connecting to MQTT...');
+      if (kDebugMode) {
+        print('Connecting to MQTT...');
+      }
       await client!.connect();
     } catch (e) {
-      print('Error connecting to MQTT: $e');
+      if (kDebugMode) {
+        print('Error connecting to MQTT: $e');
+      }
       client!.disconnect();
       return;
     }
 
     if (client!.connectionStatus!.state == MqttConnectionState.connected) {
-      print('MQTT Connected');
+      if (kDebugMode) {
+        print('MQTT Connected');
+      }
       _subscribeToTopic();
     } else {
-      print('Failed to connect, status: ${client!.connectionStatus}');
+      if (kDebugMode) {
+        print('Failed to connect, status: ${client!.connectionStatus}');
+      }
     }
   }
 
@@ -80,7 +89,9 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       final payload =
           MqttPublishPayload.bytesToStringAsString(message.payload.message);
 
-      print('Received message: $payload');
+      if (kDebugMode) {
+        print('Received message: $payload');
+      }
       try {
         final json = jsonDecode(payload);
         final newSensorData = RealtimeSensorData.fromJson(json);
@@ -89,9 +100,13 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
           sensorData = newSensorData;
         });
 
-        print('Updated sensor data: $sensorData');
+        if (kDebugMode) {
+          print('Updated sensor data: $sensorData');
+        }
       } catch (e) {
-        print('Error parsing MQTT message: $e');
+        if (kDebugMode) {
+          print('Error parsing MQTT message: $e');
+        }
       }
     });
   }
@@ -181,9 +196,19 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
                   weather: weatherState.weather,
                 );
               } else if (weatherState is WeatherError) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text('Failed to load weather'),
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.lightbg,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      "Error loading weather data",
+                      style: AppTextStyle.defaultBold(color: Colors.white),
+                    ),
+                  ),
                 );
               }
               return Skeletonizer(

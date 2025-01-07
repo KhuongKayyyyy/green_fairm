@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
+// ignore: must_be_immutable
 class EnvironmentalCharactersiticQualityItem extends StatelessWidget {
   String type;
   String value;

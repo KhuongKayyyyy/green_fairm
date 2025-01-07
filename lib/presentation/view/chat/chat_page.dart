@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
@@ -28,7 +28,6 @@ class _ChatPageState extends State<ChatPage> {
           "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Google_Gemini_logo.svg/1200px-Google_Gemini_logo.svg.png");
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     chatUser = ChatUser(
       id: user.uid,
@@ -150,7 +149,9 @@ class _ChatPageState extends State<ChatPage> {
             final fileBytes = File(media.url).readAsBytesSync();
             medias.add(fileBytes);
           } catch (e) {
-            print("Error reading file: ${media.url}, Error: $e");
+            if (kDebugMode) {
+              print("Error reading file: ${media.url}, Error: $e");
+            }
           }
         }
       }
@@ -183,7 +184,9 @@ class _ChatPageState extends State<ChatPage> {
         }
       });
     } catch (e) {
-      print("Error in _sendMessage: $e");
+      if (kDebugMode) {
+        print("Error in _sendMessage: $e");
+      }
     }
   }
 

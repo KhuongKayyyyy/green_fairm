@@ -29,7 +29,7 @@ class NewsPage extends StatelessWidget {
                 ),
               ),
             ),
-            SliverFillRemaining(
+            const SliverFillRemaining(
               child: TabBarView(
                 children: [
                   Center(child: Text('Content for Tab 1')),

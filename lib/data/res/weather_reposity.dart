@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:green_fairm/core/network/server.dart';
 import 'package:green_fairm/data/model/weather_model.dart';
 
@@ -15,10 +16,14 @@ class WeatherReposity {
       var jsonString = await response.transform(utf8.decoder).join();
       var jsonMap = jsonDecode(jsonString);
       WeatherModel weather = WeatherModel.fromJson(jsonMap);
-      print('Weather: $weather');
+      if (kDebugMode) {
+        print('Weather: $weather');
+      }
       return weather;
     } else {
-      print('Failed getting weather');
+      if (kDebugMode) {
+        print('Failed getting weather');
+      }
       throw const HttpException('Failed getting weather');
     }
   }

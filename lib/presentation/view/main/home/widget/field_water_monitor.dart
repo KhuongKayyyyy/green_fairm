@@ -34,21 +34,9 @@ class _FieldWaterMonitorState extends State<FieldWaterMonitor> {
           //     _buildLineChart("Optimal", 42, AppColor.secondaryColor),
           //   ],
           // )
-          WaterPieChartWidget(),
+          const WaterPieChartWidget(),
         ],
       ),
-    );
-  }
-
-  Widget _buildLineChart(String title, int value, Color color) {
-    return Column(
-      children: [
-        Text(
-          "$value fields",
-          style: AppTextStyle.defaultBold(),
-        ),
-        const SizedBox(height: 10),
-      ],
     );
   }
 }

@@ -14,6 +14,8 @@ class FieldManagementBloc
   FieldManagementBloc() : super(FieldManagementInitial()) {
     on<FieldManagementEventCreate>(_onCreate);
     on<FieldManagementGetByUserId>(_onGetByUserId);
+    on<FieldManagementEventUpdate>(_onUpdate);
+    on<FieldManagementEventDelete>(_onDelete);
   }
 
   Future<void> _onCreate(
@@ -45,11 +47,38 @@ class FieldManagementBloc
       final userId =
           await const FlutterSecureStorage().read(key: AppSetting.userUid) ??
               '';
-      print('User ID: $userId');
       final fields = await _fieldRepository.getFieldsByUserId(userId);
       emit(FieldManagementGetByUserIdSuccess(fields: fields));
     } catch (e) {
       emit(const FieldManagementGetByUserIdError(
+          message: 'An unknown error occurred'));
+    }
+  }
+
+  Future<void> _onUpdate(
+    FieldManagementEventUpdate event,
+    Emitter<FieldManagementState> emit,
+  ) async {
+    emit(FieldManagementLoading());
+    try {
+      await _fieldRepository.updateField(event.field);
+      emit(FieldManagementUpdateSuccess(field: event.field));
+    } catch (e) {
+      emit(const FieldManagementUpdateError(
+          message: 'An unknown error occurred'));
+    }
+  }
+
+  Future<void> _onDelete(
+    FieldManagementEventDelete event,
+    Emitter<FieldManagementState> emit,
+  ) async {
+    emit(FieldManagementLoading());
+    try {
+      await _fieldRepository.deleteField(event.field);
+      emit(FieldManagementDeleteSuccess(field: event.field));
+    } catch (e) {
+      emit(const FieldManagementDeleteError(
           message: 'An unknown error occurred'));
     }
   }

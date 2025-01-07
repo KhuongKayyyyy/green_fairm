@@ -50,4 +50,9 @@ class Field {
       'haverstTime': haverstTime,
     };
   }
+
+  @override
+  String toString() {
+    return 'Field{id: $id, name: $name, status: $status, type: $type, area: $area, imageUrl: $imageUrl, plantingDate: $plantingDate, cropHealth: $cropHealth, haverstTime: $haverstTime, isAutoWatering: $isAutoWatering, isWeatherService: $isWeatherService}';
+  }
 }
