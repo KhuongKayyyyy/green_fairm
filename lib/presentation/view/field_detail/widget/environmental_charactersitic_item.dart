@@ -44,9 +44,6 @@ class _EnvironmentalCharactersiticItemState
   void _updateValue() {
     setState(() {
       valueNum = double.tryParse(widget.value) ?? 0.0;
-      if (valueNum > 100) {
-        valueNum = Helper.scaleToPercentageNum(valueNum.toInt(), 0, 4095);
-      }
     });
   }
 

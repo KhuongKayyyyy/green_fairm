@@ -35,7 +35,7 @@ class EnvironmentalCharactersiticQualityItem extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     icon,
-                    color: Colors.grey,
+                    color: getIconColor(),
                   ),
                 ),
               ),
@@ -80,6 +80,32 @@ class EnvironmentalCharactersiticQualityItem extends StatelessWidget {
       return "Light Rain";
     } else {
       return "No Rain";
+    }
+  }
+
+  Color getIconColor() {
+    if (isQuality) {
+      int valueInt = double.parse(value).toInt();
+      if (valueInt <= 1000) {
+        return Colors.green;
+      } else if (valueInt <= 2000) {
+        return Colors.yellow;
+      } else if (valueInt <= 3000) {
+        return Colors.orange;
+      } else {
+        return Colors.red;
+      }
+    } else {
+      int valueInt = double.parse(value).toInt();
+      if (valueInt <= 1000) {
+        return Colors.blue;
+      } else if (valueInt <= 2000) {
+        return Colors.lightBlue;
+      } else if (valueInt <= 3000) {
+        return Colors.grey;
+      } else {
+        return Colors.grey.shade400;
+      }
     }
   }
 }

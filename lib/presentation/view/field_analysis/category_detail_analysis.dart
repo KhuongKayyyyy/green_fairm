@@ -1,34 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
+import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/environmental_data.dart';
+import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CategoryDetailAnalysis extends StatefulWidget {
   final String category;
-  const CategoryDetailAnalysis({super.key, required this.category});
+  final String fieldId;
+  final bool isWeekly;
+  const CategoryDetailAnalysis(
+      {super.key,
+      required this.category,
+      required this.fieldId,
+      required this.isWeekly});
 
   @override
   State<CategoryDetailAnalysis> createState() => _CategoryDetailAnalysisState();
 }
 
 class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
-  List<EnvironmentalData> chartData = FakeData.fakeWeekChartData;
+  List<StatisticData> chartData = FakeData.fakeDailyTemperature;
+  final FieldAnalysisBloc _analysisBloc = FieldAnalysisBloc();
 
-  // Method to calculate the average humidity
-  double calculateAverageHumidity() {
-    if (chartData.isEmpty) return 0; // Handle the case where data is empty
-    final totalHumidity = chartData.fold<num>(
-      0,
-      (sum, data) => sum + (data.humidity ?? 0),
-    );
-    return totalHumidity / chartData.length;
+  late final String dataType;
+
+  @override
+  void initState() {
+    super.initState();
+
+    switch (widget.category) {
+      case 'Humidity':
+        dataType = 'humidity';
+        break;
+      case 'Light':
+        dataType = 'light';
+        break;
+      case 'Soil Moisture':
+        dataType = 'soilMoisture';
+        break;
+      case 'CO2':
+        dataType = 'gasVolume';
+        break;
+      case 'Rain':
+        dataType = 'rainVolume';
+        break;
+      default:
+        dataType = 'unknown';
+    }
+
+    _analysisBloc.add(widget.isWeekly
+        ? FieldAnalysisWeeklyDataRequested(
+            date: Helper.getTodayDateFormatted(),
+            fieldId: widget.fieldId,
+            type: dataType)
+        : FieldAnalysisDailyDataRequested(
+            date: Helper.getTodayDateFormatted(),
+            fieldId: widget.fieldId,
+            type: dataType));
   }
 
   @override
   Widget build(BuildContext context) {
-    final averageHumidity = calculateAverageHumidity(); // Calculate average
+    var averageValue = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +81,7 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
           children: [
             Text("Graph of ${widget.category}",
                 style: AppTextStyle.defaultBold()),
-            _buildGraph(averageHumidity),
+            _buildGraphSection(averageValue.toDouble()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
@@ -103,7 +141,7 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
               ),
               const Spacer(),
               Text(
-                "DHT-11",
+                "${widget.category} Sensor",
                 style: AppTextStyle.defaultBold()
                     .copyWith(color: AppColors.primaryColor),
               ),
@@ -114,7 +152,29 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
     );
   }
 
-  Container _buildGraph(double averageHumidity) {
+  Widget _buildGraphSection(double averageHumidity) {
+    return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+      bloc: _analysisBloc,
+      builder: (context, state) {
+        if (state is FieldAnalysisDailyDataSuccess) {
+          averageHumidity = Helper.calculateAverage(
+              state.data.map((data) => data.data).toList());
+          return _buildGraph(state.data, averageHumidity);
+        } else if (state is FieldAnalysisWeeklyDataSuccess) {
+          averageHumidity = Helper.calculateAverage(
+              state.data.map((data) => data.data).toList());
+          return _buildGraph(state.data, averageHumidity);
+        }
+        return Skeletonizer(
+          enableSwitchAnimation: true,
+          enabled: true,
+          child: _buildGraph(FakeData.fakeDailyTemperature, averageHumidity),
+        );
+      },
+    );
+  }
+
+  Widget _buildGraph(List<StatisticData> graphData, double averageValue) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -127,15 +187,26 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
         children: [
           SfCartesianChart(
             primaryXAxis: CategoryAxis(),
-            primaryYAxis: NumericAxis(minimum: 50),
+            primaryYAxis: NumericAxis(
+                minimum:
+                    Helper.getMinimumData(graphData).round().toDouble() - 5,
+                maximum:
+                    Helper.getMaximumData(graphData).round().toDouble() + 5),
             series: <ChartSeries>[
-              LineSeries<EnvironmentalData, String>(
-                dataSource: chartData,
-                xValueMapper: (EnvironmentalData data, _) => data.date,
-                yValueMapper: (EnvironmentalData data, _) => data.humidity,
+              LineSeries<StatisticData, String>(
+                color: AppColors.secondaryColor,
+                dataSource: graphData,
+                xValueMapper: (StatisticData data, _) => data.date,
+                yValueMapper: (StatisticData data, _) =>
+                    double.parse(data.data.toStringAsFixed(2)),
                 dataLabelSettings: DataLabelSettings(
                   isVisible: true,
                   textStyle: AppTextStyle.smallBold(),
+                ),
+                markerSettings: const MarkerSettings(
+                  isVisible: true,
+                  shape: DataMarkerType.circle,
+                  color: AppColors.accentColor,
                 ),
               ),
             ],
@@ -146,12 +217,14 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
           Row(
             children: [
               Text(
-                "Week average ${widget.category}: ",
+                widget.isWeekly
+                    ? "Week average ${widget.category}: "
+                    : "Day average ${widget.category}: ",
                 style: AppTextStyle.defaultBold(),
               ),
               const Spacer(),
               Text(
-                "${averageHumidity.toStringAsFixed(2)}%", // Display average
+                "${averageValue.toStringAsFixed(2)} %", // Display average
                 style: AppTextStyle.defaultBold()
                     .copyWith(color: AppColors.primaryColor),
               ),

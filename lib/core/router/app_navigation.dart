@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/router/routes.dart';
-import 'package:green_fairm/data/model/environmental_data.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
 import 'package:green_fairm/presentation/view/authentication/reset_password_page.dart';
@@ -240,9 +239,12 @@ class AppNavigation {
             final extra = state.extra as Map<String, dynamic>?;
 
             final category = extra?['category'] as String? ?? '';
-
+            final fieldId = extra?['fieldId'] as String? ?? '';
+            final isWeekly = extra?['isWeekly'] as bool? ?? true;
             return CategoryDetailAnalysis(
               category: category,
+              fieldId: fieldId,
+              isWeekly: isWeekly,
             );
           },
         ),

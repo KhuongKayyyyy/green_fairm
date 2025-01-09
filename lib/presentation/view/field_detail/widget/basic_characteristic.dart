@@ -29,7 +29,6 @@ class BasicCharacteristic extends StatelessWidget {
                 icon: CupertinoIcons.drop_triangle,
                 type: "Humidity",
                 value: sensorData?.humidity ?? 'N/A',
-                isAnimated: true,
               ),
             ),
             const SizedBox(

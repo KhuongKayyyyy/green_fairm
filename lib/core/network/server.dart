@@ -15,4 +15,15 @@ class API {
 
   // weather
   static const String getWeatherByCity = "${Server.baseUrl}/weather/city/";
+
+  // analysis
+  static String getDailyDataRequest(
+      {required String type, required String date, required String fieldId}) {
+    return "${Server.baseUrl}/sensor/statistics/daily?type=$type&date=$date&fieldId=$fieldId";
+  }
+
+  static String getWeeklyDataRequest(
+      {required String type, required String date, required String fieldId}) {
+    return "${Server.baseUrl}/sensor/statistics/weekly?type=$type&date=$date&fieldId=$fieldId";
+  }
 }

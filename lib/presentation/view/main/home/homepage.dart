@@ -7,6 +7,8 @@ import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
+import 'package:green_fairm/core/util/helper.dart';
+import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_monitor.dart';
@@ -74,6 +76,15 @@ class _HomepageState extends State<Homepage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            TextButton(
+                onPressed: () {
+                  // EnvironmentalDataRepository.getWeeklyStatistic(
+                  //   date: Helper.getTodayDateFormatted(),
+                  //   fieldId: "676d4559c3b9d9d8e1ac5828",
+                  //   type: "temperature",
+                  // );
+                },
+                child: const Text("Test")),
             _buildWeatherReport(),
             _buildMyFieldsSection(),
             const FieldWaterMonitor(),

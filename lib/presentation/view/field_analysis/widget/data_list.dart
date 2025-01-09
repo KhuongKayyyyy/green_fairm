@@ -1,12 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/data/model/environmental_data.dart';
+import 'package:green_fairm/core/constant/sensor_type.dart';
+import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/core/util/helper.dart';
+import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/data_list_item.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class DataList extends StatelessWidget {
-  final List<EnvironmentalData> environmentalData;
+class DataList extends StatefulWidget {
+  final String fieldId;
+  final bool isWeekly;
+  const DataList({super.key, required this.fieldId, required this.isWeekly});
 
-  DataList({super.key, required this.environmentalData});
+  @override
+  State<DataList> createState() => _DataListState();
+}
+
+class _DataListState extends State<DataList> {
+  final FieldAnalysisBloc _tempAnalysisBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc _humAnalysisBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc _soilAnalysisBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc _co2AnalysisBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc _lightAnalysisBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc _rainAnalysisBloc = FieldAnalysisBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  @override
+  void didUpdateWidget(covariant DataList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isWeekly != widget.isWeekly) {
+      _loadData();
+    }
+  }
+
+  void _loadData() {
+    if (widget.isWeekly) {
+      _tempAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.temperature));
+      _humAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.humidity));
+      _soilAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.soilMoisture));
+      _co2AnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.gasVolume));
+      _lightAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.light));
+      _rainAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.rainVolume));
+    } else {
+      _tempAnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.temperature));
+      _humAnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.humidity));
+      _soilAnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.soilMoisture));
+      _co2AnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.gasVolume));
+      _lightAnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.light));
+      _rainAnalysisBloc.add(FieldAnalysisDailyDataRequested(
+          date: Helper.getTodayDateFormatted(),
+          fieldId: widget.fieldId,
+          type: SensorType.rainVolume));
+    }
+  }
 
   final List<String> dataTitle = [
     'Humidity',
@@ -17,11 +103,11 @@ class DataList extends StatelessWidget {
   ];
 
   final List<IconData> dataIcon = [
-    Icons.ac_unit,
-    Icons.lightbulb,
-    Icons.water,
-    Icons.cloud,
-    Icons.wb_sunny,
+    Icons.water_drop, // Humidity
+    Icons.wb_sunny, // Light
+    Icons.grass, // Soil Moisture
+    Icons.cloud, // CO2
+    Icons.umbrella, // Rain
   ];
 
   @override
@@ -42,30 +128,16 @@ class DataList extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           height: MediaQuery.of(context).size.height * 0.5,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    itemCount: dataTitle.length,
-                    itemBuilder: (context, index) {
-                      // Get the data value dynamically based on the index
-                      final dataValue = _getEnvironmentalValue(
-                          environmentalData.first, index);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: DataListItem(
-                          icon: dataIcon[index],
-                          title: dataTitle[index],
-                          data: dataValue,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                _buildListItem(_humAnalysisBloc, dataIcon[0], dataTitle[0]),
+                _buildListItem(_lightAnalysisBloc, dataIcon[1], dataTitle[1]),
+                _buildListItem(_soilAnalysisBloc, dataIcon[2], dataTitle[2]),
+                _buildListItem(_co2AnalysisBloc, dataIcon[3], dataTitle[3]),
+                _buildListItem(_rainAnalysisBloc, dataIcon[4], dataTitle[4]),
               ],
             ),
           ),
@@ -74,21 +146,63 @@ class DataList extends StatelessWidget {
     );
   }
 
-  /// Helper method to map the correct data value based on the index
-  num _getEnvironmentalValue(EnvironmentalData data, int index) {
-    switch (index) {
-      case 0:
-        return data.humidity ?? 0;
-      case 1:
-        return data.light ?? 0;
-      case 2:
-        return data.soilMoisture ?? 0;
-      case 3:
-        return data.co2 ?? 0;
-      case 4:
-        return data.rain ?? 0;
-      default:
-        return 0;
-    }
+  Widget _buildListItem(
+      FieldAnalysisBloc typeBloc, IconData icon, String title) {
+    return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+        bloc: typeBloc,
+        builder: (context, state) {
+          if (state is FieldAnalysisWeeklyDataSuccess) {
+            var valueAvg = Helper.calculateAverage(
+                state.data.map((data) => data.data).toList());
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: DataListItem(
+                icon: icon,
+                title: title,
+                data: valueAvg,
+                onTap: () => context.pushNamed(Routes.categoryDetailAnalysis,
+                    extra: {
+                      'category': title,
+                      'fieldId': widget.fieldId,
+                      'isWeekly': true
+                    }),
+              ),
+            );
+          }
+          if (state is FieldAnalysisDailyDataSuccess) {
+            var humidityAvg = Helper.calculateAverage(
+                state.data.map((data) => data.data).toList());
+            if (humidityAvg > 100) {
+              humidityAvg =
+                  Helper.scaleToPercentageNum(humidityAvg.toInt(), 0, 4095);
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: DataListItem(
+                icon: icon,
+                title: title,
+                data: humidityAvg,
+                onTap: () => context.pushNamed(Routes.categoryDetailAnalysis,
+                    extra: {
+                      'category': title,
+                      'fieldId': widget.fieldId,
+                      'isWeekly': widget.isWeekly
+                    }),
+              ),
+            );
+          }
+          return Skeletonizer(
+            enableSwitchAnimation: true,
+            enabled: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: DataListItem(
+                icon: dataIcon[0],
+                title: dataTitle[0],
+                data: 50,
+              ),
+            ),
+          );
+        });
   }
 }

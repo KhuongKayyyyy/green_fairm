@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/router/routes.dart';
 
 class DataListItem extends StatelessWidget {
+  final Function()? onTap;
   final IconData icon;
   final String title;
   final num data;
 
   const DataListItem({
     super.key,
+    this.onTap,
     required this.icon,
     required this.title,
     required this.data,
@@ -20,10 +20,7 @@ class DataListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.pushNamed(Routes.categoryDetailAnalysis, extra: {
-        'category': title,
-        'data': data,
-      }),
+      onTap: onTap,
       child: Column(
         children: [
           Row(

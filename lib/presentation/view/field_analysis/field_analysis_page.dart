@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/daily_stacked_chart.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/data_list.dart';
@@ -89,23 +88,27 @@ class _FieldAnalysisPageState extends State<FieldAnalysisPage> {
                       child: Column(
                         children: [
                           WeeklyStackedChart.weekly(
+                            fieldId: widget.field.id!,
                             onPointTap: _handlePointTap,
                           ),
                           DataList(
-                            environmentalData: FakeData.fakeWeekChartData,
+                            fieldId: widget.field.id!,
+                            isWeekly: true,
                           ),
-                          const SizedBox(height: 100),
                         ],
                       ),
                     )
                   : SingleChildScrollView(
                       child: Column(
                         children: [
-                          DailyStackedChart(initalIndex: _dailyInitialIndex),
-                          DataList(
-                            environmentalData: FakeData.fakeDailyChartData,
+                          DailyStackedChart(
+                            initalIndex: _dailyInitialIndex,
+                            fieldId: widget.field.id!,
                           ),
-                          const SizedBox(height: 100),
+                          DataList(
+                            fieldId: widget.field.id!,
+                            isWeekly: false,
+                          ),
                         ],
                       ),
                     ),

@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/constant/sensor_type.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
+import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/environmental_data.dart';
+import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/temperature_chart.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DailyStackedChart extends StatefulWidget {
+  final String fieldId;
   final int? initalIndex;
-  const DailyStackedChart({super.key, this.initalIndex});
+  const DailyStackedChart({super.key, this.initalIndex, required this.fieldId});
 
   @override
   State<DailyStackedChart> createState() => _DailyStackedChartState();
@@ -18,14 +25,22 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
   late PageController _pageController;
   late final List<EnvironmentalData> _dailyChartData;
   late final List<EnvironmentalData> _weeklyChartData;
-  String _selectedDate = '';
+
+  String _selectedDate = Helper.getFormattedDay(DateTime.now());
 
   bool _showPointValue = false;
   bool _showTempChart = false;
   late TooltipBehavior _tooltipBehavior;
+
+  // bloc
+  final FieldAnalysisBloc tempBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc allDataWeekBloc = FieldAnalysisBloc();
+  // final FieldAnalysisBloc allDataDayBloc = FieldAnalysisBloc();
+  late final List<FieldAnalysisBloc> dailyBlocs;
+  late final List<String> weekDates;
+
   @override
   void initState() {
-    _selectedDate = "Today, 6 Janurary";
     _dailyChartData = FakeData.fakeDailyChartData;
     _weeklyChartData = FakeData.fakeWeekChartData;
     _pageController = PageController(viewportFraction: 0.9);
@@ -36,7 +51,33 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       enable: true,
       canShowMarker: true,
     );
+
     super.initState();
+    //bloc
+    tempBloc.add(FieldAnalysisDailyDataRequested(
+        date: Helper.getTodayDateFormatted(),
+        fieldId: widget.fieldId,
+        type: SensorType.temperature));
+    allDataWeekBloc.add(FieldAnaylysisWeeklyFullDataRequested(
+      date: Helper.getTodayDateFormatted(),
+      fieldId: widget.fieldId,
+    ));
+
+    dailyBlocs = List.generate(
+      Helper.getPassedDaysOfCurrentWeek().length,
+      (index) {
+        final bloc = FieldAnalysisBloc();
+        final date = Helper.getPassedDaysOfCurrentWeek()
+            .elementAt(Helper.getPassedDaysOfCurrentWeek().length - 1 - index);
+        bloc.add(FieldAnaylysisDailyFullDataRequested(
+          date: date,
+          fieldId: widget.fieldId,
+        ));
+        return bloc;
+      },
+    );
+
+    weekDates = Helper.getPassedDaysOfCurrentWeek();
   }
 
   @override
@@ -44,9 +85,7 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
     return Column(
       children: [
         if (_showTempChart)
-          TemperatureChart(
-            chartData: FakeData.fakeDailyTemperature,
-          )
+          _buildTempChart()
         else
           Container(
             decoration: BoxDecoration(
@@ -66,17 +105,69 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
     );
   }
 
+  Widget _buildTempChart() {
+    return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+      bloc: tempBloc,
+      builder: (context, tempState) {
+        if (tempState is FieldAnalysisDailyDataSuccess) {
+          return TemperatureChart(
+            showPointValue: _showPointValue,
+            chartData: tempState.data,
+          );
+        } else if (tempState is FieldAnalysisDailyDataFailure) {
+          return Center(
+            child: Text(tempState.errorMessage),
+          );
+        }
+        return Skeletonizer(
+          enableSwitchAnimation: true,
+          enabled: true,
+          child: TemperatureChart(
+            showPointValue: _showPointValue,
+            chartData: FakeData.fakeDailyTemperature,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildWeekStackedChart() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.25,
-      child: SfCartesianChart(
-        title: ChartTitle(
-            text: _selectedDate, textStyle: AppTextStyle.smallBold()),
-        primaryXAxis: CategoryAxis(),
-        primaryYAxis: NumericAxis(),
-        series: _buildStackedSeries(_weeklyChartData, true),
-        tooltipBehavior: _tooltipBehavior,
-      ),
+    return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+      bloc: allDataWeekBloc,
+      builder: (context, allWeekDataState) {
+        if (allWeekDataState is FieldAnalysisWeeklyFullDataSuccess) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.25,
+            child: SfCartesianChart(
+              title: ChartTitle(
+                  text: _selectedDate, textStyle: AppTextStyle.smallBold()),
+              primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(),
+              series: _buildStackedSeries(allWeekDataState.data, true),
+              tooltipBehavior: _tooltipBehavior,
+            ),
+          );
+        } else if (allWeekDataState is FieldAnalysisWeeklyFullDataFailure) {
+          return Center(
+            child: Text(allWeekDataState.errorMessage),
+          );
+        }
+        return Container(
+          width: 50,
+          height: MediaQuery.of(context).size.height * 0.25,
+          color: Colors.white,
+          child: const Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor,
+                strokeWidth: 4.0, // Optional: Adjust thickness
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -87,17 +178,43 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
           controller: _pageController,
           scrollDirection: Axis.horizontal,
           reverse: true,
-          itemCount: 7,
+          itemCount: dailyBlocs.length,
           itemBuilder: (context, index) {
-            return SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(),
-              legend: Legend(
-                isVisible: true,
-                position: LegendPosition.bottom,
-              ),
-              series: _buildStackedSeries(_dailyChartData, false),
-              tooltipBehavior: _tooltipBehavior,
+            return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+              bloc: dailyBlocs[index],
+              builder: (context, allDayDataState) {
+                if (allDayDataState is FieldAnalysisDailyFullDataSuccess) {
+                  return SfCartesianChart(
+                    // title: ChartTitle(
+                    //     text: _selectedDate,
+                    //     textStyle: AppTextStyle.smallBold()),
+                    primaryXAxis: CategoryAxis(),
+                    primaryYAxis: NumericAxis(),
+                    series: _buildStackedSeries(allDayDataState.data, true),
+                    tooltipBehavior: _tooltipBehavior,
+                  );
+                } else if (allDayDataState
+                    is FieldAnalysisDailyFullDataFailure) {
+                  return Center(
+                    child: Text(allDayDataState.errorMessage),
+                  );
+                }
+                return Container(
+                  width: 50,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  color: Colors.white,
+                  child: const Center(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                        strokeWidth: 4.0, // Optional: Adjust thickness
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           },
         ));
@@ -165,11 +282,17 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
   }
 
   void _onPointTap(ChartPointDetails args) {
+    final reversedIndex = dailyBlocs.length - 1 - args.pointIndex!;
     _pageController.animateToPage(
-      args.pointIndex!,
+      reversedIndex,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
+    setState(() {
+      _selectedDate = Helper.getFormattedDay(
+        DateTime.parse(weekDates.elementAt(args.pointIndex!)),
+      );
+    });
   }
 
   Widget _buildControlButtons() {

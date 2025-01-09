@@ -64,6 +64,7 @@ dependencies:
   wave: ^0.2.2
   mqtt_client: ^10.5.1
   syncfusion_flutter_charts: ^20.3.60
+  font_awesome_flutter: ^10.8.0
 
 
 dev_dependencies:
