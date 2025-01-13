@@ -144,6 +144,7 @@ class FieldAnalysisBloc extends Bloc<FieldAnalysisEvent, FieldAnalysisState> {
       final List<EnvironmentalData> environmentalDataList =
           List.generate(listLength, (index) {
         return EnvironmentalData(
+          time: humidityData[index].time,
           date: humidityData[index]
               .date, // Assuming all lists have matching dates
           humidity: humidityData[index].data,
@@ -216,6 +217,7 @@ class FieldAnalysisBloc extends Bloc<FieldAnalysisEvent, FieldAnalysisState> {
       final List<EnvironmentalData> environmentalDataList =
           List.generate(listLength, (index) {
         return EnvironmentalData(
+          time: humidityData[index].time,
           date: humidityData[index]
               .date, // Assuming all lists have matching dates
           humidity: humidityData[index].data,

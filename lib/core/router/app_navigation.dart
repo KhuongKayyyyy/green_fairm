@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/authentication/authentication_landing_page.dart';
@@ -45,20 +44,7 @@ class AppNavigation {
   static final GlobalKey<NavigatorState> _paddingNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'paddingNavigator');
   static final GoRouter router = GoRouter(
-      initialLocation: isLoggedIn
-          ? (AppSetting.isUserNew ? Routes.settingLanding : Routes.home)
-          : Routes.authenticate_landing,
-      // redirect: (context, state) {
-      //   final loggedIn = isLoggedIn; // Replace with your actual login check
-      //   final goingToLogin = state.subloc == Routes.authenticate_landing;
-
-      //   if (!loggedIn && !goingToLogin) {
-      //     return Routes.authenticate_landing;
-      //   } else if (loggedIn && goingToLogin) {
-      //     return Routes.home;
-      //   }
-      //   return null;
-      // },
+      initialLocation: isLoggedIn ? Routes.home : Routes.authenticate_landing,
       routes: [
         _buildMainShellRoute(),
         ..._buildAuthenticationRoute(),
@@ -215,9 +201,13 @@ class AppNavigation {
             path: Routes.fieldDetail,
             name: Routes.fieldDetail,
             builder: (context, state) {
-              final extra = state.extra;
-              final field = extra as Field;
-              return FieldDetailPage(field: field);
+              final extra = state.extra as Map<String, dynamic>;
+              final field = extra['field'] as Field;
+              final onDelete = extra['onDelete'] as VoidCallback;
+              return FieldDetailPage(
+                field: field,
+                onDelete: onDelete,
+              );
             }),
         GoRoute(
             path: Routes.weatherDetail,
@@ -240,9 +230,11 @@ class AppNavigation {
 
             final category = extra?['category'] as String? ?? '';
             final fieldId = extra?['fieldId'] as String? ?? '';
+            final date = extra?['date'] as String? ?? '';
             final isWeekly = extra?['isWeekly'] as bool? ?? true;
             return CategoryDetailAnalysis(
               category: category,
+              date: date,
               fieldId: fieldId,
               isWeekly: isWeekly,
             );
@@ -262,10 +254,13 @@ class AppNavigation {
           builder: (context, state) => const ProfilePage(),
         ),
         GoRoute(
-          path: Routes.profileDetail,
-          name: Routes.profileDetail,
-          builder: (context, state) => const ProfileDetailPage(),
-        ),
+            path: Routes.profileDetail,
+            name: Routes.profileDetail,
+            builder: (context, state) {
+              final extra = state.extra;
+              final onUpdate = extra as VoidCallback;
+              return ProfileDetailPage(onUpdate: onUpdate);
+            }),
         GoRoute(
           path: Routes.updatePassword,
           name: Routes.updatePassword,

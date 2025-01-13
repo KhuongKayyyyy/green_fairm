@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/util/helper.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // ignore: must_be_immutable

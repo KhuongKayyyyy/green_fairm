@@ -9,13 +9,16 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class FieldSmallItem extends StatelessWidget {
   final Field field;
-  const FieldSmallItem({super.key, required this.field});
+  final VoidCallback onDelete;
+  const FieldSmallItem(
+      {super.key, required this.field, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushNamed(Routes.fieldDetail, extra: field);
+        context.pushNamed(Routes.fieldDetail,
+            extra: {"field": field, "onDelete": onDelete});
       },
       child: SizedBox(
         width: MediaQuery.of(context).size.height * 0.18,

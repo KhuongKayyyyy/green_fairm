@@ -26,7 +26,7 @@ class TemperatureChart extends StatelessWidget {
             ),
             color: AppColors.secondaryColor,
             dataSource: chartData,
-            xValueMapper: (StatisticData data, _) => data.date,
+            xValueMapper: (StatisticData data, _) => data.time,
             yValueMapper: (StatisticData data, _) => data.data,
             dataLabelSettings: DataLabelSettings(
                 isVisible: showPointValue, textStyle: AppTextStyle.smallBold()),

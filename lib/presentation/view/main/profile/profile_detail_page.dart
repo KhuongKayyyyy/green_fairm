@@ -7,7 +7,8 @@ import 'package:green_fairm/presentation/view/main/profile/widget/account_detail
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
 
 class ProfileDetailPage extends StatefulWidget {
-  const ProfileDetailPage({super.key});
+  final VoidCallback onUpdate;
+  const ProfileDetailPage({super.key, required this.onUpdate});
 
   @override
   State<ProfileDetailPage> createState() => _ProfileDetailPageState();
@@ -48,12 +49,13 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
                   icon: CupertinoIcons.chevron_left,
                   onPressed: () => context.pop(),
                 )),
-            const Positioned(
+            Positioned(
               top: 120,
               left: 0,
               right: 0,
               child: SingleChildScrollView(
-                child: AccountDetailInformation(),
+                child:
+                    AccountDetailInformation(onUpdate: () => widget.onUpdate),
               ),
             ),
           ],

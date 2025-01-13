@@ -17,7 +17,8 @@ import 'package:green_fairm/presentation/widget/primary_button.dart';
 
 class FieldOverview extends StatefulWidget {
   final Field field;
-  const FieldOverview({super.key, required this.field});
+  final VoidCallback onDelete;
+  const FieldOverview({super.key, required this.field, required this.onDelete});
 
   @override
   State<FieldOverview> createState() => _FieldOverviewState();
@@ -317,12 +318,14 @@ class _FieldOverviewState extends State<FieldOverview> {
             listener: (context, updateState) {
               if (updateState is FieldManagementUpdateSuccess) {
                 EasyLoading.showSuccess('Field updated');
+                setState(() {});
               } else if (updateState is FieldManagementUpdateError) {
                 EasyLoading.showError(updateState.message);
               } else if (updateState is FieldManagementLoading) {
                 EasyLoading.show(status: 'Updating field...');
               } else if (updateState is FieldManagementDeleteSuccess) {
                 EasyLoading.showSuccess('Field deleted');
+                widget.onDelete();
                 context.pop();
               } else if (updateState is FieldManagementDeleteError) {
                 EasyLoading.showError(updateState.message);

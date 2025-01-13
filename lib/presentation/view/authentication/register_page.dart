@@ -21,20 +21,22 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool agreePolicy = false;
 
-  // Declare TextEditingController instances for text fields
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController(text: "zzkhngzz@gmail.com");
+  final TextEditingController nameController =
+      TextEditingController(text: "Nguyen Dat Khuong");
+  final TextEditingController passwordController =
+      TextEditingController(text: "11231123");
 
   final TextEditingController confirmPasswordController =
-      TextEditingController();
+      TextEditingController(text: "11231123");
 
-  late final RegisterBloc registerBloc;
+  // late final RegisterBloc registerBloc;
 
   @override
   void initState() {
     super.initState();
-    registerBloc = RegisterBloc();
+    // registerBloc = RegisterBloc();
   }
 
   @override
@@ -43,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
-    registerBloc.close();
+    // registerBloc.close();
     super.dispose();
   }
 
@@ -63,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   _buildRegisterHeader(),
                   const SizedBox(height: 20),
                   BlocListener<RegisterBloc, RegisterState>(
-                    bloc: registerBloc,
+                    bloc: context.read<RegisterBloc>(),
                     listener: (context, resigsterState) {
                       if (resigsterState is RegisterLoading) {
                         // Show loading indicator
@@ -180,11 +182,11 @@ class _RegisterPageState extends State<RegisterPage> {
             text: "Sign Up",
             onPressed: () {
               // context.pushNamed(Routes.otpVerification);
-              registerBloc.add(RegisterEventPressed(
-                email: emailController.text,
-                username: nameController.text,
-                password: passwordController.text,
-              ));
+              context.read<RegisterBloc>().add(RegisterEventPressed(
+                    email: emailController.text,
+                    username: nameController.text,
+                    password: passwordController.text,
+                  ));
             }),
         const SizedBox(height: 10),
         Center(

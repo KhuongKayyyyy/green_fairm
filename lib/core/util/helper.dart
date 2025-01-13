@@ -8,6 +8,16 @@ class Helper {
     return '$day $month';
   }
 
+  static String getDayTypeFromDate(String dateString) {
+    final date = DateTime.parse(dateString);
+    return _getShortDayName(date.weekday);
+  }
+
+  static String _getShortDayName(int weekday) {
+    const shortDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return shortDayNames[weekday - 1];
+  }
+
   static String _getMonthName(int month) {
     const monthNames = [
       'January',
@@ -121,7 +131,7 @@ class Helper {
     return dataList.map((stat) {
       double scaledData =
           Helper.scaleToPercentageNum(stat.data.toInt(), min, max);
-      return StatisticData(date: stat.date, data: scaledData);
+      return StatisticData(date: stat.date, data: scaledData, time: stat.time);
     }).toList();
   }
 
@@ -143,11 +153,13 @@ class Helper {
     return '$year-$month-$day';
   }
 
-  static int getNumberOfDaysInWeek() {
+  static String getFirstDateOfLastThreeWeeks() {
     final now = DateTime.now();
-    final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    final lastDayOfWeek = firstDayOfWeek.add(const Duration(days: 6));
-    return lastDayOfWeek.difference(firstDayOfWeek).inDays + 1;
+    final lastThreeWeeksMonday = now.subtract(Duration(days: now.weekday + 20));
+    final year = lastThreeWeeksMonday.year;
+    final month = lastThreeWeeksMonday.month.toString().padLeft(2, '0');
+    final day = lastThreeWeeksMonday.day.toString().padLeft(2, '0');
+    return '$year-$month-$day';
   }
 
   static List<String> getPassedDaysOfCurrentWeek() {
@@ -164,29 +176,89 @@ class Helper {
     });
   }
 
-  static String getFormattedDay(DateTime date) {
+  static String getTwoWeeksBeforeIdentifier() {
     final now = DateTime.now();
-    final dayName = _getDayName(date.weekday);
-    final day = date.day;
-    final month = _getMonthName(date.month);
-    if (now.year == date.year &&
-        now.month == date.month &&
-        now.day == date.day) {
-      return 'Today, $day $month';
+    final startOfWeek = now.subtract(Duration(days: now.weekday + 13));
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
+    final startDay = startOfWeek.day;
+    final endDay = endOfWeek.day;
+    final startMonth = _getMonthName(startOfWeek.month);
+    final endMonth = _getMonthName(endOfWeek.month);
+    final startYear = startOfWeek.year;
+    final endYear = endOfWeek.year;
+
+    if (startMonth == endMonth && startYear == endYear) {
+      return '$startDay-$endDay $startMonth $startYear';
+    } else {
+      return '$startDay $startMonth $startYear - $endDay $endMonth $endYear';
     }
-    return '$dayName, $day $month';
   }
 
-  static String _getDayName(int weekday) {
-    const dayNames = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ];
-    return dayNames[weekday - 1];
+  static String getThreeWeeksBeforeIdentifier() {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday + 20));
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
+    final startDay = startOfWeek.day;
+    final endDay = endOfWeek.day;
+    final startMonth = _getMonthName(startOfWeek.month);
+    final endMonth = _getMonthName(endOfWeek.month);
+    final startYear = startOfWeek.year;
+    final endYear = endOfWeek.year;
+
+    if (startMonth == endMonth && startYear == endYear) {
+      return '$startDay-$endDay $startMonth $startYear';
+    } else {
+      return '$startDay $startMonth $startYear - $endDay $endMonth $endYear';
+    }
+  }
+
+  static List<String> getDatesOfWeek(String dateString) {
+    final date = DateTime.parse(dateString);
+    final firstDayOfWeek = date.subtract(Duration(days: date.weekday - 1));
+    return List.generate(7, (index) {
+      final currentDate = firstDayOfWeek.add(Duration(days: index));
+      final year = currentDate.year;
+      final month = currentDate.month.toString().padLeft(2, '0');
+      final day = currentDate.day.toString().padLeft(2, '0');
+      return '$year-$month-$day';
+    });
+  }
+
+  static bool isDateInCurrentWeek(String dateString) {
+    final inputDate = DateTime.parse(dateString);
+    final now = DateTime.now();
+    final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final lastDayOfWeek = firstDayOfWeek.add(const Duration(days: 6));
+
+    return inputDate
+            .isAfter(firstDayOfWeek.subtract(const Duration(days: 1))) &&
+        inputDate.isBefore(lastDayOfWeek.add(const Duration(days: 1)));
+  }
+
+  static String getFormattedDateWithDay(String dateString) {
+    final inputDate = DateTime.parse(dateString);
+    final now = DateTime.now();
+    final dayName = _getShortDayName(inputDate.weekday);
+    final day = inputDate.day;
+    final month = _getShortMonthName(inputDate.month);
+    final year = inputDate.year;
+
+    if (inputDate.year == now.year &&
+        inputDate.month == now.month &&
+        inputDate.day == now.day) {
+      return 'Today, $day $month $year';
+    } else {
+      return '$dayName, $day $month $year';
+    }
+  }
+
+  static int getIndexOfDateInWeek(String dateString) {
+    final date = DateTime.parse(dateString);
+
+    // Start of the week (Monday)
+    final firstDayOfWeek = date.subtract(Duration(days: date.weekday - 1));
+
+    // Calculate the index of the date within the week
+    return date.difference(firstDayOfWeek).inDays;
   }
 }

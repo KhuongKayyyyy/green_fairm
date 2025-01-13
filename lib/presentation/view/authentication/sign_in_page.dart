@@ -19,22 +19,24 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController(text: "zzkhngzz@gmail.com");
+  final TextEditingController passwordController =
+      TextEditingController(text: "11231123");
   bool keepSignIn = false;
-  late final LoginBloc loginBloc;
+  // late final LoginBloc loginBloc;
 
   @override
   void initState() {
     super.initState();
-    loginBloc = LoginBloc();
+    // loginBloc = LoginBloc();
   }
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    loginBloc.close();
+    // loginBloc.close();
     super.dispose();
   }
 
@@ -54,7 +56,7 @@ class _SignInPageState extends State<SignInPage> {
                   _buildSignInHeader(),
                   const SizedBox(height: 50),
                   BlocListener<LoginBloc, LoginState>(
-                    bloc: loginBloc,
+                    bloc: context.read<LoginBloc>(),
                     listener: (context, loginState) {
                       if (loginState is LoginLoading) {
                         EasyLoading.show(status: 'Logging in...');
@@ -119,12 +121,12 @@ class _SignInPageState extends State<SignInPage> {
         PrimaryButton(
           text: "Sign In",
           onPressed: () {
-            loginBloc.add(
-              LoginEventWithEmailAndPasswordPressed(
-                email: emailController.text,
-                password: passwordController.text,
-              ),
-            );
+            context.read<LoginBloc>().add(
+                  LoginEventWithEmailAndPasswordPressed(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  ),
+                );
           },
         ),
         const SizedBox(height: 10),
@@ -235,7 +237,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildSocialSignInButton() {
     return InkWell(
       onTap: () {
-        loginBloc.add(const LoginEventWithGooglePressed());
+        context.read<LoginBloc>().add(const LoginEventWithGooglePressed());
       },
       child: Container(
         width: double.infinity,

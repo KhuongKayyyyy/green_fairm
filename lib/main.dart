@@ -10,7 +10,10 @@ import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/router/app_navigation.dart';
 import 'package:green_fairm/core/theme/app_theme.dart';
 import 'package:green_fairm/presentation/bloc/authentication/authentication_bloc.dart';
-import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart'; // Example bloc
+import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
+import 'package:green_fairm/presentation/bloc/login/login_bloc.dart';
+import 'package:green_fairm/presentation/bloc/register/register_bloc.dart';
 
 void main() async {
   await dotenv.load(); // Load environment variables
@@ -30,9 +33,11 @@ void main() async {
   } else {
     // The user is not new
     if (kDebugMode) {
+      // user.updateDisplayName("Nguyen Dat Khuong");
       print('Existing user');
     }
   }
+  // UserRepository().signOut();
 }
 
 void configEasyLoading() {
@@ -57,6 +62,16 @@ class MyApp extends StatelessWidget {
         BlocProvider<FieldManagementBloc>(
           create: (context) => FieldManagementBloc(),
         ),
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider<RegisterBloc>(
+          create: (context) => RegisterBloc(),
+        ),
+        BlocProvider<FieldAnalysisBloc>(
+          create: (context) => FieldAnalysisBloc(),
+        ),
+
         // Add more BlocProvid–ers as needed
       ],
       child: MaterialApp.router(

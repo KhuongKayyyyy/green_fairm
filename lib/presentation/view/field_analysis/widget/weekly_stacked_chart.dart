@@ -4,6 +4,7 @@ import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/sensor_type.dart';
 import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/presentation/view/field_analysis/widget/data_list.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/temperature_chart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -14,7 +15,7 @@ import 'package:green_fairm/presentation/widget/primary_button.dart';
 
 class WeeklyStackedChart extends StatefulWidget {
   final String fieldId;
-  final ChartPointInteractionCallback? onPointTap;
+  final Function(String)? onPointTap;
 
   const WeeklyStackedChart({
     super.key,
@@ -24,7 +25,7 @@ class WeeklyStackedChart extends StatefulWidget {
 
   factory WeeklyStackedChart.weekly({
     Key? key,
-    ChartPointInteractionCallback? onPointTap,
+    Function(String)? onPointTap,
     required String fieldId,
   }) {
     return WeeklyStackedChart(
@@ -48,6 +49,10 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
   final FieldAnalysisBloc allDataWeek1Bloc = FieldAnalysisBloc();
   final FieldAnalysisBloc allDataWeek2Bloc = FieldAnalysisBloc();
   final FieldAnalysisBloc allDataWeek3Bloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc allDataWeek4Bloc = FieldAnalysisBloc();
+
+  int _currentPageIndex = 0;
+  String currentDate = Helper.getTodayDateFormatted();
 
   @override
   void initState() {
@@ -66,6 +71,8 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         date: Helper.getFirstDateOfLastWeek(), fieldId: widget.fieldId));
     allDataWeek3Bloc.add(FieldAnaylysisWeeklyFullDataRequested(
         date: Helper.getFirstDateOfLastTwoWeeks(), fieldId: widget.fieldId));
+    allDataWeek4Bloc.add(FieldAnaylysisWeeklyFullDataRequested(
+        date: Helper.getFirstDateOfLastThreeWeeks(), fieldId: widget.fieldId));
   }
 
   @override
@@ -89,6 +96,12 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
               child: _buildPageViewStackedChart()),
         const SizedBox(height: 15),
         _buildControlButtons(),
+        DataList(
+          key: ValueKey(currentDate),
+          fieldId: widget.fieldId,
+          isWeekly: true,
+          date: currentDate,
+        ),
       ],
     );
   }
@@ -136,14 +149,32 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         controller: _controller,
         scrollDirection: Axis.horizontal,
         reverse: true,
-        itemCount: 3,
+        itemCount: 4,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPageIndex = index;
+            if (_currentPageIndex == 0) {
+              currentDate = Helper.getTodayDateFormatted();
+            } else if (_currentPageIndex == 1) {
+              currentDate = Helper.getFirstDateOfLastWeek();
+            } else if (_currentPageIndex == 2) {
+              currentDate = Helper.getFirstDateOfLastTwoWeeks();
+            } else {
+              currentDate = Helper.getFirstDateOfLastThreeWeeks();
+            }
+          });
+        },
         itemBuilder: (context, index) {
           if (index == 0) {
-            return _buildWeeklyStackedChart("Week 1", allDataWeek1Bloc);
+            return _buildWeeklyStackedChart("This Week", allDataWeek1Bloc);
           } else if (index == 1) {
-            return _buildWeeklyStackedChart("Week 2", allDataWeek2Bloc);
+            return _buildWeeklyStackedChart("Last Week", allDataWeek2Bloc);
+          } else if (index == 2) {
+            return _buildWeeklyStackedChart(
+                Helper.getTwoWeeksBeforeIdentifier(), allDataWeek3Bloc);
           } else {
-            return _buildWeeklyStackedChart("Week 3", allDataWeek3Bloc);
+            return _buildWeeklyStackedChart(
+                Helper.getThreeWeeksBeforeIdentifier(), allDataWeek4Bloc);
           }
         },
       ),
@@ -195,24 +226,44 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
     return [
       StackedColumnSeries<EnvironmentalData, String>(
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => Helper.getDayTypeFromDate(
+            data.date ?? ""), // Display "Mon", "Tue", etc.
         yValueMapper: (EnvironmentalData data, _) => data.humidity,
+        color: AppColors.secondaryColor,
         name: 'Humidity',
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
         ),
+        // onPointTap: (details) {
+        //   final index = details.pointIndex; // Get the tapped point index
+        //   if (index != null && index < data.length) {
+        //     // Get the full date from the data source
+        //     final fullDate = data[index].date;
+        //     print('Tapped Full Date: $fullDate');
+
+        //     // Pass the full date to the callback
+        //     if (widget.onPointTap != null) {
+        //       widget.onPointTap!(fullDate); // Pass the full date string
+        //     }
+        //   }
+        // },
         onPointTap: (details) {
           final index = details.pointIndex; // Get the tapped point index
-          if (widget.onPointTap != null && index != null) {
-            widget.onPointTap!(details);
+          if (index != null && index < data.length) {
+            final fullDate = data[index].date; // Get the full date
+            if (fullDate != null && widget.onPointTap != null) {
+              widget.onPointTap!(fullDate); // Pass the date to the callback
+            }
           }
         },
       ),
       StackedColumnSeries<EnvironmentalData, String>(
         dataSource: _chartData,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) =>
+            Helper.getDayTypeFromDate(data.date ?? ""),
         yValueMapper: (EnvironmentalData data, _) => data.light,
+        color: AppColors.primaryColor,
         name: 'Light',
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
@@ -221,15 +272,17 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         onPointTap: (details) {
           final index = details.pointIndex; // Get the tapped point index
           if (widget.onPointTap != null && index != null) {
-            widget.onPointTap!(details);
+            // widget.onPointTap!(details);
           }
         },
       ),
       StackedColumnSeries<EnvironmentalData, String>(
         dataSource: _chartData,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) =>
+            Helper.getDayTypeFromDate(data.date ?? ""),
         yValueMapper: (EnvironmentalData data, _) => data.soilMoisture,
         name: 'Soil Moisture',
+        color: AppColors.accentColor,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -237,15 +290,17 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         onPointTap: (details) {
           final index = details.pointIndex; // Get the tapped point index
           if (widget.onPointTap != null && index != null) {
-            widget.onPointTap!(details);
+            // widget.onPointTap!(details);
           }
         },
       ),
       StackedColumnSeries<EnvironmentalData, String>(
         dataSource: _chartData,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) =>
+            Helper.getDayTypeFromDate(data.date ?? ""),
         yValueMapper: (EnvironmentalData data, _) => data.co2,
         name: 'CO2',
+        color: AppColors.lightbg,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -253,13 +308,14 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         onPointTap: (details) {
           final index = details.pointIndex; // Get the tapped point index
           if (widget.onPointTap != null && index != null) {
-            widget.onPointTap!(details);
+            // widget.onPointTap!(details);
           }
         },
       ),
       StackedColumnSeries<EnvironmentalData, String>(
         dataSource: _chartData,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) =>
+            Helper.getDayTypeFromDate(data.date ?? ""),
         yValueMapper: (EnvironmentalData data, _) => data.rain,
         name: 'Rain',
         dataLabelSettings: DataLabelSettings(
@@ -269,7 +325,7 @@ class _WeeklyStackedChartState extends State<WeeklyStackedChart> {
         onPointTap: (details) {
           final index = details.pointIndex; // Get the tapped point index
           if (widget.onPointTap != null && index != null) {
-            widget.onPointTap!(details);
+            // widget.onPointTap!(details);
           }
         },
       ),

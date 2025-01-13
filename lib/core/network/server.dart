@@ -6,9 +6,15 @@ class API {
   static const String login = "${Server.baseUrl}/auth/login";
   static const String register = "${Server.baseUrl}/auth/register";
   static const String loginWithGoogle = "${Server.baseUrl}/auth/login-google";
-  static const String createNewField = "${Server.baseUrl}/fields/create";
+  static const String updateUser = "${Server.baseUrl}/users";
+  static const String updatePassord = "${Server.baseUrl}/users/change-password";
+
+  static const String updatePassword = "${Server.baseUrl}/auth/change-password";
+
+  static const String deleteAccount = "${Server.baseUrl}/users";
 
   // field
+  static const String createNewField = "${Server.baseUrl}/fields/create";
   static const String getFieldsByUserId = "${Server.baseUrl}/fields/user/";
   static const String updateFieldById = "${Server.baseUrl}/fields/";
   static const String deleteFieldById = "${Server.baseUrl}/fields/";

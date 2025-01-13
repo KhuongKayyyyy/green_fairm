@@ -47,6 +47,7 @@ class FieldManagementBloc
       final userId =
           await const FlutterSecureStorage().read(key: AppSetting.userUid) ??
               '';
+      print(userId);
       final fields = await _fieldRepository.getFieldsByUserId(userId);
       emit(FieldManagementGetByUserIdSuccess(fields: fields));
     } catch (e) {

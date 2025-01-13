@@ -7,6 +7,7 @@ import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/environmental_data.dart';
 import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/presentation/view/field_analysis/widget/data_list.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/temperature_chart.dart';
 import 'package:green_fairm/presentation/widget/primary_button.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -14,8 +15,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DailyStackedChart extends StatefulWidget {
   final String fieldId;
-  final int? initalIndex;
-  const DailyStackedChart({super.key, this.initalIndex, required this.fieldId});
+  final String initialDate;
+  const DailyStackedChart(
+      {super.key, required this.fieldId, required this.initialDate});
 
   @override
   State<DailyStackedChart> createState() => _DailyStackedChartState();
@@ -23,10 +25,8 @@ class DailyStackedChart extends StatefulWidget {
 
 class _DailyStackedChartState extends State<DailyStackedChart> {
   late PageController _pageController;
-  late final List<EnvironmentalData> _dailyChartData;
-  late final List<EnvironmentalData> _weeklyChartData;
 
-  String _selectedDate = Helper.getFormattedDay(DateTime.now());
+  String _selectedDate = "";
 
   bool _showPointValue = false;
   bool _showTempChart = false;
@@ -35,47 +35,80 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
   // bloc
   final FieldAnalysisBloc tempBloc = FieldAnalysisBloc();
   final FieldAnalysisBloc allDataWeekBloc = FieldAnalysisBloc();
-  // final FieldAnalysisBloc allDataDayBloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc allDataWeek2Bloc = FieldAnalysisBloc();
+  final FieldAnalysisBloc allDataWeek3Bloc = FieldAnalysisBloc();
+
   late final List<FieldAnalysisBloc> dailyBlocs;
   late final List<String> weekDates;
 
   @override
   void initState() {
-    _dailyChartData = FakeData.fakeDailyChartData;
-    _weeklyChartData = FakeData.fakeWeekChartData;
-    _pageController = PageController(viewportFraction: 0.9);
-    if (widget.initalIndex != null) {
-      _pageController = PageController(initialPage: widget.initalIndex!);
-    }
+    _pageController = PageController(
+      viewportFraction: 0.9,
+      initialPage: Helper.getIndexOfDateInWeek(widget.initialDate) + 1,
+    )..addListener(() {
+        final int currentPage = _pageController.page!.round();
+        final int reversedIndex = weekDates.length - 1 - currentPage;
+        if (reversedIndex >= 0 && reversedIndex < weekDates.length) {
+          setState(() {
+            _selectedDate =
+                Helper.getFormattedDateWithDay(weekDates[reversedIndex]);
+          });
+          print('Selected Date on Swipe: $_selectedDate');
+        }
+      });
+    _selectedDate = Helper.getFormattedDateWithDay(widget.initialDate);
+
     _tooltipBehavior = TooltipBehavior(
       enable: true,
       canShowMarker: true,
     );
 
+    _pageController.addListener(() {});
+
     super.initState();
     //bloc
     tempBloc.add(FieldAnalysisDailyDataRequested(
-        date: Helper.getTodayDateFormatted(),
+        date: widget.initialDate,
         fieldId: widget.fieldId,
         type: SensorType.temperature));
     allDataWeekBloc.add(FieldAnaylysisWeeklyFullDataRequested(
-      date: Helper.getTodayDateFormatted(),
+      date: widget.initialDate,
       fieldId: widget.fieldId,
     ));
-
-    dailyBlocs = List.generate(
-      Helper.getPassedDaysOfCurrentWeek().length,
-      (index) {
-        final bloc = FieldAnalysisBloc();
-        final date = Helper.getPassedDaysOfCurrentWeek()
-            .elementAt(Helper.getPassedDaysOfCurrentWeek().length - 1 - index);
-        bloc.add(FieldAnaylysisDailyFullDataRequested(
-          date: date,
-          fieldId: widget.fieldId,
-        ));
-        return bloc;
-      },
-    );
+    // allDataWeek2Bloc.add(FieldAnaylysisWeeklyFullDataRequested(
+    //     date: Helper.getFirstDateOfLastWeek(), fieldId: widget.fieldId));
+    // allDataWeek3Bloc.add(FieldAnaylysisWeeklyFullDataRequested(
+    //     date: Helper.getFirstDateOfLastTwoWeeks(), fieldId: widget.fieldId));
+    if (Helper.isDateInCurrentWeek(widget.initialDate)) {
+      dailyBlocs = List.generate(
+        Helper.getPassedDaysOfCurrentWeek().length,
+        (index) {
+          final bloc = FieldAnalysisBloc();
+          final date = Helper.getPassedDaysOfCurrentWeek().elementAt(
+              Helper.getPassedDaysOfCurrentWeek().length - 1 - index);
+          bloc.add(FieldAnaylysisDailyFullDataRequested(
+            date: date,
+            fieldId: widget.fieldId,
+          ));
+          return bloc;
+        },
+      );
+    } else {
+      dailyBlocs = List.generate(
+        Helper.getDatesOfWeek(widget.initialDate).length,
+        (index) {
+          final bloc = FieldAnalysisBloc();
+          final date = Helper.getDatesOfWeek(widget.initialDate).elementAt(
+              Helper.getDatesOfWeek(widget.initialDate).length - 1 - index);
+          bloc.add(FieldAnaylysisDailyFullDataRequested(
+            date: date,
+            fieldId: widget.fieldId,
+          ));
+          return bloc;
+        },
+      );
+    }
 
     weekDates = Helper.getPassedDaysOfCurrentWeek();
   }
@@ -101,6 +134,12 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
           ),
         const SizedBox(height: 16),
         _buildControlButtons(),
+        DataList(
+          key: ValueKey(widget.initialDate),
+          fieldId: widget.fieldId,
+          isWeekly: true,
+          date: widget.initialDate,
+        ),
       ],
     );
   }
@@ -132,43 +171,42 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
   }
 
   Widget _buildWeekStackedChart() {
-    return BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
-      bloc: allDataWeekBloc,
-      builder: (context, allWeekDataState) {
-        if (allWeekDataState is FieldAnalysisWeeklyFullDataSuccess) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.25,
-            child: SfCartesianChart(
-              title: ChartTitle(
-                  text: _selectedDate, textStyle: AppTextStyle.smallBold()),
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(),
-              series: _buildStackedSeries(allWeekDataState.data, true),
-              tooltipBehavior: _tooltipBehavior,
-            ),
-          );
-        } else if (allWeekDataState is FieldAnalysisWeeklyFullDataFailure) {
-          return Center(
-            child: Text(allWeekDataState.errorMessage),
-          );
-        }
-        return Container(
-          width: 50,
-          height: MediaQuery.of(context).size.height * 0.25,
-          color: Colors.white,
-          child: const Center(
-            child: SizedBox(
+    return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.25,
+        child: BlocBuilder<FieldAnalysisBloc, FieldAnalysisState>(
+          bloc: allDataWeekBloc,
+          builder: (context, allWeekDataState) {
+            if (allWeekDataState is FieldAnalysisWeeklyFullDataSuccess) {
+              return SfCartesianChart(
+                title: ChartTitle(
+                    text: _selectedDate, textStyle: AppTextStyle.smallBold()),
+                primaryXAxis: CategoryAxis(),
+                primaryYAxis: NumericAxis(),
+                series: _buildStackedSeries(allWeekDataState.data, true),
+                tooltipBehavior: _tooltipBehavior,
+              );
+            } else if (allWeekDataState is FieldAnalysisWeeklyFullDataFailure) {
+              return Center(
+                child: Text(allWeekDataState.errorMessage),
+              );
+            }
+            return Container(
               width: 50,
-              height: 50,
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
-                strokeWidth: 4.0, // Optional: Adjust thickness
+              height: MediaQuery.of(context).size.height * 0.25,
+              color: Colors.white,
+              child: const Center(
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryColor,
+                    strokeWidth: 4.0, // Optional: Adjust thickness
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
-      },
-    );
+            );
+          },
+        ));
   }
 
   Widget _buildDailyStackedChart() {
@@ -185,9 +223,8 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
               builder: (context, allDayDataState) {
                 if (allDayDataState is FieldAnalysisDailyFullDataSuccess) {
                   return SfCartesianChart(
-                    // title: ChartTitle(
-                    //     text: _selectedDate,
-                    //     textStyle: AppTextStyle.smallBold()),
+                    legend: Legend(
+                        isVisible: true, position: LegendPosition.bottom),
                     primaryXAxis: CategoryAxis(),
                     primaryYAxis: NumericAxis(),
                     series: _buildStackedSeries(allDayDataState.data, true),
@@ -226,9 +263,10 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       StackedColumnSeries<EnvironmentalData, String>(
         onPointTap: isJumaple ? _onPointTap : null,
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => data.time,
         yValueMapper: (EnvironmentalData data, _) => data.humidity,
         name: 'Humidity',
+        color: AppColors.secondaryColor,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -237,9 +275,10 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       StackedColumnSeries<EnvironmentalData, String>(
         onPointTap: isJumaple ? _onPointTap : null,
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => data.time,
         yValueMapper: (EnvironmentalData data, _) => data.light,
         name: 'Light',
+        color: AppColors.primaryColor,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -248,9 +287,10 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       StackedColumnSeries<EnvironmentalData, String>(
         onPointTap: isJumaple ? _onPointTap : null,
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => data.time,
         yValueMapper: (EnvironmentalData data, _) => data.soilMoisture,
         name: 'Soil Moisture',
+        color: AppColors.accentColor,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -259,9 +299,10 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       StackedColumnSeries<EnvironmentalData, String>(
         onPointTap: isJumaple ? _onPointTap : null,
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => data.time,
         yValueMapper: (EnvironmentalData data, _) => data.co2,
         name: 'CO2',
+        color: AppColors.lightbg,
         dataLabelSettings: DataLabelSettings(
           isVisible: _showPointValue,
           textStyle: AppTextStyle.smallBold(),
@@ -270,7 +311,7 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       StackedColumnSeries<EnvironmentalData, String>(
         onPointTap: isJumaple ? _onPointTap : null,
         dataSource: data,
-        xValueMapper: (EnvironmentalData data, _) => data.date,
+        xValueMapper: (EnvironmentalData data, _) => data.time,
         yValueMapper: (EnvironmentalData data, _) => data.rain,
         name: 'Rain',
         dataLabelSettings: DataLabelSettings(
@@ -289,9 +330,9 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
       curve: Curves.easeInOut,
     );
     setState(() {
-      _selectedDate = Helper.getFormattedDay(
-        DateTime.parse(weekDates.elementAt(args.pointIndex!)),
-      );
+      _selectedDate = Helper.getFormattedDateWithDay(args
+          .dataPoints![dailyBlocs.length - 1 - args.pointIndex!].x
+          .toString());
     });
   }
 

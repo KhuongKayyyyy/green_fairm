@@ -12,7 +12,12 @@ import 'package:skeletonizer/skeletonizer.dart';
 class DataList extends StatefulWidget {
   final String fieldId;
   final bool isWeekly;
-  const DataList({super.key, required this.fieldId, required this.isWeekly});
+  final String date;
+  const DataList(
+      {super.key,
+      required this.fieldId,
+      required this.isWeekly,
+      required this.date});
 
   @override
   State<DataList> createState() => _DataListState();
@@ -43,52 +48,48 @@ class _DataListState extends State<DataList> {
   void _loadData() {
     if (widget.isWeekly) {
       _tempAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.temperature));
       _humAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.humidity));
       _soilAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.soilMoisture));
       _co2AnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.gasVolume));
       _lightAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
-          fieldId: widget.fieldId,
-          type: SensorType.light));
+          date: widget.date, fieldId: widget.fieldId, type: SensorType.light));
       _rainAnalysisBloc.add(FieldAnalysisWeeklyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.rainVolume));
     } else {
       _tempAnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.temperature));
       _humAnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.humidity));
       _soilAnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.soilMoisture));
       _co2AnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.gasVolume));
       _lightAnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
-          fieldId: widget.fieldId,
-          type: SensorType.light));
+          date: widget.date, fieldId: widget.fieldId, type: SensorType.light));
       _rainAnalysisBloc.add(FieldAnalysisDailyDataRequested(
-          date: Helper.getTodayDateFormatted(),
+          date: widget.date,
           fieldId: widget.fieldId,
           type: SensorType.rainVolume));
     }
@@ -160,12 +161,13 @@ class _DataListState extends State<DataList> {
                 icon: icon,
                 title: title,
                 data: valueAvg,
-                onTap: () => context.pushNamed(Routes.categoryDetailAnalysis,
-                    extra: {
-                      'category': title,
-                      'fieldId': widget.fieldId,
-                      'isWeekly': true
-                    }),
+                onTap: () =>
+                    context.pushNamed(Routes.categoryDetailAnalysis, extra: {
+                  'category': title,
+                  'date': widget.date,
+                  'fieldId': widget.fieldId,
+                  'isWeekly': true
+                }),
               ),
             );
           }
@@ -182,12 +184,13 @@ class _DataListState extends State<DataList> {
                 icon: icon,
                 title: title,
                 data: humidityAvg,
-                onTap: () => context.pushNamed(Routes.categoryDetailAnalysis,
-                    extra: {
-                      'category': title,
-                      'fieldId': widget.fieldId,
-                      'isWeekly': widget.isWeekly
-                    }),
+                onTap: () =>
+                    context.pushNamed(Routes.categoryDetailAnalysis, extra: {
+                  'category': title,
+                  'fieldId': widget.fieldId,
+                  'date': widget.date,
+                  'isWeekly': widget.isWeekly
+                }),
               ),
             );
           }

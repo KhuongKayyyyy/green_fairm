@@ -42,7 +42,7 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   void initState() {
     super.initState();
     _weatherBloc.add(WeatherGetByCity(city: _getStateOnly(widget.field.area!)));
-    _connectToMqtt();
+    // _connectToMqtt();
   }
 
   Future<void> _connectToMqtt() async {

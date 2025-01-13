@@ -8,6 +8,7 @@ import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/field_monitoring.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/field_overview.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/header_brief_information.dart';
 import 'package:green_fairm/presentation/widget/action_button_icon.dart';
@@ -15,7 +16,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class FieldDetailPage extends StatefulWidget {
   final Field field;
-  const FieldDetailPage({super.key, required this.field});
+  final VoidCallback onDelete;
+  const FieldDetailPage(
+      {super.key, required this.field, required this.onDelete});
 
   @override
   State<FieldDetailPage> createState() => _FieldDetailPageState();
@@ -100,11 +103,14 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  FieldOverview(field: widget.field),
+                  FieldOverview(
+                    field: widget.field,
+                    onDelete: widget.onDelete,
+                  ),
                   const SizedBox(height: 15),
-                  // FieldMonitoring(
-                  //   field: widget.field,
-                  // ),
+                  FieldMonitoring(
+                    field: widget.field,
+                  ),
                 ],
               ),
             ),

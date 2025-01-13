@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/realtime_sensor_data.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/environmental_charactersitic_item.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/environmental_charactersitic_quality_item.dart';
@@ -36,10 +37,15 @@ class BasicCharacteristic extends StatelessWidget {
             ),
             Expanded(
               child: EnvironmentalCharactersiticItem(
-                icon: CupertinoIcons.tree,
-                type: "Soil moisture",
-                value: sensorData?.soilMoisture ?? 'N/A',
-              ),
+                  icon: CupertinoIcons.tree,
+                  type: "Soil moisture",
+                  value: Helper.scaleToPercentageNum(
+                          double.tryParse(sensorData!.soilMoisture.toString())
+                                  ?.toInt() ??
+                              0,
+                          0,
+                          4095)
+                      .toString()),
             ),
           ],
         ),

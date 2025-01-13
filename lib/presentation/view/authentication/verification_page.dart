@@ -29,7 +29,7 @@ class _VerificationPageState extends State<VerificationPage> {
       if (FirebaseAuth.instance.currentUser!.emailVerified == true) {
         EasyLoading.showSuccess("Email verified");
         timer.cancel();
-        context.go(Routes.home);
+        context.go(Routes.settingLanding);
       }
     });
   }

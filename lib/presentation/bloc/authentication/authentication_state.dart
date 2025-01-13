@@ -36,3 +36,49 @@ class AuthenticationFailure extends AuthenticationState {
     return "AuthenticationFailure { message: $message }";
   }
 }
+
+class AuthenticationLoading extends AuthenticationState {}
+
+class AuthenticationUpdateProfileSuccess extends AuthenticationState {
+  final User user;
+
+  const AuthenticationUpdateProfileSuccess(this.user);
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() {
+    return "AuthenticationUpdateProfileSuccess { user: $user }";
+  }
+}
+
+class AuthenticationUpdateProfileImageSuccess extends AuthenticationState {
+  final User user;
+
+  const AuthenticationUpdateProfileImageSuccess(this.user);
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() {
+    return "AuthenticationUpdateProfileImageSuccess { user: $user }";
+  }
+}
+
+class AuthenticationUpdatePasswordSuccess extends AuthenticationState {
+  final User user;
+
+  const AuthenticationUpdatePasswordSuccess(this.user);
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() {
+    return "AuthenticationUpdatePasswordSuccess { user: $user }";
+  }
+}
+
+class AuthenticationDeleteAccountSuccess extends AuthenticationState {}

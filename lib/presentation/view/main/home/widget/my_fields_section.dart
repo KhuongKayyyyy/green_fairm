@@ -13,9 +13,10 @@ class MyFieldsSection extends StatefulWidget {
 class _MyFieldsSectionState extends State<MyFieldsSection> {
   var controller = PageController(viewportFraction: 0.45);
 
-  @override
-  void initState() {
-    super.initState();
+  void deleteField(int index) {
+    setState(() {
+      widget.fields.removeAt(index);
+    });
   }
 
   @override
@@ -29,8 +30,14 @@ class _MyFieldsSectionState extends State<MyFieldsSection> {
         itemCount: widget.fields.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: FieldSmallItem(field: widget.fields[index]),
+            padding: EdgeInsets.only(
+              left: 15,
+              right: index == widget.fields.length - 1 ? 15 : 0,
+            ),
+            child: FieldSmallItem(
+              field: widget.fields[index],
+              onDelete: () => deleteField(index), // Pass the callback
+            ),
           );
         },
       ),

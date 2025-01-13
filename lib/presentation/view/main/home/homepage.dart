@@ -7,8 +7,7 @@ import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
-import 'package:green_fairm/core/util/helper.dart';
-import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_monitor.dart';
@@ -26,7 +25,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final FieldManagementBloc _fieldManagementBloc = FieldManagementBloc();
   final WeatherBloc _weatherBloc = WeatherBloc();
   final storage = const FlutterSecureStorage();
   var userId = "";
@@ -34,7 +32,9 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     _initializeUserId();
-    _fieldManagementBloc.add(FieldManagementGetByUserId(userId: userId));
+    context
+        .read<FieldManagementBloc>()
+        .add(FieldManagementGetByUserId(userId: userId));
     _weatherBloc.add(const WeatherGetByCity(city: 'Ho Chi Minh'));
   }
 
@@ -77,12 +77,9 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           children: [
             TextButton(
-                onPressed: () {
-                  // EnvironmentalDataRepository.getWeeklyStatistic(
-                  //   date: Helper.getTodayDateFormatted(),
-                  //   fieldId: "676d4559c3b9d9d8e1ac5828",
-                  //   type: "temperature",
-                  // );
+                onPressed: () async {
+                  await UserRepository()
+                      .updateUsername(name: "Nguyen Dat Khuong dep trai");
                 },
                 child: const Text("Test")),
             _buildWeatherReport(),
@@ -131,7 +128,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget _buildMyFieldsSection() {
     return BlocBuilder<FieldManagementBloc, FieldManagementState>(
-      bloc: _fieldManagementBloc,
+      bloc: context.read<FieldManagementBloc>(),
       builder: (context, fieldOfUserState) {
         if (fieldOfUserState is FieldManagementLoading) {
           return Skeletonizer(
@@ -142,6 +139,26 @@ class _HomepageState extends State<Homepage> {
             ),
           );
         } else if (fieldOfUserState is FieldManagementGetByUserIdSuccess) {
+          if (fieldOfUserState.fields.isEmpty) {
+            return Container(
+              height: 80,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                  child: Text(
+                "Add your first field",
+                style: AppTextStyle.defaultBold(color: Colors.white),
+              )),
+            );
+          }
           return MyFieldsSection(
             fields: fieldOfUserState.fields,
           );

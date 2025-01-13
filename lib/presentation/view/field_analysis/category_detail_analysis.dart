@@ -12,10 +12,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class CategoryDetailAnalysis extends StatefulWidget {
   final String category;
   final String fieldId;
+  final String date;
   final bool isWeekly;
   const CategoryDetailAnalysis(
       {super.key,
       required this.category,
+      required this.date,
       required this.fieldId,
       required this.isWeekly});
 
@@ -55,13 +57,9 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
 
     _analysisBloc.add(widget.isWeekly
         ? FieldAnalysisWeeklyDataRequested(
-            date: Helper.getTodayDateFormatted(),
-            fieldId: widget.fieldId,
-            type: dataType)
+            date: widget.date, fieldId: widget.fieldId, type: dataType)
         : FieldAnalysisDailyDataRequested(
-            date: Helper.getTodayDateFormatted(),
-            fieldId: widget.fieldId,
-            type: dataType));
+            date: widget.date, fieldId: widget.fieldId, type: dataType));
   }
 
   @override
@@ -196,7 +194,7 @@ class _CategoryDetailAnalysisState extends State<CategoryDetailAnalysis> {
               LineSeries<StatisticData, String>(
                 color: AppColors.secondaryColor,
                 dataSource: graphData,
-                xValueMapper: (StatisticData data, _) => data.date,
+                xValueMapper: (StatisticData data, _) => data.time,
                 yValueMapper: (StatisticData data, _) =>
                     double.parse(data.data.toStringAsFixed(2)),
                 dataLabelSettings: DataLabelSettings(

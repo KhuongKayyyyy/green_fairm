@@ -105,12 +105,10 @@ class EnvironmentalDataRepository {
                   hour = "Unknown";
               }
               var statisticData = StatisticData(
-                date: hour,
-                data: item['avgValue'].toDouble(),
-              );
-              if (kDebugMode) {
-                print('Statistic Data: $statisticData');
-              }
+                  time: hour, data: item['avgValue'].toDouble(), date: date);
+              // if (kDebugMode) {
+              //   print('Statistic Data: $statisticData');
+              // }
               dailyStatisticData.add(statisticData);
             }
           }
@@ -121,7 +119,6 @@ class EnvironmentalDataRepository {
         }
       }
       if (type == SensorType.humidity || type == SensorType.temperature) {
-        print("true");
         return dailyStatisticData;
       } else {
         dailyStatisticData =
@@ -182,12 +179,13 @@ class EnvironmentalDataRepository {
                   day = "Unknown";
               }
               var statisticData = StatisticData(
-                date: day,
+                time: day,
                 data: item['avgValue'].toDouble(),
+                date: item['date'],
               );
-              if (kDebugMode) {
-                print('Temperature Data: $statisticData');
-              }
+              // if (kDebugMode) {
+              //   print('Statistic Data: $statisticData');
+              // }
               weeklyStatisticData.add(statisticData);
             }
           }

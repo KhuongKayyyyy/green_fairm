@@ -53,13 +53,11 @@ class UserRepository {
   Future<UserCredential> createUserWithEmailAndPassword(
       String email, String name, String password) async {
     try {
-      // Attempt to create the user with email and password
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
-      // Update the user's profile with the provided name
       await userCredential.user!.updateProfile(
           displayName: name,
           photoURL:
@@ -84,12 +82,45 @@ class UserRepository {
     return Future.wait([
       _firebaseAuth.signOut(),
       _googleSignIn.signOut(),
+      const FlutterSecureStorage().delete(key: AppSetting.userUid),
     ]);
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user != null) {
+        await user.delete();
+        if (kDebugMode) {
+          print('User deleted successfully');
+        }
+        const storage = FlutterSecureStorage();
+        final userId = await storage.read(key: AppSetting.userUid);
+        deleteUserFromServer(userId: userId!);
+        await storage.delete(key: AppSetting.userUid);
+        signOut();
+      } else {
+        throw Exception('No user is signed in');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting user: $e');
+      }
+      rethrow;
+    }
   }
 
   Future<bool> isSignedIn() async {
     final currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
+  }
+
+  Future<void> updateUsername({required String name}) async {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await user.updateProfile(displayName: name);
+      await user.reload();
+    }
   }
 
   Future<User?> getUser() async {
@@ -112,6 +143,20 @@ class UserRepository {
       } else {
         if (kDebugMode) {
           print('User saved to server successfully');
+          final responseBody = await response.transform(utf8.decoder).join();
+          final responseData = jsonDecode(responseBody);
+          if (responseData['statusCode'] == 200) {
+            const storage = FlutterSecureStorage();
+            await storage.write(
+                key: AppSetting.userUid,
+                value: responseData['metadata']['_id']);
+            if (kDebugMode) {
+              print('User ID saved to secure storage successfully');
+              print(await storage.read(key: AppSetting.userUid));
+            }
+          } else {
+            throw Exception('Failed to save user ID to secure storage');
+          }
         }
       }
     } catch (e) {
@@ -205,6 +250,83 @@ class UserRepository {
     } catch (e) {
       if (kDebugMode) {
         print('Error saving user to server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> updateUsernameToServer(
+      {required String userId, required String username}) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.patchUrl(Uri.parse("${API.updateUser}/$userId"));
+      request.headers.set('content-type', 'application/json');
+      request.write(jsonEncode({
+        "username": username,
+      }));
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update user on server');
+      } else {
+        if (kDebugMode) {
+          print('User updated on server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating user on server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> updatePassordToServer(
+      {required String userId,
+      required String oldPassword,
+      required String password}) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.patchUrl(Uri.parse("${API.updateUser}/$userId"));
+      request.headers.set('content-type', 'application/json');
+      request.write(jsonEncode({
+        "oldPassword": oldPassword,
+        "password": password,
+      }));
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update user on server');
+      } else {
+        if (kDebugMode) {
+          print('User updated on server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating user on server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> deleteUserFromServer({required String userId}) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.deleteUrl(Uri.parse("${API.deleteAccount}/$userId"));
+      request.headers.set('content-type', 'application/json');
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete user from server');
+      } else {
+        if (kDebugMode) {
+          print('User deleted from server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting user from server: $e');
       }
       rethrow;
     }

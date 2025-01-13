@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/daily_stacked_chart.dart';
-import 'package:green_fairm/presentation/view/field_analysis/widget/data_list.dart';
 import 'package:green_fairm/presentation/view/field_analysis/widget/weekly_stacked_chart.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FieldAnalysisPage extends StatefulWidget {
   final Field field;
@@ -20,20 +18,14 @@ class FieldAnalysisPage extends StatefulWidget {
 
 class _FieldAnalysisPageState extends State<FieldAnalysisPage> {
   int _slidingIndex = 0;
-  int _dailyInitialIndex = 0;
+  String _initialDate = Helper.getTodayDateFormatted();
 
-  void _handlePointTap(ChartPointDetails details) {
-    if (details.pointIndex != null) {
-      final tappedIndex = details.pointIndex!;
-      if (kDebugMode) {
-        print('Tapped point index: $tappedIndex');
-      }
-
-      setState(() {
-        _slidingIndex = 1;
-        _dailyInitialIndex = tappedIndex;
-      });
-    }
+  void _handlePointTap(String date) {
+    print(date);
+    setState(() {
+      _initialDate = date;
+      _slidingIndex = 1;
+    });
   }
 
   @override
@@ -91,10 +83,6 @@ class _FieldAnalysisPageState extends State<FieldAnalysisPage> {
                             fieldId: widget.field.id!,
                             onPointTap: _handlePointTap,
                           ),
-                          DataList(
-                            fieldId: widget.field.id!,
-                            isWeekly: true,
-                          ),
                         ],
                       ),
                     )
@@ -102,12 +90,8 @@ class _FieldAnalysisPageState extends State<FieldAnalysisPage> {
                       child: Column(
                         children: [
                           DailyStackedChart(
-                            initalIndex: _dailyInitialIndex,
+                            initialDate: _initialDate,
                             fieldId: widget.field.id!,
-                          ),
-                          DataList(
-                            fieldId: widget.field.id!,
-                            isWeekly: false,
                           ),
                         ],
                       ),

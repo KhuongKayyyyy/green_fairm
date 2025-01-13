@@ -19,7 +19,7 @@ class _MainWrapperState extends State<MainWrapper>
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: Padding(
-          padding: const EdgeInsets.only(bottom: 100),
+          padding: const EdgeInsets.only(bottom: 80),
           child: widget.navigationShell,
         ),
         bottomNavigationBar: Stack(

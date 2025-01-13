@@ -2,6 +2,7 @@
 class EnvironmentalData {
   EnvironmentalData({
     this.id,
+    this.time,
     this.date,
     this.humidity,
     this.light,
@@ -11,6 +12,7 @@ class EnvironmentalData {
   });
 
   final String? id;
+  final String? time;
   final String? date;
   final num? humidity;
   final num? light;
@@ -22,6 +24,7 @@ class EnvironmentalData {
     return EnvironmentalData(
       id: json['id'] as String?,
       date: json['date'] as String?,
+      time: json['time'] as String?,
       humidity: json['humidity'] as num?,
       light: json['light'] as num?,
       soilMoisture: json['soilMoisture'] as num?,
@@ -34,6 +37,7 @@ class EnvironmentalData {
     return {
       'id': id,
       'date': date,
+      'time': time,
       'humidity': humidity,
       'light': light,
       'soilMoisture': soilMoisture,
@@ -44,17 +48,18 @@ class EnvironmentalData {
 
   @override
   String toString() {
-    return 'EnvironmentalData(id: $id, date: $date, humidity: $humidity, light: $light, soilMoisture: $soilMoisture, co2: $co2, rain: $rain)';
+    return 'EnvironmentalData(id: $id,time: $time, date: $date, humidity: $humidity, light: $light, soilMoisture: $soilMoisture, co2: $co2, rain: $rain)';
   }
 }
 
 class StatisticData {
   StatisticData({
-    required this.date,
+    this.date,
+    required this.time,
     required this.data,
   });
-
-  final String date;
+  final String time;
+  final String? date;
   final double data;
 
   @override
@@ -65,6 +70,7 @@ class StatisticData {
   factory StatisticData.fromJson(Map<String, dynamic> json) {
     return StatisticData(
       date: json['date'] as String,
+      time: json['time'] as String,
       data: json['data'] as double,
     );
   }
@@ -72,6 +78,7 @@ class StatisticData {
   Map<String, dynamic> toJson() {
     return {
       'date': date,
+      'time': time,
       'data': data,
     };
   }

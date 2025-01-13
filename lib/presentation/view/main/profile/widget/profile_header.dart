@@ -15,8 +15,10 @@ class ProfileHeader extends StatefulWidget {
 class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+    return FutureBuilder<User?>(
+      future: FirebaseAuth.instance.currentUser?.reload().then((_) {
+        return FirebaseAuth.instance.currentUser;
+      }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -27,30 +29,29 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         if (!snapshot.hasData) {
           return const Text('User not found');
         }
-
         final User? updatedUser = snapshot.data;
 
         return Column(
           children: [
-            const SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 100),
             const Hero(tag: 'avatar', child: UserAvatar()),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 20),
+            Text(
+              updatedUser?.displayName ?? 'No display name',
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Text(updatedUser?.displayName ?? 'No display name',
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                )),
-            Text(updatedUser?.email ?? 'No email',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                )),
+            Text(
+              updatedUser?.email ?? 'No email',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         );
       },
