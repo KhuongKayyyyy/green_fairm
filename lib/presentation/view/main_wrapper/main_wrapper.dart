@@ -16,6 +16,7 @@ class _MainWrapperState extends State<MainWrapper>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: Padding(
@@ -35,6 +36,22 @@ class _MainWrapperState extends State<MainWrapper>
               right: 0,
               child: Center(child: AiMiniChatbox()),
             ),
+            Positioned(
+                bottom: 90,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 15,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                          colors: [
+                            Colors.white,
+                            Colors.white.withOpacity(0.3),
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter)),
+                )),
           ],
         ));
   }

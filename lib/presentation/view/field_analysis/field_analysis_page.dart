@@ -21,7 +21,6 @@ class _FieldAnalysisPageState extends State<FieldAnalysisPage> {
   String _initialDate = Helper.getTodayDateFormatted();
 
   void _handlePointTap(String date) {
-    print(date);
     setState(() {
       _initialDate = date;
       _slidingIndex = 1;

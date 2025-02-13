@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
+import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/view/main/field/widget/field_page_field_list.dart';
 import 'package:green_fairm/presentation/view/main/field/widget/field_page_header.dart';
@@ -19,6 +20,7 @@ class FieldPage extends StatefulWidget {
 class _FieldPageState extends State<FieldPage> {
   FieldManagementBloc fieldManagementBloc = FieldManagementBloc();
   var userId = "";
+  List<Field> fields = [];
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,7 @@ class _FieldPageState extends State<FieldPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // Optional: Uncomment this for background image
@@ -55,11 +58,13 @@ class _FieldPageState extends State<FieldPage> {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 60,
             left: 20,
             right: 20,
-            child: FieldPageHeader(),
+            child: FieldPageHeader(
+              fields: fields,
+            ),
           ),
           Positioned(
             top: 200,
@@ -75,6 +80,7 @@ class _FieldPageState extends State<FieldPage> {
                     child: FieldPageFieldList(fields: FakeData.fakeFields),
                   );
                 } else if (fileldState is FieldManagementGetByUserIdSuccess) {
+                  fields = fileldState.fields;
                   return FieldPageFieldList(fields: fileldState.fields);
                 }
                 return Skeletonizer(

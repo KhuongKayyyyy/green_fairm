@@ -115,9 +115,6 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 100),
-          ),
         ],
       ),
     );

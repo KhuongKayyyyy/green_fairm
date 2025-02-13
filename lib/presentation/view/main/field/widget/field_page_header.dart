@@ -4,10 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/router/routes.dart';
+import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/widget/app_search_bar.dart';
 
 class FieldPageHeader extends StatefulWidget {
-  const FieldPageHeader({super.key});
+  final List<Field> fields;
+  const FieldPageHeader({super.key, required this.fields});
 
   @override
   State<FieldPageHeader> createState() => _FieldPageHeaderState();
@@ -54,7 +56,9 @@ class _FieldPageHeaderState extends State<FieldPageHeader> {
             ],
           ),
           const SizedBox(height: 10),
-          const AppSearchBar(),
+          AppSearchBar(
+            fields: widget.fields,
+          ),
           const SizedBox(height: 20),
         ],
       ),

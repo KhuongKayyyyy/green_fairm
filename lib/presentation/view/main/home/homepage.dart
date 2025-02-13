@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/service/noti_service.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
@@ -78,8 +79,10 @@ class _HomepageState extends State<Homepage> {
           children: [
             TextButton(
                 onPressed: () async {
-                  await UserRepository()
-                      .updateUsername(name: "Nguyen Dat Khuong dep trai");
+                  NotiService().showNotification(
+                      title: "New day has come ! ",
+                      body: "Check out your farm yesterday analysis, Khuong",
+                      id: 1);
                 },
                 child: const Text("Test")),
             _buildWeatherReport(),

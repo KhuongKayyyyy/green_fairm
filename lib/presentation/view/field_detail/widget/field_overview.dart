@@ -111,7 +111,8 @@ class _FieldOverviewState extends State<FieldOverview> {
             Expanded(
               child: FieldInformationItem(
                   informationType: "Planting Date",
-                  information: widget.field.plantingDate ?? "No data"),
+                  information: widget.field.plantingDate ??
+                      Helper.getTodayDateFormatted()),
             ),
           ],
         ),
@@ -126,7 +127,7 @@ class _FieldOverviewState extends State<FieldOverview> {
             Expanded(
               child: FieldInformationItem(
                   informationType: "Harvest Time",
-                  information: widget.field.haverstTime ?? "No data"),
+                  information: widget.field.haverstTime ?? "2025-10-10"),
             ),
           ],
         ),

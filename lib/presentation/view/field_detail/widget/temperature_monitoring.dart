@@ -106,7 +106,7 @@ class TemperatureMonitoring extends StatelessWidget {
     Color statusColor;
     IconData statusIcon;
 
-    if (currentTemperature <= 24) {
+    if (currentTemperature < 25) {
       status = "Cold";
       statusColor = Colors.blue;
       statusIcon = Icons.ac_unit;
@@ -119,6 +119,7 @@ class TemperatureMonitoring extends StatelessWidget {
       statusColor = Colors.orange;
       statusIcon = Icons.warning;
     } else {
+      // currentTemperature > 40
       status = "Super hot";
       statusColor = Colors.red;
       statusIcon = Icons.dangerous;

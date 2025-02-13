@@ -53,3 +53,15 @@ final class FieldManagementEventDelete extends FieldManagementEvent {
   @override
   List<Object> get props => [field];
 }
+
+final class FieldManagementEventUpdateFieldSetting
+    extends FieldManagementEvent {
+  final Field field;
+  final String settingType;
+
+  const FieldManagementEventUpdateFieldSetting(
+      {required this.field, required this.settingType});
+
+  @override
+  List<Object> get props => [field, settingType];
+}

@@ -16,6 +16,7 @@ class FieldManagementBloc
     on<FieldManagementGetByUserId>(_onGetByUserId);
     on<FieldManagementEventUpdate>(_onUpdate);
     on<FieldManagementEventDelete>(_onDelete);
+    on<FieldManagementEventUpdateFieldSetting>(_onUpdateFieldSetting);
   }
 
   Future<void> _onCreate(
@@ -47,7 +48,7 @@ class FieldManagementBloc
       final userId =
           await const FlutterSecureStorage().read(key: AppSetting.userUid) ??
               '';
-      print(userId);
+
       final fields = await _fieldRepository.getFieldsByUserId(userId);
       emit(FieldManagementGetByUserIdSuccess(fields: fields));
     } catch (e) {
@@ -80,6 +81,20 @@ class FieldManagementBloc
       emit(FieldManagementDeleteSuccess(field: event.field));
     } catch (e) {
       emit(const FieldManagementDeleteError(
+          message: 'An unknown error occurred'));
+    }
+  }
+
+  Future<void> _onUpdateFieldSetting(
+    FieldManagementEventUpdateFieldSetting event,
+    Emitter<FieldManagementState> emit,
+  ) async {
+    emit(FieldManagementLoading());
+    try {
+      await _fieldRepository.updateFieldSetting(event.field, event.settingType);
+      emit(FieldManagementUpdateFieldSettingSuccess(field: event.field));
+    } catch (e) {
+      emit(const FieldManagementUpdateFieldSettingError(
           message: 'An unknown error occurred'));
     }
   }

@@ -137,4 +137,60 @@ class FieldRepository {
       rethrow;
     }
   }
+
+  Future<Field> getFieldById(String fieldId) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.getUrl(Uri.parse('${API.getFieldById}$fieldId'));
+      var response = await request.close();
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to get field from server. Response code: ${response.statusCode}');
+      } else {
+        var responseBody = await response.transform(utf8.decoder).join();
+        var jsonResponse = jsonDecode(responseBody);
+
+        if (jsonResponse['statusCode'] != 200) {
+          throw Exception(
+              'Failed to get field from server. Status code: ${jsonResponse['statusCode']}');
+        }
+
+        var field = jsonResponse['metadata'];
+
+        return Field.fromJson(field);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting field from server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> updateFieldSetting(Field field, String settingType) async {
+    try {
+      var client = HttpClient();
+      var request = await client
+          .patchUrl(Uri.parse('${API.getFieldById}${field.id}/$settingType'));
+      request.headers.set('content-type', 'application/json');
+
+      var response = await request.close();
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to update field setting to server. Response code: ${response.statusCode}');
+      } else {
+        if (kDebugMode) {
+          print('Field setting updated to server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating field setting to server: $e');
+      }
+      rethrow;
+    }
+  }
 }

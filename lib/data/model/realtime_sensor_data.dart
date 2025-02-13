@@ -6,6 +6,8 @@ class RealtimeSensorData {
   String soilMoisture;
   String rainVolume;
   String gasVolume;
+  bool? isAutoWatering;
+  bool? isWatering;
   String fieldId;
   DateTime createdAt;
   DateTime updatedAt;
@@ -19,6 +21,8 @@ class RealtimeSensorData {
     required this.soilMoisture,
     required this.rainVolume,
     required this.gasVolume,
+    this.isAutoWatering,
+    this.isWatering,
     required this.fieldId,
     required this.createdAt,
     required this.updatedAt,
@@ -34,6 +38,10 @@ class RealtimeSensorData {
       soilMoisture: json['soilMoisture'] ?? '0.0', // Default to '0.0' if null
       rainVolume: json['rainVolume'] ?? '0.0', // Default to '0.0' if null
       gasVolume: json['gasVolume'] ?? '0.0', // Default to '0.0' if null
+      isAutoWatering: json['isAutoWatering'] ==
+          '1', // Convert "1" to true, "0" or null to false
+      isWatering: json['isWatering'] ==
+          '1', // Convert "1" to true, "0" or null to false
       fieldId: json['fieldId'] ?? '', // Default to an empty string if null
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
@@ -63,6 +71,6 @@ class RealtimeSensorData {
 
   @override
   String toString() {
-    return 'SensorData{id: $id, humidity: $humidity, temperature: $temperature, light: $light, soilMoisture: $soilMoisture, rainVolume: $rainVolume, gasVolume: $gasVolume, fieldId: $fieldId, createdAt: $createdAt, updatedAt: $updatedAt, v: $v}';
+    return 'SensorData{id: $id, humidity: $humidity, temperature: $temperature, light: $light, soilMoisture: $soilMoisture, rainVolume: $rainVolume, gasVolume: $gasVolume, isAutoWatering: $isAutoWatering, isWatering: $isWatering, fieldId: $fieldId, createdAt: $createdAt, updatedAt: $updatedAt, v: $v}';
   }
 }

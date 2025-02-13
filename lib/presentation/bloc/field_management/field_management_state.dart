@@ -88,3 +88,18 @@ final class FieldManagementDeleteError extends FieldManagementState {
   @override
   List<Object> get props => [message];
 }
+
+final class FieldManagementUpdateFieldSettingSuccess
+    extends FieldManagementState {
+  final Field field;
+  const FieldManagementUpdateFieldSettingSuccess({required this.field});
+}
+
+final class FieldManagementUpdateFieldSettingError
+    extends FieldManagementState {
+  final String message;
+  const FieldManagementUpdateFieldSettingError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

@@ -54,7 +54,7 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
             _selectedDate =
                 Helper.getFormattedDateWithDay(weekDates[reversedIndex]);
           });
-          print('Selected Date on Swipe: $_selectedDate');
+          // print('Selected Date on Swipe: $_selectedDate');
         }
       });
     _selectedDate = Helper.getFormattedDateWithDay(widget.initialDate);
@@ -137,7 +137,7 @@ class _DailyStackedChartState extends State<DailyStackedChart> {
         DataList(
           key: ValueKey(widget.initialDate),
           fieldId: widget.fieldId,
-          isWeekly: true,
+          isWeekly: false,
           date: widget.initialDate,
         ),
       ],

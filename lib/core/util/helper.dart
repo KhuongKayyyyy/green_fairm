@@ -165,7 +165,6 @@ class Helper {
   static List<String> getPassedDaysOfCurrentWeek() {
     final now = DateTime.now();
     final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    final today = DateTime(now.year, now.month, now.day);
 
     return List.generate(now.weekday, (index) {
       final currentDate = firstDayOfWeek.add(Duration(days: index));

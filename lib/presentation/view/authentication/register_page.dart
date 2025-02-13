@@ -52,47 +52,53 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          ..._buildRegisterBackground(),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.06,
-            left: 20,
-            right: 20,
-            child: Center(
-              child: Column(
-                children: [
-                  _buildRegisterHeader(),
-                  const SizedBox(height: 20),
-                  BlocListener<RegisterBloc, RegisterState>(
-                    bloc: context.read<RegisterBloc>(),
-                    listener: (context, resigsterState) {
-                      if (resigsterState is RegisterLoading) {
-                        // Show loading indicator
-                        EasyLoading.show(status: 'Signing up...');
-                      } else {
-                        // Dismiss loading indicator
-                        EasyLoading.dismiss();
-                      }
-                      if (resigsterState is RegisterSuccess) {
-                        context.pushNamed(Routes.mailVerification);
-                      } else if (resigsterState is RegisterFailure) {
-                        // Show error message on failure
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(resigsterState.errorMessage),
-                          ),
-                        );
-                      }
-                    },
-                    child: _buildSignUpForm(),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              ..._buildRegisterBackground(),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.06,
+                left: 20,
+                right: 20,
+                child: Center(
+                  child: Column(
+                    children: [
+                      _buildRegisterHeader(),
+                      const SizedBox(height: 20),
+                      BlocListener<RegisterBloc, RegisterState>(
+                        bloc: context.read<RegisterBloc>(),
+                        listener: (context, resigsterState) {
+                          if (resigsterState is RegisterLoading) {
+                            // Show loading indicator
+                            EasyLoading.show(status: 'Signing up...');
+                          } else {
+                            // Dismiss loading indicator
+                            EasyLoading.dismiss();
+                          }
+                          if (resigsterState is RegisterSuccess) {
+                            context.pushNamed(Routes.mailVerification);
+                          } else if (resigsterState is RegisterFailure) {
+                            // Show error message on failure
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(resigsterState.errorMessage),
+                              ),
+                            );
+                          }
+                        },
+                        child: _buildSignUpForm(),
+                      ),
+                      _buildSignUpFooter()
+                    ],
                   ),
-                  _buildSignUpFooter()
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

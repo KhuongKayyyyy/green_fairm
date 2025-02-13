@@ -8,18 +8,22 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/router/app_navigation.dart';
+import 'package:green_fairm/core/service/noti_service.dart';
 import 'package:green_fairm/core/theme/app_theme.dart';
 import 'package:green_fairm/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/login/login_bloc.dart';
 import 'package:green_fairm/presentation/bloc/register/register_bloc.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() async {
-  await dotenv.load(); // Load environment variables
+  await dotenv.load();
 
   Gemini.init(apiKey: dotenv.env['GEMINI_API_KEY']!);
   WidgetsFlutterBinding.ensureInitialized();
+  NotiService().initNotification();
+  tz.initializeTimeZones();
   await Firebase.initializeApp();
   configEasyLoading();
   runApp(const MyApp());

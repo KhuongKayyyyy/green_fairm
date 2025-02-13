@@ -16,6 +16,7 @@ class API {
   // field
   static const String createNewField = "${Server.baseUrl}/fields/create";
   static const String getFieldsByUserId = "${Server.baseUrl}/fields/user/";
+  static const String getFieldById = "${Server.baseUrl}/fields/";
   static const String updateFieldById = "${Server.baseUrl}/fields/";
   static const String deleteFieldById = "${Server.baseUrl}/fields/";
 

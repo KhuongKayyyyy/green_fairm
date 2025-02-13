@@ -13,6 +13,7 @@ import 'package:green_fairm/presentation/view/field_detail/widget/basic_characte
 import 'package:green_fairm/presentation/view/field_detail/widget/field_setting.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/monitoring_weather_widget.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_history_section.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/water_monitoring.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_schedule.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_usage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -29,10 +30,14 @@ class FieldMonitoring extends StatefulWidget {
 }
 
 class _FieldMonitoringState extends State<FieldMonitoring> {
+  bool isWatering = false;
+  bool isAutomatic = false;
   final WeatherBloc _weatherBloc = WeatherBloc();
   final String broker = '103.216.117.115';
   final int port = 1883;
   final String topic = 'ngoctruongbui/sensor_realtime';
+  String waterTopic = 'bekhuongcute/watering';
+
   MqttServerClient? client;
 
   RealtimeSensorData? sensorData;
@@ -41,8 +46,40 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   @override
   void initState() {
     super.initState();
+    waterTopic = 'bekhuongcute/watering_${widget.field.id}';
     _weatherBloc.add(WeatherGetByCity(city: _getStateOnly(widget.field.area!)));
-    // _connectToMqtt();
+    _connectToMqtt();
+  }
+
+  void _switchIrrigationMode(bool value) {
+    final switchIrrigationMode = jsonEncode({
+      'isAutoWatering': value,
+    });
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(switchIrrigationMode);
+
+    client!.publishMessage(waterTopic, MqttQos.atLeastOnce, builder.payload!);
+
+    if (kDebugMode) {
+      print('Test JSON sent: $switchIrrigationMode');
+    }
+  }
+
+  void _sendWaterRequest(bool value) {
+    final requestJson = jsonEncode({
+      'isWatering': value,
+      "isAutomatic": false,
+      'remainingTime': 300,
+    });
+
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(requestJson);
+
+    client!.publishMessage(waterTopic, MqttQos.atLeastOnce, builder.payload!);
+
+    if (kDebugMode) {
+      print('Test JSON sent: $requestJson');
+    }
   }
 
   Future<void> _connectToMqtt() async {
@@ -184,6 +221,16 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
+          // Switch.adaptive(
+          //   value: isWatering,
+          //   onChanged: (value) {
+          //     setState(() {
+          //       isWatering = value;
+          //     });
+          //     // _sendTestJson(value);
+          //     // _switchIrrigationMode(value);
+          //   },
+          // ),
           BlocBuilder<WeatherBloc, WeatherState>(
             bloc: _weatherBloc,
             builder: (context, weatherState) {
@@ -224,25 +271,35 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   }
 
   Widget _buildIrrigation() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          WaterUsage(),
-          SizedBox(height: 20),
-          WaterHistorySection(),
-          SizedBox(height: 20),
-          WaterSchedule(),
+          WaterMonitoring(
+            sensorData: sensorData,
+            mqqtNotifier: _sendWaterRequest,
+          ),
+          const SizedBox(height: 20),
+          const WaterUsage(),
+          const SizedBox(height: 20),
+          const WaterHistorySection(),
+          const SizedBox(height: 20),
+          const WaterSchedule(),
         ],
       ),
     );
   }
 
   Widget _buildSettings() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
-        children: [FieldSetting()],
+        children: [
+          FieldSetting(
+            field: widget.field,
+            mqqtNotifier: _switchIrrigationMode,
+          )
+        ],
       ),
     );
   }

@@ -9,12 +9,16 @@ class ToggleSelectionItem extends StatefulWidget {
   final String description;
   bool? isSelected;
   final bool? isDisable;
-  ToggleSelectionItem(
-      {super.key,
-      required this.title,
-      required this.description,
-      this.isSelected,
-      this.isDisable});
+  final Function(bool value)? onChange;
+
+  ToggleSelectionItem({
+    super.key,
+    required this.title,
+    required this.description,
+    this.isSelected,
+    this.isDisable,
+    this.onChange,
+  });
 
   @override
   State<ToggleSelectionItem> createState() => _ToggleSelectionItemState();
@@ -56,6 +60,10 @@ class _ToggleSelectionItemState extends State<ToggleSelectionItem> {
                         setState(() {
                           widget.isSelected = value;
                         });
+                        // Pass the new value to the onChange callback if it exists
+                        if (widget.onChange != null) {
+                          widget.onChange!(value);
+                        }
                       },
               ),
             ],

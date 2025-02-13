@@ -21,6 +21,8 @@ class Field {
     this.plantingDate,
     this.cropHealth,
     this.haverstTime,
+    this.isAutoWatering,
+    this.isWeatherService,
   });
 
   factory Field.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,8 @@ class Field {
       // plantingDate: json['plantingDate'],
       // cropHealth: json['cropHealth'],
       // haverstTime: json['haverstTime'],
+      isAutoWatering: json['isAutoWatering'],
+      isWeatherService: json['isWeather'],
     );
   }
 

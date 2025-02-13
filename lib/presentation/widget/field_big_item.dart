@@ -13,7 +13,8 @@ class FieldBigItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          context.pushNamed(Routes.fieldDetail, extra: field);
+          context.pushNamed(Routes.fieldDetail,
+              extra: {"field": field, "onDelete": () {}});
         },
         child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

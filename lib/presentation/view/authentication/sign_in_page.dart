@@ -43,45 +43,52 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          ..._buildSignInBackground(),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.15,
-            left: 20,
-            right: 20,
-            child: Center(
-              child: Column(
-                children: [
-                  _buildSignInHeader(),
-                  const SizedBox(height: 50),
-                  BlocListener<LoginBloc, LoginState>(
-                    bloc: context.read<LoginBloc>(),
-                    listener: (context, loginState) {
-                      if (loginState is LoginLoading) {
-                        EasyLoading.show(status: 'Logging in...');
-                      } else {
-                        EasyLoading.dismiss();
-                      }
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              ..._buildSignInBackground(),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.15,
+                left: 20,
+                right: 20,
+                child: Center(
+                  child: Column(
+                    children: [
+                      _buildSignInHeader(),
+                      const SizedBox(height: 50),
+                      BlocListener<LoginBloc, LoginState>(
+                        bloc: context.read<LoginBloc>(),
+                        listener: (context, loginState) {
+                          if (loginState is LoginLoading) {
+                            EasyLoading.show(status: 'Logging in...');
+                          } else {
+                            EasyLoading.dismiss();
+                          }
 
-                      if (loginState is LoginSuccess) {
-                        context.go(Routes.home); // Navigate to home on success
-                      } else if (loginState is LoginFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(loginState.errorMessage),
-                          ),
-                        );
-                      }
-                    },
-                    child: _buildSignInForm(),
+                          if (loginState is LoginSuccess) {
+                            context
+                                .go(Routes.home); // Navigate to home on success
+                          } else if (loginState is LoginFailure) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(loginState.errorMessage),
+                              ),
+                            );
+                          }
+                        },
+                        child: _buildSignInForm(),
+                      ),
+                      _buildSignInFooter(),
+                    ],
                   ),
-                  _buildSignInFooter(),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
