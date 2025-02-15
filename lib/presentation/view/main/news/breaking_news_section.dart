@@ -4,7 +4,7 @@ import 'package:green_fairm/presentation/view/main/news/widget/breaking_news_ite
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BreakingNewsSection extends StatefulWidget {
-  const BreakingNewsSection({Key? key}) : super(key: key);
+  const BreakingNewsSection({super.key});
 
   @override
   State<BreakingNewsSection> createState() => _BreakingNewsSectionState();

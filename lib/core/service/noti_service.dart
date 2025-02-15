@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -31,9 +32,14 @@ class NotiService {
     await notificationPlugins.initialize(
       initSettings,
       onDidReceiveNotificationResponse: (details) {
-        print("Notification tapped!");
-        print(details);
+        if (kDebugMode) {
+          print("Notification tapped!");
+        }
+        if (kDebugMode) {
+          print(details);
+        }
       },
+      // ignore: avoid_print
       onDidReceiveBackgroundNotificationResponse: (details) => print(details),
     );
 
@@ -71,7 +77,7 @@ class NotiService {
 
     // If 5 AM has already passed today, schedule for tomorrow
     final nextNotificationTime = scheduledTime.isBefore(now)
-        ? scheduledTime.add(Duration(days: 1))
+        ? scheduledTime.add(const Duration(days: 1))
         : scheduledTime;
 
     await notificationPlugins.zonedSchedule(

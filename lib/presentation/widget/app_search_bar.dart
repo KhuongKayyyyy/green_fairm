@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_fairm/data/model/field.dart';
-import 'package:green_fairm/data/res/field_repository.dart';
-import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
+
 import 'package:green_fairm/presentation/widget/field_search_item.dart';
 
 class AppSearchBar extends StatefulWidget {

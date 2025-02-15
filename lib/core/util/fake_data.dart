@@ -137,33 +137,29 @@ class FakeData {
   static final List<WaterHistory> fakeWaterHistories = [
     WaterHistory(
       id: "1",
-      date: "Thursday, 12 August 2021",
-      time: "9:00 AM",
-      status: "Done",
+      // time: Timestamp.fromDate(DateTime.parse("2024-12-15 09:00:00")),
+      startDate: "2024-12-15 09:00:00",
+      endDate: "2024-12-15 10:00:00",
     ),
     WaterHistory(
       id: "2",
-      date: "Thursday, 12 August 2021",
-      time: "9:00 AM",
-      status: "Done",
+      startDate: "2024-12-15 09:00:00",
+      endDate: "2024-12-15 10:00:00",
     ),
     WaterHistory(
       id: "3",
-      date: "Thursday, 12 August 2021",
-      time: "9:00 AM",
-      status: "Done",
+      startDate: "2024-12-15 09:00:00",
+      endDate: "2024-12-15 10:00:00",
     ),
     WaterHistory(
       id: "4",
-      date: "Thursday, 12 August 2021",
-      time: "9:00 AM",
-      status: "Done",
+      startDate: "2024-12-15 09:00:00",
+      endDate: "2024-12-15 10:00:00",
     ),
     WaterHistory(
       id: "5",
-      date: "Thursday, 12 August 2021",
-      time: "9:00 AM",
-      status: "Done",
+      startDate: "2024-12-15 09:00:00",
+      endDate: "2024-12-15 10:00:00",
     ),
   ];
 

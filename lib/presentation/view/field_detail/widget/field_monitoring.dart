@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
+import 'package:green_fairm/core/service/noti_service.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/data/model/realtime_sensor_data.dart';
@@ -32,6 +33,7 @@ class FieldMonitoring extends StatefulWidget {
 class _FieldMonitoringState extends State<FieldMonitoring> {
   bool isWatering = false;
   bool isAutomatic = false;
+  bool _hasNotifiedRain = false;
   final WeatherBloc _weatherBloc = WeatherBloc();
   final String broker = '103.216.117.115';
   final int port = 1883;
@@ -43,6 +45,7 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   RealtimeSensorData? sensorData;
   int _slidingIndex = 0;
 
+  // waterHistoryBloc
   @override
   void initState() {
     super.initState();
@@ -68,7 +71,6 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   void _sendWaterRequest(bool value) {
     final requestJson = jsonEncode({
       'isWatering': value,
-      "isAutomatic": false,
       'remainingTime': 300,
     });
 
@@ -126,9 +128,9 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       final payload =
           MqttPublishPayload.bytesToStringAsString(message.payload.message);
 
-      if (kDebugMode) {
-        print('Received message: $payload');
-      }
+      // if (kDebugMode) {
+      //   print('Received message: $payload');
+      // }
       try {
         final json = jsonDecode(payload);
         final newSensorData = RealtimeSensorData.fromJson(json);
@@ -136,10 +138,33 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
         setState(() {
           sensorData = newSensorData;
         });
-
-        if (kDebugMode) {
-          print('Updated sensor data: $sensorData');
+        if (double.parse(newSensorData.gasVolume) > 1200) {
+          NotiService().showNotification(
+              title: "Fire Warning 🔥",
+              body: "A considerable amount of gas found in your farm, Khuong",
+              id: 2);
         }
+        double rainVolume = double.parse(newSensorData.rainVolume);
+
+        if (rainVolume < 3000 && !_hasNotifiedRain) {
+          NotiService().showNotification(
+              title: "It's raining outside 🌧️",
+              body: "Looks like it's raining at your farm, Khuong",
+              id: 3);
+          _hasNotifiedRain = true; // Prevent duplicate notifications
+        } else if (rainVolume < 1500 && !_hasNotifiedRain) {
+          NotiService().showNotification(
+              title: "Heavy rain ⛈️",
+              body: "It's raining heavily at your farm, Khuong",
+              id: 3);
+          _hasNotifiedRain = true; // Prevent duplicate notifications
+        } else if (rainVolume > 3000) {
+          _hasNotifiedRain = false; // Reset flag when rain stops
+        }
+
+        // if (kDebugMode) {
+        //   print('Updated sensor data: $sensorData');
+        // }
       } catch (e) {
         if (kDebugMode) {
           print('Error parsing MQTT message: $e');
@@ -221,16 +246,6 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          // Switch.adaptive(
-          //   value: isWatering,
-          //   onChanged: (value) {
-          //     setState(() {
-          //       isWatering = value;
-          //     });
-          //     // _sendTestJson(value);
-          //     // _switchIrrigationMode(value);
-          //   },
-          // ),
           BlocBuilder<WeatherBloc, WeatherState>(
             bloc: _weatherBloc,
             builder: (context, weatherState) {
@@ -276,13 +291,17 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       child: Column(
         children: [
           WaterMonitoring(
+            refresh: () => setState(() {}),
+            field: widget.field,
             sensorData: sensorData,
             mqqtNotifier: _sendWaterRequest,
           ),
           const SizedBox(height: 20),
-          const WaterUsage(),
+          WaterHistorySection(
+            field: widget.field,
+          ),
           const SizedBox(height: 20),
-          const WaterHistorySection(),
+          const WaterUsage(),
           const SizedBox(height: 20),
           const WaterSchedule(),
         ],

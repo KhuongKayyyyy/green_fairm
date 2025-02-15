@@ -23,11 +23,11 @@ class _WaterStatisticState extends State<WaterStatistic> {
           _buildStatisticHeader(),
           const SizedBox(height: 20),
           const WaterUsageLineChart(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           const WaterUsage(
             date: "January Usage",
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           const WaterDailyUse()
         ],
       ),

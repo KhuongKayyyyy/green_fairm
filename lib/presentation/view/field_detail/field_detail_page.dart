@@ -8,6 +8,7 @@ import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/bloc/field_analysis/field_analysis_bloc.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/farm_from_satelite.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/field_monitoring.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/field_overview.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/header_brief_information.dart';
@@ -79,6 +80,21 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
                     icon: Icons.arrow_back, onPressed: () => context.pop()),
               ),
             ),
+            actions: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: ActionButtonIcon(
+                      icon: Icons.map,
+                      onPressed: () {
+                        showMapDialog(widget.field);
+                      }),
+                ),
+              ),
+            ],
             title: _showTitle
                 ? Text(
                     "${widget.field.name}",
@@ -188,5 +204,13 @@ class _FieldDetailPageState extends State<FieldDetailPage> {
         ),
       ),
     );
+  }
+
+  void showMapDialog(Field field) {
+    showDialog(
+        context: context,
+        builder: (context) => FarmFromSatelite(
+              field: field,
+            ));
   }
 }

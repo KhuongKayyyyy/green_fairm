@@ -33,4 +33,12 @@ class API {
       {required String type, required String date, required String fieldId}) {
     return "${Server.baseUrl}/sensor/statistics/weekly?type=$type&date=$date&fieldId=$fieldId";
   }
+
+  // water history
+  static const String addWaterHistoryByFieldId =
+      "${Server.baseUrl}/watering-history/";
+  static const String getWaterHistoryByFieldId =
+      "${Server.baseUrl}/watering-history/field/";
+  static const String clearAllWaterHistoryByFieldId =
+      "${Server.baseUrl}/watering-history/field/";
 }

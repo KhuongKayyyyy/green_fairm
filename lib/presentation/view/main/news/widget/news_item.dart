@@ -3,6 +3,7 @@ import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
 import 'package:green_fairm/presentation/view/main/news/news_detail_page.dart';
 
+// ignore: must_be_immutable
 class NewsItem extends StatelessWidget {
   int? index;
   NewsItem({super.key, this.index});
@@ -104,7 +105,7 @@ class NewsItem extends StatelessWidget {
                               color: AppColors.primaryColor,
                             )),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       const Icon(Icons.bookmark_border),
                     ],
                   ),

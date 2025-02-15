@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
-import 'package:green_fairm/core/constant/app_image.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/presentation/view/main/news/breaking_news_section.dart';
 import 'package:green_fairm/presentation/view/main/news/widget/news_item.dart';
@@ -65,7 +64,7 @@ class _NewsPageState extends State<NewsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: BreakingNewsSection(),
             ),

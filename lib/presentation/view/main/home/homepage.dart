@@ -5,10 +5,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
-import 'package:green_fairm/core/service/noti_service.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
-import 'package:green_fairm/data/res/user_repository.dart';
+import 'package:green_fairm/data/model/water_history.dart';
+import 'package:green_fairm/data/res/water_history_repository.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_monitor.dart';
@@ -28,6 +28,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final WeatherBloc _weatherBloc = WeatherBloc();
   final storage = const FlutterSecureStorage();
+
   var userId = "";
   @override
   void initState() {
@@ -79,10 +80,11 @@ class _HomepageState extends State<Homepage> {
           children: [
             TextButton(
                 onPressed: () async {
-                  NotiService().showNotification(
-                      title: "New day has come ! ",
-                      body: "Check out your farm yesterday analysis, Khuong",
-                      id: 1);
+                  WaterHistoryRepository().addWaterHistory(WaterHistory(
+                      fieldId: "676d4559c3b9d9d8e1ac5828",
+                      startDate: DateTime.now().toLocal().toIso8601String(),
+                      endDate: DateTime.now().toLocal().toIso8601String(),
+                      createdAt: DateTime.now().toLocal().toIso8601String()));
                 },
                 child: const Text("Test")),
             _buildWeatherReport(),

@@ -3,6 +3,7 @@ import 'package:green_fairm/core/constant/app_color.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 import 'package:green_fairm/core/util/fake_data.dart';
 
+// ignore: must_be_immutable
 class NewsDetailPage extends StatefulWidget {
   int? index;
   NewsDetailPage({super.key, this.index});
