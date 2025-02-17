@@ -15,7 +15,6 @@ final class FieldAnalysisDailyAverageDataSuccess extends FieldAnalysisState {
   final num temperatureAverage;
   final num humidityAverage;
   final num soilMoistureAverage;
-
   const FieldAnalysisDailyAverageDataSuccess({
     required this.temperatureAverage,
     required this.humidityAverage,

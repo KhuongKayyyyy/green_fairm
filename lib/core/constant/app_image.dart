@@ -15,6 +15,10 @@ class AppImage {
   // illustration
   static const String plant1 = 'assets/images/illustration/plant1.png';
   static const String plant2 = 'assets/images/illustration/plant2.png';
+  static const String excellentPlant =
+      'assets/images/illustration/excellent.gif';
+  static const String goodPlant = 'assets/images/illustration/normal.gif';
+  static const String badPlant = 'assets/images/illustration/withered.gif';
 
   //weather
   // ignore: constant_identifier_names

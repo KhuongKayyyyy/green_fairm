@@ -13,6 +13,12 @@ class API {
 
   static const String deleteAccount = "${Server.baseUrl}/users";
 
+  static const String getUserById = "${Server.baseUrl}/users/";
+
+  static String updateEmailNotification(String userId) {
+    return "${Server.baseUrl}/users/$userId/receive-weekly-email";
+  }
+
   // field
   static const String createNewField = "${Server.baseUrl}/fields/create";
   static const String getFieldsByUserId = "${Server.baseUrl}/fields/user/";
@@ -41,4 +47,10 @@ class API {
       "${Server.baseUrl}/watering-history/field/";
   static const String clearAllWaterHistoryByFieldId =
       "${Server.baseUrl}/watering-history/field/";
+// machine learning
+  static const String getPlantHeathPrediction =
+      "http://103.216.117.115:3003/predict/health_model";
+
+  static const String getWaterNeedPrediction =
+      "http://103.216.117.115:3003/predict/watering_time";
 }

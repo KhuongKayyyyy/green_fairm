@@ -7,8 +7,9 @@ import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
-import 'package:green_fairm/data/model/water_history.dart';
-import 'package:green_fairm/data/res/water_history_repository.dart';
+import 'package:green_fairm/data/model/environmental_data.dart';
+import 'package:green_fairm/data/res/machine_learning_repository.dart';
+import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/field_water_monitor.dart';
@@ -80,11 +81,14 @@ class _HomepageState extends State<Homepage> {
           children: [
             TextButton(
                 onPressed: () async {
-                  WaterHistoryRepository().addWaterHistory(WaterHistory(
-                      fieldId: "676d4559c3b9d9d8e1ac5828",
-                      startDate: DateTime.now().toLocal().toIso8601String(),
-                      endDate: DateTime.now().toLocal().toIso8601String(),
-                      createdAt: DateTime.now().toLocal().toIso8601String()));
+                  String? userId = await storage.read(key: AppSetting.userUid);
+                  Future<bool> result =
+                      UserRepository().getUserEmailNotiFromServer(userId!);
+                  result.then((value) {
+                    print(value);
+                  }).catchError((error) {
+                    print("Error: $error");
+                  });
                 },
                 child: const Text("Test")),
             _buildWeatherReport(),

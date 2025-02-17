@@ -10,6 +10,7 @@ import 'package:green_fairm/core/router/routes.dart';
 import 'package:green_fairm/core/util/helper.dart';
 import 'package:green_fairm/data/model/field.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/plant_health_dialog.dart';
 import 'package:green_fairm/presentation/view/main/home/widget/check_our_ai_recommendation.dart';
 import 'package:green_fairm/presentation/widget/field_information_item.dart';
 import 'package:green_fairm/presentation/widget/grey_button.dart';
@@ -102,8 +103,11 @@ class _FieldOverviewState extends State<FieldOverview> {
           children: [
             Expanded(
               child: FieldInformationItem(
+                onPressed: () {
+                  showHealthDialog();
+                },
                 informationType: "Crop health",
-                information: widget.field.cropHealth ?? "No data",
+                information: widget.field.status ?? "No data",
                 isExpandable: true,
               ),
             ),
@@ -211,13 +215,7 @@ class _FieldOverviewState extends State<FieldOverview> {
               Flexible(
                 child: TextField(
                   controller: fieldNameController,
-                  // onChanged: (text) {
-                  //   setState(() {
-                  //     widget.field.name = text;
-                  //   });
-                  // },
                   cursorColor: AppColors.secondaryColor,
-
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -382,5 +380,15 @@ class _FieldOverviewState extends State<FieldOverview> {
         ],
       ),
     );
+  }
+
+  void showHealthDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PlantHealthDialog(
+            field: widget.field,
+          );
+        });
   }
 }

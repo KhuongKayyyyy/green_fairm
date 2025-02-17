@@ -35,6 +35,7 @@ class _MyFieldsSectionState extends State<MyFieldsSection> {
               right: index == widget.fields.length - 1 ? 15 : 0,
             ),
             child: FieldSmallItem(
+              key: ValueKey(widget.fields[index].id),
               field: widget.fields[index],
               onDelete: () => deleteField(index), // Pass the callback
             ),

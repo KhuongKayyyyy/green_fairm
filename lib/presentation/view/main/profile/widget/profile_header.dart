@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:green_fairm/presentation/view/main/profile/widget/user_avatar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileHeader extends StatefulWidget {
   final bool needsRefresh;
@@ -21,7 +22,26 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return Skeletonizer(
+            child: Column(
+              children: [
+                const SizedBox(height: 100),
+                const Hero(tag: 'avatar', child: UserAvatar()),
+                const SizedBox(height: 20),
+                Container(
+                  width: 200,
+                  height: 20,
+                  color: Colors.grey[300],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 200,
+                  height: 20,
+                  color: Colors.grey[300],
+                ),
+              ],
+            ),
+          );
         }
         if (snapshot.hasError) {
           return const Text('Something went wrong');

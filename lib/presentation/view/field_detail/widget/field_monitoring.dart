@@ -15,6 +15,7 @@ import 'package:green_fairm/presentation/view/field_detail/widget/field_setting.
 import 'package:green_fairm/presentation/view/field_detail/widget/monitoring_weather_widget.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_history_section.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_monitoring.dart';
+import 'package:green_fairm/presentation/view/field_detail/widget/water_need_prediction.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_schedule.dart';
 import 'package:green_fairm/presentation/view/field_detail/widget/water_usage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -34,6 +35,7 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   bool isWatering = false;
   bool isAutomatic = false;
   bool _hasNotifiedRain = false;
+  bool _hasNotifiedGas = false;
   final WeatherBloc _weatherBloc = WeatherBloc();
   final String broker = '103.216.117.115';
   final int port = 1883;
@@ -138,12 +140,19 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
         setState(() {
           sensorData = newSensorData;
         });
-        if (double.parse(newSensorData.gasVolume) > 1200) {
+        double gasVolume = double.parse(newSensorData.gasVolume);
+
+        if (gasVolume > 1200 && !_hasNotifiedGas) {
           NotiService().showNotification(
               title: "Fire Warning 🔥",
-              body: "A considerable amount of gas found in your farm, Khuong",
+              body:
+                  "A considerable amount of gas ${gasVolume.toStringAsFixed(2)} ppm found in your farm, Khuong",
               id: 2);
+          _hasNotifiedGas = true; // Prevent duplicate notifications
+        } else if (gasVolume <= 1200) {
+          _hasNotifiedGas = false; // Reset flag when gas level is safe
         }
+
         double rainVolume = double.parse(newSensorData.rainVolume);
 
         if (rainVolume < 3000 && !_hasNotifiedRain) {
@@ -290,6 +299,9 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
+          WaterNeedPrediction(
+            field: widget.field,
+          ),
           WaterMonitoring(
             refresh: () => setState(() {}),
             field: widget.field,

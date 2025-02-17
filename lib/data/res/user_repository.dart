@@ -331,4 +331,54 @@ class UserRepository {
       rethrow;
     }
   }
+
+  Future<void> updateEmailNotification(bool value, String userId) async {
+    try {
+      var client = HttpClient();
+      var request =
+          await client.patchUrl(Uri.parse(API.updateEmailNotification(userId)));
+      request.headers.set('content-type', 'application/json');
+      request.write(jsonEncode({
+        "receiveWeeklyEmail": value,
+      }));
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update email notification on server');
+      } else {
+        if (kDebugMode) {
+          print('Email notification updated on server successfully');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating email notification on server: $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<bool> getUserEmailNotiFromServer(String userId) async {
+    try {
+      var client = HttpClient();
+      var request = await client.getUrl(Uri.parse("${API.getUserById}$userId"));
+      request.headers.set('content-type', 'application/json');
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        throw Exception('Failed to get user from server');
+      } else {
+        final responseBody = await response.transform(utf8.decoder).join();
+        final responseData = jsonDecode(responseBody);
+        if (responseData['statusCode'] == 200) {
+          return responseData['metadata']['receiveWeeklyEmail'];
+        } else {
+          throw Exception('Failed to get user email notification status');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting user from server: $e');
+      }
+      rethrow;
+    }
+  }
 }
