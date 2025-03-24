@@ -14,7 +14,7 @@
 // }
 
 // class _MqttExampleState extends State<MqttExample> {
-//   final String broker = '103.216.117.115'; // Replace with your broker address
+//   final String broker = '103.216.116.55'; // Replace with your broker address
 //   final int port = 1883;
 //   final String topic = 'ngoctruongbui/sensor_realtime';
 //   MqttServerClient? client;

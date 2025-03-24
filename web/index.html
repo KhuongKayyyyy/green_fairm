@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
+  <!-- <base href="./"> -->
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
+
+  <!-- Mobile Viewport for Better Scaling -->
+  <meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,8 +22,42 @@
 
   <title>green_fairm</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Center and restrict app size to mobile dimensions */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f8f8f8;
+    }
+    flutter-view {
+      width: 390px;  /* Mobile screen width */
+      height: 844px; /* Mobile screen height */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <script src="flutter.js" defer></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAV7s3IQfeBmTUAyc56SR5V6lz5gexBLxU",
+      authDomain: "greenfairm-68044.firebaseapp.com",
+      projectId: "greenfairm-68044",
+      storageBucket: "greenfairm-68044.appspot.com",
+      messagingSenderId: "113320151024",
+      appId: "1:113320151024:web:b708c284ea921543d07f35"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
 </body>
 </html>

@@ -7,8 +7,6 @@ import 'package:green_fairm/core/constant/app_setting.dart';
 import 'package:green_fairm/core/constant/app_text_style.dart';
 
 import 'package:green_fairm/core/util/fake_data.dart';
-import 'package:green_fairm/data/model/environmental_data.dart';
-import 'package:green_fairm/data/res/machine_learning_repository.dart';
 import 'package:green_fairm/data/res/user_repository.dart';
 import 'package:green_fairm/presentation/bloc/field_management/field_management_bloc.dart';
 import 'package:green_fairm/presentation/bloc/weather/weather_bloc.dart';
@@ -79,18 +77,18 @@ class _HomepageState extends State<Homepage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            TextButton(
-                onPressed: () async {
-                  String? userId = await storage.read(key: AppSetting.userUid);
-                  Future<bool> result =
-                      UserRepository().getUserEmailNotiFromServer(userId!);
-                  result.then((value) {
-                    print(value);
-                  }).catchError((error) {
-                    print("Error: $error");
-                  });
-                },
-                child: const Text("Test")),
+            // TextButton(
+            //     onPressed: () async {
+            //       String? userId = await storage.read(key: AppSetting.userUid);
+            //       Future<bool> result =
+            //           UserRepository().getUserEmailNotiFromServer(userId!);
+            //       result.then((value) {
+            //         print(value);
+            //       }).catchError((error) {
+            //         print("Error: $error");
+            //       });
+            //     },
+            //     child: const Text("Test")),
             _buildWeatherReport(),
             _buildMyFieldsSection(),
             const FieldWaterMonitor(),
@@ -173,9 +171,23 @@ class _HomepageState extends State<Homepage> {
           );
         } else if (fieldOfUserState is FieldManagementGetByUserIdError) {
           {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text('Failed to load fields'),
+            return Container(
+              height: 80,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                  child: Text(
+                "Add your first field",
+                style: AppTextStyle.defaultBold(color: Colors.white),
+              )),
             );
           }
         }

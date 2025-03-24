@@ -81,6 +81,7 @@ class _FieldPageState extends State<FieldPage> {
                   );
                 } else if (fileldState is FieldManagementGetByUserIdSuccess) {
                   fields = fileldState.fields;
+                  print(fields.length);
                   return FieldPageFieldList(fields: fileldState.fields);
                 }
                 return Skeletonizer(

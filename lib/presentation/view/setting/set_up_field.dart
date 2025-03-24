@@ -104,7 +104,7 @@ class _SetUpFieldPageState extends State<SetUpFieldPage> {
                       });
                     }
                   }),
-              const SizedBox(height: 80),
+              const SizedBox(height: 20),
             ],
           ),
         ),

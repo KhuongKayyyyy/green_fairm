@@ -37,7 +37,7 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
   bool _hasNotifiedRain = false;
   bool _hasNotifiedGas = false;
   final WeatherBloc _weatherBloc = WeatherBloc();
-  final String broker = '103.216.117.115';
+  final String broker = '103.216.116.55';
   final int port = 1883;
   final String topic = 'ngoctruongbui/sensor_realtime';
   String waterTopic = 'bekhuongcute/watering';
@@ -53,7 +53,7 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
     super.initState();
     waterTopic = 'bekhuongcute/watering_${widget.field.id}';
     _weatherBloc.add(WeatherGetByCity(city: _getStateOnly(widget.field.area!)));
-    _connectToMqtt();
+    if (widget.field.id == "676d4559c3b9d9d8e1ac5828") _connectToMqtt();
   }
 
   void _switchIrrigationMode(bool value) {
@@ -143,11 +143,11 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
         double gasVolume = double.parse(newSensorData.gasVolume);
 
         if (gasVolume > 1200 && !_hasNotifiedGas) {
-          NotiService().showNotification(
-              title: "Fire Warning 🔥",
-              body:
-                  "A considerable amount of gas ${gasVolume.toStringAsFixed(2)} ppm found in your farm, Khuong",
-              id: 2);
+          // NotiService().showNotification(
+          //     title: "Fire Warning 🔥",
+          //     body:
+          //         "A considerable amount of gas ${gasVolume.toStringAsFixed(2)} ppm found in your farm, Khuong",
+          //     id: 2);
           _hasNotifiedGas = true; // Prevent duplicate notifications
         } else if (gasVolume <= 1200) {
           _hasNotifiedGas = false; // Reset flag when gas level is safe
@@ -255,38 +255,39 @@ class _FieldMonitoringState extends State<FieldMonitoring> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          BlocBuilder<WeatherBloc, WeatherState>(
-            bloc: _weatherBloc,
-            builder: (context, weatherState) {
-              if (weatherState is WeatherLoading) {
-                return MonitoringWeatherWidget(
-                  weather: FakeData.fakeWeather,
-                );
-              } else if (weatherState is WeatherLoaded) {
-                return MonitoringWeatherWidget(
-                  weather: weatherState.weather,
-                );
-              } else if (weatherState is WeatherError) {
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.lightbg,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
-                    child: Text(
-                      "Error loading weather data",
-                      style: AppTextStyle.defaultBold(color: Colors.white),
+          if (widget.field.isWeatherService!)
+            BlocBuilder<WeatherBloc, WeatherState>(
+              bloc: _weatherBloc,
+              builder: (context, weatherState) {
+                if (weatherState is WeatherLoading) {
+                  return MonitoringWeatherWidget(
+                    weather: FakeData.fakeWeather,
+                  );
+                } else if (weatherState is WeatherLoaded) {
+                  return MonitoringWeatherWidget(
+                    weather: weatherState.weather,
+                  );
+                } else if (weatherState is WeatherError) {
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.lightbg,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: Text(
+                        "Error loading weather data",
+                        style: AppTextStyle.defaultBold(color: Colors.white),
+                      ),
+                    ),
+                  );
+                }
+                return Skeletonizer(
+                  child: MonitoringWeatherWidget(weather: FakeData.fakeWeather),
                 );
-              }
-              return Skeletonizer(
-                child: MonitoringWeatherWidget(weather: FakeData.fakeWeather),
-              );
-            },
-          ),
+              },
+            ),
           const SizedBox(height: 15),
           if (sensorData != null) BasicCharacteristic(sensorData: sensorData),
         ],

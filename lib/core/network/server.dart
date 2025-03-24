@@ -1,5 +1,5 @@
 class Server {
-  static const String baseUrl = "http://103.216.117.115:3001/api/v1";
+  static const String baseUrl = "http://103.216.116.55:3001/api/v1";
 }
 
 class API {
@@ -49,8 +49,8 @@ class API {
       "${Server.baseUrl}/watering-history/field/";
 // machine learning
   static const String getPlantHeathPrediction =
-      "http://103.216.117.115:3003/predict/health_model";
+      "http://103.216.116.55:3003/predict/health_model";
 
   static const String getWaterNeedPrediction =
-      "http://103.216.117.115:3003/predict/watering_time";
+      "http://103.216.116.55:3003/predict/watering_time";
 }

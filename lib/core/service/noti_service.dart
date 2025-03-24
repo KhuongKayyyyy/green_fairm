@@ -3,6 +3,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
+// ✅ Top-level function for handling background notifications
+void onBackgroundNotificationResponse(NotificationResponse details) {
+  if (kDebugMode) {
+    print("Background Notification tapped!");
+    print(details);
+  }
+}
+
 class NotiService {
   final notificationPlugins = FlutterLocalNotificationsPlugin();
 
@@ -34,13 +42,12 @@ class NotiService {
       onDidReceiveNotificationResponse: (details) {
         if (kDebugMode) {
           print("Notification tapped!");
-        }
-        if (kDebugMode) {
           print(details);
         }
       },
-      // ignore: avoid_print
-      onDidReceiveBackgroundNotificationResponse: (details) => print(details),
+      // ✅ Reference the top-level function
+      onDidReceiveBackgroundNotificationResponse:
+          onBackgroundNotificationResponse,
     );
 
     _isInitialized = true;

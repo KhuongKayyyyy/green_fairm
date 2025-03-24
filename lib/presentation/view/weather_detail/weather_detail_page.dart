@@ -14,7 +14,7 @@ class WeatherDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentHour = DateTime.now().hour;
 
-    bool isDayTime = currentHour >= 6 && currentHour < 18;
+    bool isDayTime = !(currentHour >= 6 && currentHour < 18);
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),

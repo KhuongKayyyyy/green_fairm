@@ -13,6 +13,12 @@ class AppSearchBar extends StatefulWidget {
 
 class _AppSearchBarState extends State<AppSearchBar> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
